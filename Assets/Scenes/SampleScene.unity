@@ -443,7 +443,7 @@ PrefabInstance:
     - target: {fileID: 114674612155881938, guid: c6a74181d4000004887343fb87b3c53a,
         type: 3}
       propertyPath: _enablePhysicsCapsules
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6a74181d4000004887343fb87b3c53a, type: 3}
@@ -1730,6 +1730,11 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5941058076522969291, guid: 644b2490ba6ecae4db6ff17d33bd1245,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 1222390948}
+    - target: {fileID: 7632749932831532189, guid: 644b2490ba6ecae4db6ff17d33bd1245,
         type: 3}
       propertyPath: target
       value: 

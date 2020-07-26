@@ -10,7 +10,7 @@ public class Block : MonoBehaviour
     }
 
     public BlockType blockType = BlockType.Grass;
-    
+
     private bool _frozen;
     private Vector2 _position;
     private GameObject _occupiedBy;
@@ -18,7 +18,7 @@ public class Block : MonoBehaviour
     public void DestroySelf()
     {
         GetWorldPlane().RemoveBlockAt(_position);
-        
+
         Destroy(gameObject);
         Destroy(_occupiedBy);
     }
@@ -28,9 +28,9 @@ public class Block : MonoBehaviour
         var worldPlane = GetWorldPlane();
         worldPlane.RemoveBlockAt(_position);
         worldPlane.AddBlockToPosition(otherBlock, _position);
-        
+
         otherBlock.transform.position = transform.position;
-        
+
         DestroySelf();
     }
 
@@ -50,7 +50,7 @@ public class Block : MonoBehaviour
             _frozen = false;
         }
     }
-
+    
     public bool IsInteractable()
     {
         return !_frozen;
@@ -75,7 +75,7 @@ public class Block : MonoBehaviour
     {
         _occupiedBy = house;
 
-        var animationHeight = .05f; 
+        var animationHeight = .05f;
         house.transform.position = transform.position + Vector3.up * (.05f + animationHeight);
     }
 }
