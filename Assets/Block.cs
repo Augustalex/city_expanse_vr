@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Linq.Expressions;
 using UnityEngine;
 
 public class Block : MonoBehaviour
@@ -12,8 +14,9 @@ public class Block : MonoBehaviour
     public BlockType blockType = BlockType.Grass;
 
     private bool _frozen;
-    private Vector2 _position;
+    private Vector3 _position;
     private GameObject _occupiedBy;
+    private bool _permaFrozen;
 
     public void DestroySelf()
     {
@@ -41,6 +44,8 @@ public class Block : MonoBehaviour
 
     public void ShortFreeze()
     {
+        if (_permaFrozen) return;
+        
         _frozen = true;
         StartCoroutine(UnfreezeSoon());
 
@@ -53,7 +58,12 @@ public class Block : MonoBehaviour
     
     public bool IsInteractable()
     {
-        return !_frozen;
+        return !_frozen && !IsPermaFrozen();
+    }
+    
+    public bool IsPermaFrozen()
+    {
+        return _permaFrozen;
     }
 
     public WorldPlane GetWorldPlane()
@@ -61,12 +71,12 @@ public class Block : MonoBehaviour
         return GameObject.FindWithTag("WorldPlane").GetComponent<WorldPlane>();
     }
 
-    public void SetPosition(Vector2 blockPosition)
+    public void SetPosition(Vector3 blockPosition)
     {
         _position = blockPosition;
     }
 
-    public Vector2 GetPosition()
+    public Vector3 GetPosition()
     {
         return _position;
     }
@@ -77,5 +87,27 @@ public class Block : MonoBehaviour
 
         var animationHeight = .05f;
         house.transform.position = transform.position + Vector3.up * (.05f + animationHeight);
+    }
+
+    public void PlaceOnTopOfSelf(GameObject otherBlock)
+    {
+        _occupiedBy = otherBlock;
+        
+        GetWorldPlane().AddBlockToPosition(otherBlock, _position + Vector3.up);
+        otherBlock.transform.position = transform.position + new Vector3(0, .1f, 0);
+        
+        var otherBlockComponent = otherBlock.GetComponent<Block>();
+        otherBlockComponent.ShortFreeze();
+    }
+
+    public void PermanentFreeze()
+    {
+        _frozen = true;
+        _permaFrozen = true;
+    }
+
+    public bool IsGroundLevel()
+    {
+        return Math.Abs(_position.y) < .5f;
     }
 }

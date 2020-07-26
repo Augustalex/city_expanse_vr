@@ -15,6 +15,8 @@ public class FloodingWater : MonoBehaviour
 
     void Update()
     {
+        if (_block.IsPermaFrozen()) return;
+        
         var nearbyEmptyPositions = _worldPlane.GetNearbyEmptyPositions(_block.GetPosition());
         foreach (var position in nearbyEmptyPositions)
         {
