@@ -13,9 +13,10 @@ public class RaiseWaterBlockInteractor : BlockInteractor
         var blockComponent = other.gameObject.GetComponent<Block>();
         if (blockComponent && blockComponent.IsInteractable() && blockComponent.Vacant())
         {
-            var waterBlock = Instantiate(waterBlockTemplate);
-            blockComponent.PlaceOnTopOfSelf(waterBlock);
-            waterBlock.GetComponent<Block>().PermanentFreeze();
+            var water = Instantiate(waterBlockTemplate);
+            var waterBlock = water.GetComponentInChildren<Block>();
+            blockComponent.PlaceOnTopOfSelf(waterBlock, water);
+            waterBlock.PermanentFreeze();
             PlayGeneralSound();
         }
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FloodingWater : MonoBehaviour
 {
+    public GameObject waterBlockTemplate;
     private Block _block;
     private WorldPlane _worldPlane;
 
@@ -20,14 +21,10 @@ public class FloodingWater : MonoBehaviour
         var nearbyEmptyPositions = _worldPlane.GetNearbyEmptyPositions(_block.GetPosition());
         foreach (var position in nearbyEmptyPositions)
         {
-            var waterBlock = Replicate();
+            var water = Instantiate(waterBlockTemplate);
+            var waterBlock = water.GetComponentInChildren<Block>();
             _worldPlane.AddBlockToPosition(waterBlock, position);
-            waterBlock.GetComponent<Block>().ShortFreeze();
+            waterBlock.ShortFreeze();
         }
-    }
-
-    GameObject Replicate()
-    {
-        return Instantiate(gameObject);
     }
 }

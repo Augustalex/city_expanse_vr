@@ -26,14 +26,12 @@ public class Block : MonoBehaviour
         Destroy(_occupiedBy);
     }
 
-    public void TurnOverSpotTo(GameObject otherBlock)
+    public void TurnOverSpotTo(Block otherBlock)
     {
         var worldPlane = GetWorldPlane();
         worldPlane.RemoveBlockAt(_position);
-        worldPlane.AddBlockToPosition(otherBlock, _position);
-
-        otherBlock.transform.position = transform.position;
-
+        worldPlane.AddBlockToPosition(otherBlock, _position); // TODO Is there someway to remove this circular dependency perhaps. It is very confusing!
+        
         DestroySelf();
     }
 
@@ -74,11 +72,17 @@ public class Block : MonoBehaviour
     public void SetPosition(Vector3 blockPosition)
     {
         _position = blockPosition;
+        transform.parent.position = RealPosition();
     }
 
     public Vector3 GetPosition()
     {
         return _position;
+    }
+
+    private Vector3 RealPosition()
+    {
+        return GetWorldPlane().ToRealCoordinates(_position);
     }
 
     public void Occupy(GameObject house)
@@ -89,15 +93,14 @@ public class Block : MonoBehaviour
         house.transform.position = transform.position + Vector3.up * (.05f + animationHeight);
     }
 
-    public void PlaceOnTopOfSelf(GameObject otherBlock)
+    public void PlaceOnTopOfSelf(Block otherBlock, GameObject occupantRoot)
     {
-        _occupiedBy = otherBlock;
+        _occupiedBy = occupantRoot;
         
         GetWorldPlane().AddBlockToPosition(otherBlock, _position + Vector3.up);
         otherBlock.transform.position = transform.position + new Vector3(0, .1f, 0);
         
-        var otherBlockComponent = otherBlock.GetComponent<Block>();
-        otherBlockComponent.ShortFreeze();
+        otherBlock.ShortFreeze();
     }
 
     public void PermanentFreeze()

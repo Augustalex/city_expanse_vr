@@ -39,7 +39,7 @@ public class BlockInteractor : MonoBehaviour
 
         IEnumerator UnfreezeSoon()
         {
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
             _frozen = false;
         }
     }

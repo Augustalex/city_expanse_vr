@@ -12,7 +12,8 @@ public class RaiseLandBlockInteractor : BlockInteractor
         if (!blockComponent || blockComponent.blockType != Block.BlockType.Grass || !blockComponent.Vacant() || !blockComponent.IsInteractable()) return;
 
         var grass = Instantiate(grassBlockTemplate);
-        blockComponent.PlaceOnTopOfSelf(grass);
+        var grassBlock = grass.GetComponentInChildren<Block>();
+        blockComponent.PlaceOnTopOfSelf(grassBlock, grass);
         PlayGeneralSound();
     }
 }
