@@ -99,11 +99,10 @@ public class WorldPlane : MonoBehaviour
         {
             var element = list[i];
             var isTopBlock = i == 0;
-            var isGroundLevel = Math.Abs(element.Key.y) < .5f;
 
             if (!element.Value.IsGrass()) continue;
 
-            if (isTopBlock && !isGroundLevel)
+            if (isTopBlock)
             {
                 element.Value.GetComponent<GrassBlock>().SetTopMaterial();
             }

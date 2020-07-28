@@ -24,20 +24,45 @@ public class City : MonoBehaviour
         foreach (var block in blocksWithHouse)
         {
             var houseSpawn = block.GetOccupantHouse();
-            if (houseSpawn.IsLarge()) continue;
+            if (houseSpawn.IsBig()) continue;
 
             var closeHouses = 0;
             foreach (var otherBlock in blocksWithHouse)
             {
                 if (otherBlock != block
-                    && !otherBlock.GetOccupantHouse().IsLarge()
+                    && !otherBlock.GetOccupantHouse().IsSmall()
                     && block.DistanceToOtherBlock(otherBlock) <= 3)
                 {
                     closeHouses += 1;
                 }
             }
 
-            if (closeHouses >= 5)
+            if (closeHouses >= 10)
+            {
+                block
+                    .GetOccupantHouse()
+                    .Upgrade();
+            }
+        }
+        
+        foreach (var block in blocksWithHouse)
+        {
+            var houseSpawn = block.GetOccupantHouse();
+            if (houseSpawn.IsMegaBig()) continue;
+
+            var closeHouses = 0;
+            foreach (var otherBlock in blocksWithHouse)
+            {
+                var isActuallyAnotherBlock = otherBlock != block;
+                if (isActuallyAnotherBlock
+                    && otherBlock.GetOccupantHouse().IsBig()
+                    && block.DistanceToOtherBlock(otherBlock) <= 5)
+                {
+                    closeHouses += 1;
+                }
+            }
+
+            if (closeHouses >= 20)
             {
                 block
                     .GetOccupantHouse()
