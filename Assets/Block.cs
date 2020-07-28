@@ -150,4 +150,9 @@ public class Block : MonoBehaviour
         var dist = Mathf.Max(Mathf.Abs(dx), Mathf.Abs(dy), Mathf.Abs(dx + dy));
         return Convert.ToInt32(Mathf.Round(dist));
     }
+
+    public bool IsGrass()
+    {
+        return blockType == BlockType.Grass;
+    }
 }

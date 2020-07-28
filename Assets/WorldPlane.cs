@@ -86,6 +86,25 @@ public class WorldPlane : MonoBehaviour
     {
         block.SetPosition(position);
         _blocks[position] = block;
+
+        MakeSureTopGrassBlocksHaveCorrectTexture();
+    }
+
+    private void MakeSureTopGrassBlocksHaveCorrectTexture()
+    {
+        var highestY = _blocks.Max(pair => pair.Key.y);
+        foreach (var pair in _blocks.Where(b => b.Value.IsGrass()))
+        {
+            var grass = pair.Value.GetComponent<GrassBlock>();
+            if (pair.Key.y == highestY)
+            {
+                grass.SetTopMaterial();
+            }
+            else
+            {
+                grass.SetNormalMaterial();
+            }
+        }
     }
 
     public List<Block> GetWaterBlocks()
