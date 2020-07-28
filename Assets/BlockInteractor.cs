@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockInteractor : MonoBehaviour
+[RequireComponent(typeof(FollowObject))]
+[RequireComponent(typeof(AudioSource))]
+public abstract class BlockInteractor : MonoBehaviour
 {
     public bool isStartingInteractor = false;
 
@@ -24,6 +26,8 @@ public class BlockInteractor : MonoBehaviour
             Activate();
         }
     }
+
+    public abstract void Interact(GameObject other);
 
     public void Activate()
     {

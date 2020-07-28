@@ -45,6 +45,6 @@ public class City : MonoBehaviour
             target.y = house.transform.position.y;
             house.transform.LookAt(target);
             _lastPlacedHouse = Time.fixedTime;
-        }
+        }    
     }
 }

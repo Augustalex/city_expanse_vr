@@ -8,18 +8,7 @@ public class PlaceGreensBlockInteractor : BlockInteractor
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!IsActivated()) return;
-
-        var blockComponent = other.gameObject.GetComponent<Block>();
-        if (blockComponent && blockComponent.IsInteractable() && blockComponent.blockType == Block.BlockType.Grass && blockComponent.IsVacant())
-        {
-            var greens = Instantiate(greensBlockTemplate);
-            blockComponent.Occupy(greens);
-            blockComponent.ShortFreeze();
-            PlayGeneralSound();
-
-            StopRigidbodySoon(greens);
-        }
+        Interact(other.gameObject);
     }
     
     public void StopRigidbodySoon(GameObject greens)
@@ -31,6 +20,22 @@ public class PlaceGreensBlockInteractor : BlockInteractor
             yield return new WaitForSeconds(2);
 
             greens.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        }
+    }
+
+    public override void Interact(GameObject other)
+    {
+        if (!IsActivated()) return;
+
+        var blockComponent = other.gameObject.GetComponent<Block>();
+        if (blockComponent && blockComponent.IsInteractable() && blockComponent.blockType == Block.BlockType.Grass && blockComponent.IsVacant())
+        {
+            var greens = Instantiate(greensBlockTemplate);
+            blockComponent.Occupy(greens);
+            blockComponent.ShortFreeze();
+            PlayGeneralSound();
+
+            StopRigidbodySoon(greens);
         }
     }
 }
