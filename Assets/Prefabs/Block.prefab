@@ -152,5 +152,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c41754ea871beac4e856a7592519bbe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalMaterial: {fileID: 0}
-  topMaterial: {fileID: 0}
+  normalMaterial: {fileID: 2100000, guid: 0184b296287748e449e368bedd213e22, type: 2}
+  topMaterial: {fileID: 2100000, guid: 3964d61c77d723a478e201f6e2cac73a, type: 2}

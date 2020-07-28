@@ -25,7 +25,6 @@ public class RaiseLandBlockInteractor : BlockInteractor
         {
             var grass = Instantiate(grassBlockTemplate);
             var grassBlock = grass.GetComponentInChildren<Block>();
-            grassBlock.RandomRotateAlongY();
             blockComponent.PlaceOnTopOfSelf(grassBlock, grass);
             PlayGeneralSound();
         }

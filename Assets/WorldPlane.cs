@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -21,15 +22,10 @@ public class WorldPlane : MonoBehaviour
             for (var z = 0; z < Width; z++)
             {
                 var blockPosition = new Vector3(x, 0, z);
-
                 var blockObject = Instantiate(blockTemplate);
-                
-                blockObject.transform.position = ToRealCoordinates(blockPosition);
                 var block = blockObject.GetComponentInChildren<Block>();
-                block.SetPosition(blockPosition);
-                block.RandomRotateAlongY();
-                
-                _blocks[blockPosition] = block;
+
+                AddBlockToPosition(block, blockPosition);
             }
         }
     }
@@ -39,13 +35,15 @@ public class WorldPlane : MonoBehaviour
         var x = position.x;
         var z = position.z;
         var middle = Math.Abs(x % 2) < .5f;
-        var xOffset = (((blockTemplate.transform.localScale.x + -0.014f) * x)) + blockTemplate.transform.localScale.x * .5f;
-        var zOffset = blockTemplate.transform.localScale.z * z + blockTemplate.transform.localScale.z * .5f + (middle ? blockTemplate.transform.localScale.z * -.5f : 0);
+        var xOffset = (((blockTemplate.transform.localScale.x + -0.014f) * x)) +
+                      blockTemplate.transform.localScale.x * .5f;
+        var zOffset = blockTemplate.transform.localScale.z * z + blockTemplate.transform.localScale.z * .5f +
+                      (middle ? blockTemplate.transform.localScale.z * -.5f : 0);
         return TopLeftPoint.position + new Vector3(
-                   xOffset,
-                   blockTemplate.transform.localScale.y * .5f,
-                   zOffset
-               );
+            xOffset,
+            blockTemplate.transform.localScale.y * .5f,
+            zOffset
+        );
     }
 
     public void RemoveBlockAt(Vector3 position)
@@ -63,7 +61,7 @@ public class WorldPlane : MonoBehaviour
 
             new Vector3(-1, position.y, 0),
             new Vector3(1, position.y, 0),
-            
+
             new Vector3(0, position.y, 1),
             new Vector3(middle ? 1 : -1, position.y, 1),
         };
@@ -85,24 +83,33 @@ public class WorldPlane : MonoBehaviour
     public void AddBlockToPosition(Block block, Vector3 position)
     {
         block.SetPosition(position);
+        block.RandomRotateAlongY();
+
         _blocks[position] = block;
 
-        MakeSureTopGrassBlocksHaveCorrectTexture();
+        MakeSureTopGrassBlocksHaveCorrectTexture(position);
     }
 
-    private void MakeSureTopGrassBlocksHaveCorrectTexture()
+    private void MakeSureTopGrassBlocksHaveCorrectTexture(Vector3 position)
     {
-        var highestY = _blocks.Max(pair => pair.Key.y);
-        foreach (var pair in _blocks.Where(b => b.Value.IsGrass()))
+        var stack = _blocks.Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
+
+        var list = stack.OrderByDescending(pair => pair.Key.y).ToList();
+        for (var i = 0; i < list.Count; i++)
         {
-            var grass = pair.Value.GetComponent<GrassBlock>();
-            if (pair.Key.y == highestY)
+            var element = list[i];
+            var isTopBlock = i == 0;
+            var isGroundLevel = Math.Abs(element.Key.y) < .5f;
+
+            if (!element.Value.IsGrass()) continue;
+
+            if (isTopBlock && !isGroundLevel)
             {
-                grass.SetTopMaterial();
+                element.Value.GetComponent<GrassBlock>().SetTopMaterial();
             }
             else
             {
-                grass.SetNormalMaterial();
+                element.Value.GetComponent<GrassBlock>().SetNormalMaterial();
             }
         }
     }
