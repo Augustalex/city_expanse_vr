@@ -35,7 +35,7 @@ public class Block : MonoBehaviour
         DestroySelf();
     }
 
-    public bool Vacant()
+    public bool IsVacant()
     {
         return _occupiedBy == null;
     }

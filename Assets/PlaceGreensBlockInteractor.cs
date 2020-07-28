@@ -11,7 +11,7 @@ public class PlaceGreensBlockInteractor : BlockInteractor
         if (!IsActivated()) return;
 
         var blockComponent = other.gameObject.GetComponent<Block>();
-        if (blockComponent && blockComponent.IsInteractable() && blockComponent.blockType == Block.BlockType.Grass && blockComponent.Vacant())
+        if (blockComponent && blockComponent.IsInteractable() && blockComponent.blockType == Block.BlockType.Grass && blockComponent.IsVacant())
         {
             var greens = Instantiate(greensBlockTemplate);
             blockComponent.Occupy(greens);

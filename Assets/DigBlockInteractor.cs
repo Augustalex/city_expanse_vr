@@ -7,9 +7,11 @@ public class DigBlockInteractor : BlockInteractor
         if (!IsActivated()) return;
 
         var blockComponent = other.gameObject.GetComponent<Block>();
-        if (!blockComponent || blockComponent.blockType == Block.BlockType.Water) return;
 
-        blockComponent.DestroySelf();
-        PlayGeneralSound();
+        if (blockComponent && blockComponent.blockType == Block.BlockType.Grass && blockComponent.IsGroundLevel() && blockComponent.IsVacant())
+        {
+            blockComponent.DestroySelf();
+            PlayGeneralSound();
+        }
     }
 }
