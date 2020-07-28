@@ -20,8 +20,33 @@ public class City : MonoBehaviour
 
     void Update()
     {
+        var blocksWithHouse = _worldPlane.GetBlocksWithHouses();
+        foreach (var block in blocksWithHouse)
+        {
+            var houseSpawn = block.GetOccupantHouse();
+            if (houseSpawn.IsLarge()) continue;
+
+            var closeHouses = 0;
+            foreach (var otherBlock in blocksWithHouse)
+            {
+                if (otherBlock != block
+                    && !otherBlock.GetOccupantHouse().IsLarge()
+                    && block.DistanceToOtherBlock(otherBlock) <= 3)
+                {
+                    closeHouses += 1;
+                }
+            }
+
+            if (closeHouses >= 5)
+            {
+                block
+                    .GetOccupantHouse()
+                    .Upgrade();
+            }
+        }
+        
         var delta = Time.fixedTime - _lastPlacedHouse;
-        if (delta > 8 && Random.value < .1)
+        if (delta > 1 && Random.value < .1)
         {
             SpawnOneHouse();
         }
@@ -45,6 +70,6 @@ public class City : MonoBehaviour
             target.y = house.transform.position.y;
             house.transform.LookAt(target);
             _lastPlacedHouse = Time.fixedTime;
-        }    
+        }
     }
 }

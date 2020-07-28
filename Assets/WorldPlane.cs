@@ -103,4 +103,9 @@ public class WorldPlane : MonoBehaviour
             .Where(b => b.blockType == Block.BlockType.Grass && b.IsVacant())
             .ToList();
     }
+
+    public List<Block> GetBlocksWithHouses()
+    {
+        return _blocks.Values.Where(block => block.OccupiedByHouse()).ToList();
+    }
 }

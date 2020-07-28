@@ -123,4 +123,31 @@ public class Block : MonoBehaviour
         var transformRotation = blockRoot.rotation;
         blockRoot.rotation = Quaternion.Euler(transformRotation.x, (Random.Range(0, 5) * 60), transformRotation.z);
     }
+
+    public bool OccupiedByHouse()
+    {
+        return !IsVacant() && _occupiedBy.CompareTag("HouseSpawn");
+    }
+
+    public HouseSpawn GetOccupantHouse()
+    {
+        if(!OccupiedByHouse()) throw new Exception("Trying to get occupant house, but is not occupied by a house!");
+
+        return _occupiedBy.GetComponent<HouseSpawn>();
+    }
+
+    public int DistanceToOtherBlock(Block otherBlock)
+    {
+        var position = GetPosition();
+        var x0 = position.x - Mathf.Floor(position.z / 2);
+        var y0 = position.z;
+        
+        var otherPosition = otherBlock.GetPosition();
+        var x1 = otherPosition.x - Mathf.Floor(otherPosition.z / 2);
+        var y1 = otherPosition.z;
+        var dx = x1 - x0;
+        var dy = y1 - y0;
+        var dist = Mathf.Max(Mathf.Abs(dx), Mathf.Abs(dy), Mathf.Abs(dx + dy));
+        return Convert.ToInt32(Mathf.Round(dist));
+    }
 }
