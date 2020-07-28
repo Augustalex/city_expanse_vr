@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class WorldPlane : MonoBehaviour
 {
@@ -22,10 +23,12 @@ public class WorldPlane : MonoBehaviour
                 var blockPosition = new Vector3(x, 0, z);
 
                 var blockObject = Instantiate(blockTemplate);
+                
                 blockObject.transform.position = ToRealCoordinates(blockPosition);
-
                 var block = blockObject.GetComponentInChildren<Block>();
                 block.SetPosition(blockPosition);
+                block.RandomRotateAlongY();
+                
                 _blocks[blockPosition] = block;
             }
         }

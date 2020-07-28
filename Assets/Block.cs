@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Linq.Expressions;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Block : MonoBehaviour
 {
@@ -30,8 +31,9 @@ public class Block : MonoBehaviour
     {
         var worldPlane = GetWorldPlane();
         worldPlane.RemoveBlockAt(_position);
-        worldPlane.AddBlockToPosition(otherBlock, _position); // TODO Is there someway to remove this circular dependency perhaps. It is very confusing!
-        
+        worldPlane.AddBlockToPosition(otherBlock,
+            _position); // TODO Is there someway to remove this circular dependency perhaps. It is very confusing!
+
         DestroySelf();
     }
 
@@ -43,7 +45,7 @@ public class Block : MonoBehaviour
     public void ShortFreeze()
     {
         if (_permaFrozen) return;
-        
+
         _frozen = true;
         StartCoroutine(UnfreezeSoon());
 
@@ -53,12 +55,12 @@ public class Block : MonoBehaviour
             _frozen = false;
         }
     }
-    
+
     public bool IsInteractable()
     {
         return !_frozen && !IsPermaFrozen();
     }
-    
+
     public bool IsPermaFrozen()
     {
         return _permaFrozen;
@@ -96,10 +98,10 @@ public class Block : MonoBehaviour
     public void PlaceOnTopOfSelf(Block otherBlock, GameObject occupantRoot)
     {
         _occupiedBy = occupantRoot;
-        
+
         GetWorldPlane().AddBlockToPosition(otherBlock, _position + Vector3.up);
         otherBlock.transform.position = transform.position + new Vector3(0, .1f, 0);
-        
+
         otherBlock.ShortFreeze();
     }
 
@@ -112,5 +114,13 @@ public class Block : MonoBehaviour
     public bool IsGroundLevel()
     {
         return Math.Abs(_position.y) < .5f;
+    }
+
+    public void RandomRotateAlongY()
+    {
+        var blockRoot = transform.parent;
+        
+        var transformRotation = blockRoot.rotation;
+        blockRoot.rotation = Quaternion.Euler(transformRotation.x, (Random.Range(0, 5) * 60), transformRotation.z);
     }
 }
