@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class RaiseLandBlockInteractor : BlockInteractor
 {
@@ -22,6 +24,8 @@ public class RaiseLandBlockInteractor : BlockInteractor
         )
         {
             var grass = Instantiate(grassBlockTemplate);
+            var transformRotation = grass.transform.rotation;
+            grass.transform.rotation = new Quaternion(transformRotation.x, (Random.Range(0, 11) * 30) * Mathf.Deg2Rad, transformRotation.z, transformRotation.w);
             var grassBlock = grass.GetComponentInChildren<Block>();
             blockComponent.PlaceOnTopOfSelf(grassBlock, grass);
             PlayGeneralSound();

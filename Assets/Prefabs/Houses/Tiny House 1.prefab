@@ -40,6 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6823249873203862208}
+  - component: {fileID: 6152935038013607998}
   m_Layer: 0
   m_Name: Tiny House 1
   m_TagString: Untagged
@@ -62,19 +63,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2788327854555368234
+--- !u!65 &6152935038013607998
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9098979050094178507}
+  m_GameObject: {fileID: 3317631866390460118}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.698565, y: 3.634682, z: 3.8469899}
-  m_Center: {x: -1.5449605, y: 1.817341, z: 1.172331}
+  m_Size: {x: 0.8, y: 1, z: 0.8}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1001 &440195842863619263
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -90,17 +91,17 @@ PrefabInstance:
     - target: {fileID: 8673355594669715540, guid: c38443d59fbc57e48965abeefa6d3f24,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.394
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8673355594669715540, guid: c38443d59fbc57e48965abeefa6d3f24,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.03
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8673355594669715540, guid: c38443d59fbc57e48965abeefa6d3f24,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.295
+      value: -0.012
       objectReference: {fileID: 0}
     - target: {fileID: 8673355594669715540, guid: c38443d59fbc57e48965abeefa6d3f24,
         type: 3}
@@ -160,12 +161,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 65377189528235854, guid: c38443d59fbc57e48965abeefa6d3f24, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c38443d59fbc57e48965abeefa6d3f24, type: 3}
---- !u!1 &9098979050094178507 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8673355594669288564, guid: c38443d59fbc57e48965abeefa6d3f24,
-    type: 3}
-  m_PrefabInstance: {fileID: 440195842863619263}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9098979050093948139 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8673355594669715540, guid: c38443d59fbc57e48965abeefa6d3f24,
