@@ -24,9 +24,8 @@ public class RaiseLandBlockInteractor : BlockInteractor
         )
         {
             var grass = Instantiate(grassBlockTemplate);
-            var transformRotation = grass.transform.rotation;
-            grass.transform.rotation = Quaternion.Euler(transformRotation.x, (Random.Range(0, 5) * 60), transformRotation.z);
             var grassBlock = grass.GetComponentInChildren<Block>();
+            grassBlock.RandomRotateAlongY();
             blockComponent.PlaceOnTopOfSelf(grassBlock, grass);
             PlayGeneralSound();
         }

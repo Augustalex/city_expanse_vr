@@ -25,11 +25,10 @@ public class WorldPlane : MonoBehaviour
                 var blockObject = Instantiate(blockTemplate);
                 
                 blockObject.transform.position = ToRealCoordinates(blockPosition);
-                var transformRotation = blockObject.transform.rotation;
-                blockObject.transform.rotation = Quaternion.Euler(transformRotation.x, (Random.Range(0, 5) * 60), transformRotation.z);
-
                 var block = blockObject.GetComponentInChildren<Block>();
                 block.SetPosition(blockPosition);
+                block.RandomRotateAlongY();
+                
                 _blocks[blockPosition] = block;
             }
         }
