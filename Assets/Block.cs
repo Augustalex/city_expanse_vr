@@ -188,4 +188,9 @@ public class Block : MonoBehaviour
         var lowestWater = GetWorldPlane().GetStack(_position).First(block => block.IsWater());
         return Math.Abs(lowestWater.GetPosition().y - _position.y) < .5f;
     }
+
+    public bool OccupiedByGreens()
+    {
+        return _occupiedBy != null && _occupiedBy.GetComponent<GreensSpawn>() != null;
+    }
 }

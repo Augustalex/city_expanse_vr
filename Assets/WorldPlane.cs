@@ -35,7 +35,7 @@ public class WorldPlane : MonoBehaviour
     {
         var placementScale = blockTemplate.GetComponent<PlacementScale>();
         var yScale = placementScale ? placementScale.yScale : blockTemplate.transform.localScale.y;
-        
+
         var x = position.x;
         var z = position.z;
         var middle = Math.Abs(x % 2) < .5f;
@@ -44,10 +44,10 @@ public class WorldPlane : MonoBehaviour
         var zOffset = blockTemplate.transform.localScale.z * z + blockTemplate.transform.localScale.z * .5f +
                       (middle ? blockTemplate.transform.localScale.z * -.5f : 0);
         return TopLeftPoint.position + new Vector3(
-                   xOffset,
-                   position.y * yScale + yScale * .5f,
-                   zOffset
-               );
+            xOffset,
+            position.y * yScale + yScale * .5f,
+            zOffset
+        );
     }
 
     public void RemoveBlockAt(Vector3 position)
@@ -75,7 +75,7 @@ public class WorldPlane : MonoBehaviour
             {
                 var translatedPosition = position + translation;
                 translatedPosition.y = GetStackHeight(translatedPosition);
-                
+
                 return translatedPosition;
             })
             .Where(newPosition => !(newPosition.z < 0 || newPosition.z > (Width - 1) || newPosition.x < 0 ||
@@ -163,17 +163,39 @@ public class WorldPlane : MonoBehaviour
     public int GetStackHeight(Vector3 position)
     {
         var stack = _blocks.Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
-        
+
         var list = stack.ToList();
         if (list.Count == 0) return 0;
-        
+
         return Convert.ToInt32(list.Max(pair => pair.Key.y));
     }
-    
+
     public List<Block> GetStack(Vector3 position)
     {
         var stack = _blocks.Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
-        
+
         return stack.Select(pair => pair.Value).ToList();
+    }
+
+    public int NatureScore()
+    {
+        return _blocks.Values.Sum(block =>
+        {
+            if (block.IsWater() && block.GetPosition().y > 4) return 4;
+            if (block.IsWater() && block.GetPosition().y > 2) return 2;
+            if (block.IsWater()) return 1;
+
+            if (block.OccupiedByGreens() && block.GetPosition().y > 2) return 4;
+            if (block.OccupiedByGreens()) return 2;
+
+            if (block.OccupiedByHouse() && block.GetOccupantHouse().IsMegaBig()) return -10;
+            if (block.OccupiedByHouse() && block.GetOccupantHouse().IsBig()) return -5;
+            if (block.OccupiedByHouse() && block.GetOccupantHouse()) return -1;
+
+            if (block.GetPosition().y > 4) return 2;
+            if (block.GetPosition().y > 2) return 1;
+
+            return 0;
+        });
     }
 }
