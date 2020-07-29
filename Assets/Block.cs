@@ -19,10 +19,14 @@ public class Block : MonoBehaviour
     private GameObject _occupiedBy;
     private bool _permaFrozen;
 
-    public void DestroySelf()
+    public void RemoveAndDestroySelf()
     {
         GetWorldPlane().RemoveBlockAt(_position);
+        DestroySelf();
+    }
 
+    private void DestroySelf()
+    {
         Destroy(gameObject);
         Destroy(_occupiedBy);
     }
@@ -31,8 +35,7 @@ public class Block : MonoBehaviour
     {
         var worldPlane = GetWorldPlane();
         worldPlane.RemoveBlockAt(_position);
-        worldPlane.AddBlockToPosition(otherBlock,
-            _position); // TODO Is there someway to remove this circular dependency perhaps. It is very confusing!
+        worldPlane.AddBlockToPosition(otherBlock, _position); // TODO Is there someway to remove this circular dependency perhaps. It is very confusing!
 
         DestroySelf();
     }
@@ -97,12 +100,28 @@ public class Block : MonoBehaviour
 
     public void PlaceOnTopOfSelf(Block otherBlock, GameObject occupantRoot)
     {
+        if (!IsVacant())
+        {
+            throw new Exception("Trying to place something on top of occupied block!");
+        }
+        
         _occupiedBy = occupantRoot;
 
         GetWorldPlane().AddBlockToPosition(otherBlock, _position + Vector3.up);
         otherBlock.transform.position = transform.position + new Vector3(0, .1f, 0);
 
         otherBlock.ShortFreeze();
+    }
+
+    public void DestroyOccupant()
+    {
+        if (!OccupiedByHouse())
+        {
+            throw new NotImplementedException("Destroying an occupant that is not a house is not supported!");
+        }
+        
+        Destroy(_occupiedBy);
+        _occupiedBy = null;
     }
 
     public void PermanentFreeze()

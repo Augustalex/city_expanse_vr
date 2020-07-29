@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Oculus.Platform;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -32,6 +33,9 @@ public class WorldPlane : MonoBehaviour
 
     public Vector3 ToRealCoordinates(Vector3 position)
     {
+        var placementScale = blockTemplate.GetComponent<PlacementScale>();
+        var yScale = placementScale ? placementScale.yScale : blockTemplate.transform.localScale.y;
+        
         var x = position.x;
         var z = position.z;
         var middle = Math.Abs(x % 2) < .5f;
@@ -40,10 +44,10 @@ public class WorldPlane : MonoBehaviour
         var zOffset = blockTemplate.transform.localScale.z * z + blockTemplate.transform.localScale.z * .5f +
                       (middle ? blockTemplate.transform.localScale.z * -.5f : 0);
         return TopLeftPoint.position + new Vector3(
-            xOffset,
-            blockTemplate.transform.localScale.y * .5f,
-            zOffset
-        );
+                   xOffset,
+                   position.y * yScale + yScale * .5f,
+                   zOffset
+               );
     }
 
     public void RemoveBlockAt(Vector3 position)
@@ -54,19 +58,26 @@ public class WorldPlane : MonoBehaviour
     private IEnumerable<Vector3> GetNeighbouringPositions(Vector3 position)
     {
         var middle = Math.Abs(position.x % 2) < .5f;
+        var positionY = 0;
         var translations = new List<Vector3>
         {
-            new Vector3(0, position.y, -1),
-            new Vector3(middle ? 1 : -1, position.y, -1),
+            new Vector3(-1, positionY, 0),
+            new Vector3(-1, positionY, middle ? -1 : 1),
 
-            new Vector3(-1, position.y, 0),
-            new Vector3(1, position.y, 0),
+            new Vector3(0, positionY, -1),
+            new Vector3(0, positionY, 1),
 
-            new Vector3(0, position.y, 1),
-            new Vector3(middle ? 1 : -1, position.y, 1),
+            new Vector3(1, positionY, 0),
+            new Vector3(1, positionY, middle ? -1 : 1),
         };
         var nearbyPositions = translations
-            .Select(translation => position + translation)
+            .Select(translation =>
+            {
+                var translatedPosition = position + translation;
+                translatedPosition.y = GetStackHeight(translatedPosition);
+                
+                return translatedPosition;
+            })
             .Where(newPosition => !(newPosition.z < 0 || newPosition.z > (Width - 1) || newPosition.x < 0 ||
                                     newPosition.x > (Height - 1)));
 
@@ -120,17 +131,34 @@ public class WorldPlane : MonoBehaviour
             .ToList();
     }
 
-    public List<Block> GetNearbyVacantLots(Vector3 position)
+    public List<Block> GetNearbyLots(Vector3 position)
     {
         return GetNeighbouringPositions(position)
             .Where(newPosition => _blocks.ContainsKey(newPosition))
             .Select(newPosition => _blocks[newPosition])
-            .Where(b => b.blockType == Block.BlockType.Grass && b.IsVacant())
+            .Where(b => b.blockType == Block.BlockType.Grass)
+            .ToList();
+    }
+
+    public List<Block> GetNearbyVacantLots(Vector3 position)
+    {
+        return GetNearbyLots(position)
+            .Where(block => block.IsVacant())
             .ToList();
     }
 
     public List<Block> GetBlocksWithHouses()
     {
         return _blocks.Values.Where(block => block.OccupiedByHouse()).ToList();
+    }
+
+    public int GetStackHeight(Vector3 position)
+    {
+        var stack = _blocks.Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
+        
+        var list = stack.ToList();
+        if (list.Count == 0) return -1;
+        
+        return Convert.ToInt32(list.Max(pair => pair.Key.y));
     }
 }

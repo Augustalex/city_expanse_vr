@@ -21,7 +21,7 @@ public class RaiseWaterBlockInteractor : BlockInteractor
             var water = Instantiate(waterBlockTemplate);
             var waterBlock = water.GetComponentInChildren<Block>();
             blockComponent.PlaceOnTopOfSelf(waterBlock, water);
-            waterBlock.PermanentFreeze();
+            waterBlock.ShortFreeze();
             PlayGeneralSound();
         }
     }

@@ -15,7 +15,7 @@ public class DigBlockInteractor : BlockInteractor
 
         if (blockComponent && blockComponent.blockType == Block.BlockType.Grass && blockComponent.IsGroundLevel() && blockComponent.IsVacant())
         {
-            blockComponent.DestroySelf();
+            blockComponent.RemoveAndDestroySelf();
             PlayGeneralSound();
         }
     }

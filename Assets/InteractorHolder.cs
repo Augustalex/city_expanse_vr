@@ -4,7 +4,6 @@ using UnityEngine;
 
 [RequireComponent(typeof(FillWaterBlockInteractor))]
 [RequireComponent(typeof(DigBlockInteractor))]
-[RequireComponent(typeof(FloodingWater))]
 [RequireComponent(typeof(RaiseLandBlockInteractor))]
 [RequireComponent(typeof(RaiseWaterBlockInteractor))]
 [RequireComponent(typeof(PlaceGreensBlockInteractor))]
@@ -34,9 +33,6 @@ public class InteractorHolder : MonoBehaviour
         
         _waterInteractor = GetComponent<FillWaterBlockInteractor>();
         _waterInteractor.enabled = false;
-
-        _floodingWater = GetComponent<FloodingWater>();
-        _floodingWater.enabled = false;
 
         _raiseLandInteractor = GetComponent<RaiseLandBlockInteractor>();
         _raiseLandInteractor.enabled = false;
