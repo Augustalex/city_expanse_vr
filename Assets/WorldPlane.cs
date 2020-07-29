@@ -157,8 +157,15 @@ public class WorldPlane : MonoBehaviour
         var stack = _blocks.Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
         
         var list = stack.ToList();
-        if (list.Count == 0) return -1;
+        if (list.Count == 0) return 0;
         
         return Convert.ToInt32(list.Max(pair => pair.Key.y));
+    }
+    
+    public List<Block> GetStack(Vector3 position)
+    {
+        var stack = _blocks.Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
+        
+        return stack.Select(pair => pair.Value).ToList();
     }
 }

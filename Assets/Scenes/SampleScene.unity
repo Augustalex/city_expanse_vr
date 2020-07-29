@@ -475,7 +475,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &234377180
 Transform:
   m_ObjectHideFlags: 0
@@ -943,8 +943,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e7f6baa4bc68bb47bb22db97de9d24c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterBlockTemplate: {fileID: 1341636617038954440, guid: 51197bda1147db94e809a7f1464269f0,
-    type: 3}
+  fullHeightWaterBlockTemplate: {fileID: 0}
   groundWaterBlockTemplate: {fileID: 612181966713644638, guid: ad50e16266866cb4f828d1b10d314e79,
     type: 3}
 --- !u!114 &546754288
@@ -1616,7 +1615,7 @@ PrefabInstance:
     - target: {fileID: 8097704663750696973, guid: 644b2490ba6ecae4db6ff17d33bd1245,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8097704663750697009, guid: 644b2490ba6ecae4db6ff17d33bd1245,
         type: 3}
@@ -2790,7 +2789,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1529638746
 MonoBehaviour:
   m_ObjectHideFlags: 0

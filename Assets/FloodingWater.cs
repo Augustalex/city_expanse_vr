@@ -24,7 +24,7 @@ public class FloodingWater : MonoBehaviour
         {
             FloodGroundLevel();
         }
-        else
+        else if (_block.IsLowestWater())
         {
             FloodDown();
         }
@@ -46,17 +46,23 @@ public class FloodingWater : MonoBehaviour
 
             if (nearbyBlock.IsVacant())
             {
-                var waterBlockBelow = newWaterBlock(true);
-                nearbyBlock.TurnOverSpotTo(waterBlockBelow);
+                var lowestBlock = nearbyBlock;
+                
+                if (!nearbyBlock.IsGroundLevel())
+                {
+                    var waterBlockBelow = newWaterBlock(true);
+                    nearbyBlock.TurnOverSpotTo(waterBlockBelow);
 
-                var previousBlock = waterBlockBelow;
-                for (var y = waterBlockBelow.GetPosition().y + 1; y <= blockHeight; y++)
+                    lowestBlock = waterBlockBelow;
+                }
+
+                for (var y = lowestBlock.GetPosition().y + 1; y <= blockHeight; y++)
                 {
                     var water = newWaterObject(y != blockHeight);
                     var waterBlock = water.GetComponentInChildren<Block>();
-                    previousBlock.PlaceOnTopOfSelf(waterBlock, water);
+                    lowestBlock.PlaceOnTopOfSelf(waterBlock, water);
 
-                    previousBlock = waterBlock;
+                    lowestBlock = waterBlock;
                 }
             }
         }

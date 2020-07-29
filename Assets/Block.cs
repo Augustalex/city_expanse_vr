@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using System.Linq.Expressions;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -173,5 +174,18 @@ public class Block : MonoBehaviour
     public bool IsGrass()
     {
         return blockType == BlockType.Grass;
+    }
+
+    public bool IsWater()
+    {
+        return blockType == BlockType.Water;
+    }
+
+    public bool IsLowestWater()
+    {
+        if (!IsWater()) return false;
+
+        var lowestWater = GetWorldPlane().GetStack(_position).First(block => block.IsWater());
+        return Math.Abs(lowestWater.GetPosition().y - _position.y) < .5f;
     }
 }
