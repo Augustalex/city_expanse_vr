@@ -22,7 +22,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: hex_grass_top
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
-  m_ShaderKeywords: _METALLICSPECGLOSSMAP _NORMALMAP
+  m_ShaderKeywords: _METALLICSPECGLOSSMAP _NORMALMAP _OCCLUSIONMAP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -34,11 +34,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 2fc220b513a87de43871bad903bcc631, type: 3}
+        m_Texture: {fileID: 2800000, guid: d76a6fdfafbfe3f4c8e7d26c74444d04, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 07f2ba3cb39c5db45a7cd761fb0d59e9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6e45ce6342df5ff4f95f4f379ac640ca, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -46,15 +46,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 2fc220b513a87de43871bad903bcc631, type: 3}
+        m_Texture: {fileID: 2800000, guid: d76a6fdfafbfe3f4c8e7d26c74444d04, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 626e5bd3513eb2a45b7ce4637cccebec, type: 3}
+        m_Texture: {fileID: 2800000, guid: 640bd15e6c8e7814db27c62a45a78abf, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 2800000, guid: a4e3239ea1e58d24f988f2d222c09b26, type: 3}
+        m_Texture: {fileID: 2800000, guid: 3e3e0ea18d891114cb286c873e03af91, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
