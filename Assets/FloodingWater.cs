@@ -12,7 +12,7 @@ public class FloodingWater : MonoBehaviour
 
     void Start()
     {
-        _block = GetComponent<Block>();
+        _block = GetComponentInChildren<Block>();
         _worldPlane = GameObject.FindWithTag("WorldPlane").GetComponent<WorldPlane>();
     }
 

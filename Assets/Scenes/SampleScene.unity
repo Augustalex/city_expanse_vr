@@ -797,7 +797,6 @@ GameObject:
   - component: {fileID: 546754290}
   - component: {fileID: 546754289}
   - component: {fileID: 546754288}
-  - component: {fileID: 546754287}
   - component: {fileID: 546754286}
   - component: {fileID: 546754285}
   - component: {fileID: 546754294}
@@ -931,21 +930,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f308374c559bb3842b0717f52b4886d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &546754287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 546754280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e7f6baa4bc68bb47bb22db97de9d24c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fullHeightWaterBlockTemplate: {fileID: 0}
-  groundWaterBlockTemplate: {fileID: 612181966713644638, guid: ad50e16266866cb4f828d1b10d314e79,
-    type: 3}
 --- !u!114 &546754288
 MonoBehaviour:
   m_ObjectHideFlags: 0

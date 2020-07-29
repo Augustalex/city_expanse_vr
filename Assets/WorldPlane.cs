@@ -147,6 +147,14 @@ public class WorldPlane : MonoBehaviour
             .ToList();
     }
 
+    public List<Block> GetVacantBlocks()
+    {
+        return _blocks
+            .Where(pair => pair.Value.IsVacant())
+            .Select(pair => pair.Value)
+            .ToList();
+    }
+
     public List<Block> GetBlocksWithHouses()
     {
         return _blocks.Values.Where(block => block.OccupiedByHouse()).ToList();
