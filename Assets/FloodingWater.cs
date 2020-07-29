@@ -28,6 +28,8 @@ public class FloodingWater : MonoBehaviour
         {
             FloodDown();
         }
+        
+        _block.PermanentFreeze();
     }
 
     private void FloodDown()
