@@ -13,43 +13,35 @@ public class HouseSpawn : MonoBehaviour
 
     void Awake()
     {
-        var houseTemplate = tinyHouseTemplates[Random.Range(0, tinyHouseTemplates.Length)];
-        var house = Instantiate(houseTemplate);
-        house.transform.SetParent(transform, false);
-
-        _activeHouse = house;
-        _size = 0;
+        SetupHouse(0, tinyHouseTemplates);
     }
 
     public void Upgrade()
     {
         if (_size == 0)
         {
-            Destroy(_activeHouse);
-
-            var houseTemplate = largeHouseTemplates[Random.Range(0, largeHouseTemplates.Length)];
-            var house = Instantiate(houseTemplate);
-            house.transform.SetParent(transform, false);
-
-            _activeHouse = house;
-            _size = 1;
+            SetupHouse(1, largeHouseTemplates);
         }
         else if (_size == 1)
         {
-            Destroy(_activeHouse);
-
-            var houseTemplate = megaHouseTemplates[Random.Range(0, megaHouseTemplates.Length)];
-            var house = Instantiate(houseTemplate);
-            house.transform.SetParent(transform, false);
-
-            _activeHouse = house;
-            _size = 2;
+            SetupHouse(2, megaHouseTemplates);
         }
+    }
+
+    private void SetupHouse(int size, GameObject[] templates)
+    {
+        Destroy(_activeHouse);
+
+        var houseTemplate = templates[Random.Range(0, templates.Length)];
+        var house = Instantiate(houseTemplate, transform, false);
+
+        _activeHouse = house;
+        _size = size;
     }
 
     public bool IsSmall()
     {
-        return _size == 1;
+        return _size == 0;
     }
     
     public bool IsBig()
@@ -60,5 +52,15 @@ public class HouseSpawn : MonoBehaviour
     public bool IsMegaBig()
     {
         return _size == 2;
+    }
+
+    public void SetToBig()
+    {
+        SetupHouse(1, largeHouseTemplates);
+    }
+
+    public void SetToMegaBig()
+    {
+        SetupHouse(2, megaHouseTemplates);
     }
 }
