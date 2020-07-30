@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: house_big_m_2
+  m_Name: house_smal_m
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_ShaderKeywords: _METALLICSPECGLOSSMAP _NORMALMAP _OCCLUSIONMAP
   m_LightmapFlags: 4
@@ -34,11 +34,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: c03ee5bbf7d559d43a8a630e169b81e5, type: 3}
+        m_Texture: {fileID: 2800000, guid: ca5b3d24e0bc37b45918a0d1e7a64be4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: b2f8cea289d35a14e878d4c9dec4c27a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1cf3d4ffefecaaf4d9b9c780b31bb83c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -46,7 +46,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c03ee5bbf7d559d43a8a630e169b81e5, type: 3}
+        m_Texture: {fileID: 2800000, guid: ca5b3d24e0bc37b45918a0d1e7a64be4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -54,7 +54,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 2800000, guid: 768ff1177687c1d4cbe842c3ddb38ebe, type: 3}
+        m_Texture: {fileID: 2800000, guid: 85c8f2677be4d11478d2fe6e70a8a511, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
