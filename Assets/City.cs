@@ -21,14 +21,14 @@ public class City : MonoBehaviour
     void Update()
     {
         var delta = Time.fixedTime - _lastPlacedHouse;
-        if (delta > 1f && Random.value < .1)
+        if (delta > .1f && Random.value < .1)
         {
             var randomValue = Random.value;
             if (randomValue < .5)
             {
                 SpawnOneHouse();
             }
-            else if (randomValue < .9)
+            else if (randomValue < .9 && CanSpawnAnotherBigHouse())
             {
                 SpawnBigHouse();
             }
@@ -56,7 +56,7 @@ public class City : MonoBehaviour
             var target = waterBlock.transform.position;
             target.y = house.transform.position.y;
             house.transform.LookAt(target);
-            
+
             _lastPlacedHouse = Time.fixedTime;
         }
     }
@@ -86,7 +86,7 @@ public class City : MonoBehaviour
             house.GetComponent<HouseSpawn>().SetToBig();
 
             vacantLot.Occupy(house);
-            
+
             _lastPlacedHouse = Time.fixedTime;
         }
     }
@@ -121,8 +121,21 @@ public class City : MonoBehaviour
             house.GetComponent<HouseSpawn>().SetToMegaBig();
 
             vacantLot.Occupy(house);
-            
+
             _lastPlacedHouse = Time.fixedTime;
         }
+    }
+
+    public bool CanSpawnAnotherBigHouse()
+    {
+        var requiredNatureScore = CountBigHouses() * 10; 
+        return _worldPlane.NatureScore() > requiredNatureScore;
+    }
+
+    public int CountBigHouses()
+    {
+        return _worldPlane
+            .GetBlocksWithHouses()
+            .Count(houseBlock => houseBlock.GetOccupantHouse().IsBig());
     }
 }
