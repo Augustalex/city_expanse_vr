@@ -188,8 +188,8 @@ public class WorldPlane : MonoBehaviour
             if (block.OccupiedByGreens() && block.GetPosition().y > 2) return 4;
             if (block.OccupiedByGreens()) return 2;
 
-            if (block.OccupiedByHouse() && block.GetOccupantHouse().IsMegaBig()) return -10;
-            if (block.OccupiedByHouse() && block.GetOccupantHouse().IsBig()) return -5;
+            if (block.OccupiedByHouse() && block.GetOccupantHouse().IsMegaBig()) return -100;
+            if (block.OccupiedByHouse() && block.GetOccupantHouse().IsBig()) return -20;
             if (block.OccupiedByHouse() && block.GetOccupantHouse()) return -1;
 
             if (block.GetPosition().y > 4) return 2;

@@ -128,14 +128,6 @@ public class City : MonoBehaviour
 
     public bool CanSpawnAnotherBigHouse()
     {
-        var requiredNatureScore = CountBigHouses() * 10; 
-        return _worldPlane.NatureScore() > requiredNatureScore;
-    }
-
-    public int CountBigHouses()
-    {
-        return _worldPlane
-            .GetBlocksWithHouses()
-            .Count(houseBlock => houseBlock.GetOccupantHouse().IsBig());
+        return _worldPlane.NatureScore() > 0;
     }
 }
