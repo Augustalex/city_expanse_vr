@@ -26,10 +26,18 @@ public class Block : MonoBehaviour
         DestroySelf();
     }
 
-    private void DestroySelf()
+    public void DestroySelf()
     {
-        Destroy(gameObject);
-        Destroy(_occupiedBy);
+        Destroy(BlockRoot());
+        if (_occupiedBy != null)
+        {
+            Destroy(_occupiedBy);
+        }
+    }
+
+    private GameObject BlockRoot()
+    {
+        return transform.parent.gameObject;
     }
 
     public void TurnOverSpotTo(Block otherBlock)
@@ -105,7 +113,7 @@ public class Block : MonoBehaviour
         {
             throw new Exception("Trying to place something on top of occupied block!");
         }
-        
+
         _occupiedBy = occupantRoot;
 
         GetWorldPlane().AddBlockToPosition(otherBlock, _position + Vector3.up);
@@ -120,7 +128,7 @@ public class Block : MonoBehaviour
         {
             throw new NotImplementedException("Destroying an occupant that is not a house is not supported!");
         }
-        
+
         Destroy(_occupiedBy);
         _occupiedBy = null;
     }
@@ -139,7 +147,7 @@ public class Block : MonoBehaviour
     public void RandomRotateAlongY()
     {
         var blockRoot = transform.parent;
-        
+
         var transformRotation = blockRoot.rotation;
         blockRoot.rotation = Quaternion.Euler(transformRotation.x, (Random.Range(0, 5) * 60), transformRotation.z);
     }
@@ -151,7 +159,7 @@ public class Block : MonoBehaviour
 
     public HouseSpawn GetOccupantHouse()
     {
-        if(!OccupiedByHouse()) throw new Exception("Trying to get occupant house, but is not occupied by a house!");
+        if (!OccupiedByHouse()) throw new Exception("Trying to get occupant house, but is not occupied by a house!");
 
         return _occupiedBy.GetComponent<HouseSpawn>();
     }
@@ -161,7 +169,7 @@ public class Block : MonoBehaviour
         var position = GetPosition();
         var x0 = position.x - Mathf.Floor(position.z / 2);
         var y0 = position.z;
-        
+
         var otherPosition = otherBlock.GetPosition();
         var x1 = otherPosition.x - Mathf.Floor(otherPosition.z / 2);
         var y1 = otherPosition.z;

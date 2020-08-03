@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Oculus.Platform;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,25 +10,15 @@ public class WorldPlane : MonoBehaviour
     public GameObject blockTemplate;
     public Transform TopLeftPoint;
 
-    private const int Width = 18;
-    private const int Height = 18;
+    public enum Size
+    {
+        Small,
+        Medium,
+        Large
+    }
 
     private Dictionary<Vector3, Block> _blocks = new Dictionary<Vector3, Block>();
-
-    void Start()
-    {
-        for (var x = 0; x < Height; x++)
-        {
-            for (var z = 0; z < Width; z++)
-            {
-                var blockPosition = new Vector3(x, 0, z);
-                var blockObject = Instantiate(blockTemplate);
-                var block = blockObject.GetComponentInChildren<Block>();
-
-                AddBlockToPosition(block, blockPosition);
-            }
-        }
-    }
+    private Vector2 _currentDimensions;
 
     public Vector3 ToRealCoordinates(Vector3 position)
     {
@@ -78,8 +67,7 @@ public class WorldPlane : MonoBehaviour
 
                 return translatedPosition;
             })
-            .Where(newPosition => !(newPosition.z < 0 || newPosition.z > (Width - 1) || newPosition.x < 0 ||
-                                    newPosition.x > (Height - 1)));
+            .Where(IsWithinBounds);
 
         return nearbyPositions;
     }
@@ -197,5 +185,82 @@ public class WorldPlane : MonoBehaviour
 
             return 0;
         });
+    }
+
+    public void ResetAtSize(Size size)
+    {
+        StartCoroutine(DestroyWorld());
+
+        IEnumerator DestroyWorld()
+        {
+            var blocksInRandomOrder = _blocks.Values.OrderBy(i => Guid.NewGuid()).ToList();
+            foreach (var block in blocksInRandomOrder)
+            {
+                block.DestroySelf();
+
+                yield return new WaitForSeconds(Random.value * 100f);
+            }
+
+            if (blocksInRandomOrder.Count > 0)
+            {
+                yield return new WaitForSeconds(2);
+            }
+
+            CreateWorld(SizeToDimensions(size));
+        }
+    }
+
+
+    private Vector2 SizeToDimensions(Size size)
+    {
+        switch (size)
+        {
+            case Size.Small:
+                return new Vector2(3, 3);
+            case Size.Medium:
+                return new Vector2(9, 9);
+            case Size.Large:
+                return new Vector2(17, 17);
+            default:
+                throw new Exception("There is no dimensions specified for size: " + size);
+        }
+    }
+
+    private void CreateWorld(Vector2 dimensions)
+    {
+        _currentDimensions = dimensions;
+
+        for (var row = 0; row < dimensions.y; row++)
+        {
+            for (var column = -1; column < dimensions.x; column++)
+            {
+                var isMiddle = Math.Abs(row % 2) < .5f;
+                if (isMiddle && column == -1) continue;
+
+                var blockPosition = new Vector3(row, 0, column);
+                var blockObject = Instantiate(blockTemplate);
+                var block = blockObject.GetComponentInChildren<Block>();
+
+                AddBlockToPosition(block, blockPosition);
+            }
+        }
+    }
+
+    private bool IsWithinBounds(Vector3 point)
+    {
+        var row = point.x;
+        var column = point.z;
+        var isEven = Math.Abs(row % 2) < .5f;
+
+        if (isEven)
+        {
+            return row >= 0 && row < _currentDimensions.x
+                            && column >= 0 && column < _currentDimensions.y;
+        }
+        else
+        {
+            return row >= 0 && row < _currentDimensions.x
+                            && column >= -1 && column < _currentDimensions.y;
+        }
     }
 }

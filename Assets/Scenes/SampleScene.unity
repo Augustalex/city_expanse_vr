@@ -4102,6 +4102,8 @@ GameObject:
   - component: {fileID: 2100806258}
   - component: {fileID: 2100806259}
   - component: {fileID: 2100806255}
+  - component: {fileID: 2100806257}
+  - component: {fileID: 2100806256}
   m_Layer: 0
   m_Name: Table
   m_TagString: WorldPlane
@@ -4123,6 +4125,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tinyHouseTemplate: {fileID: 2723339866174918418, guid: 3a64644beb96b3a4ea777cf8c96a15ff,
     type: 3}
+--- !u!114 &2100806256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100806254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5165ac86d5bcc1a448f496170d5ba7c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2100806257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100806254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efaea0f23d7f0bf4cbffac70a5952dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2100806258
 Transform:
   m_ObjectHideFlags: 0
