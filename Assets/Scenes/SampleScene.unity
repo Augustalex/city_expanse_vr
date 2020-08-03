@@ -948,6 +948,7 @@ MonoBehaviour:
   isStartingInteractor: 0
   blockGeneralInteractionSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d,
     type: 3}
+  volumeOverride: 0.5
   meteorTemplate: {fileID: 6276573657937102653, guid: 66105d64d7bffcb4daa596f586f4131b,
     type: 3}
 --- !u!114 &546754288
@@ -965,6 +966,7 @@ MonoBehaviour:
   isStartingInteractor: 0
   blockGeneralInteractionSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d,
     type: 3}
+  volumeOverride: 0.5
 --- !u!114 &546754289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -978,8 +980,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
-  blockGeneralInteractionSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d,
+  blockGeneralInteractionSound: {fileID: 8300000, guid: 9f4262535a6d8934b8fb690cbeba25f1,
     type: 3}
+  volumeOverride: 0
   waterBlockTemplate: {fileID: 612181966713644638, guid: ad50e16266866cb4f828d1b10d314e79,
     type: 3}
 --- !u!82 &546754290
@@ -1106,6 +1109,7 @@ MonoBehaviour:
   isStartingInteractor: 0
   blockGeneralInteractionSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d,
     type: 3}
+  volumeOverride: 0.5
   greensBlockTemplate: {fileID: 2723339866174918418, guid: b9c955f3a6da1db4a8a201fdf8265787,
     type: 3}
 --- !u!114 &546754293
@@ -1121,8 +1125,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
-  blockGeneralInteractionSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d,
+  blockGeneralInteractionSound: {fileID: 8300000, guid: 9f4262535a6d8934b8fb690cbeba25f1,
     type: 3}
+  volumeOverride: 0
   waterBlockTemplate: {fileID: 612181966713644638, guid: ad50e16266866cb4f828d1b10d314e79,
     type: 3}
 --- !u!114 &546754294
@@ -1140,6 +1145,7 @@ MonoBehaviour:
   isStartingInteractor: 0
   blockGeneralInteractionSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d,
     type: 3}
+  volumeOverride: 0.5
   grassBlockTemplate: {fileID: 612181966713644638, guid: ae0f003ac96b3884c89d3b3c3916cd65,
     type: 3}
 --- !u!1001 &592212085

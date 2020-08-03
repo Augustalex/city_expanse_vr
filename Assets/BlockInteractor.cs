@@ -10,6 +10,7 @@ public abstract class BlockInteractor : MonoBehaviour
     public bool isStartingInteractor = false;
 
     public AudioClip blockGeneralInteractionSound;
+    public float volumeOverride = 0;
 
     private AudioSource _audioSource;
     private FollowObject _followObject;
@@ -52,7 +53,7 @@ public abstract class BlockInteractor : MonoBehaviour
     {
         return _followObject.enabled;
     }
-    
+
     public bool IsInteractable()
     {
         return !_frozen;
@@ -60,6 +61,13 @@ public abstract class BlockInteractor : MonoBehaviour
 
     public void PlayGeneralSound()
     {
-        _audioSource.PlayOneShot(blockGeneralInteractionSound);
+        if (volumeOverride > 0)
+        {
+            _audioSource.PlayOneShot(blockGeneralInteractionSound, volumeOverride);
+        }
+        else
+        {
+            _audioSource.PlayOneShot(blockGeneralInteractionSound);
+        }
     }
 }
