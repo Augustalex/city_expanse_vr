@@ -61,6 +61,8 @@ public abstract class BlockInteractor : MonoBehaviour
 
     public void PlayGeneralSound()
     {
+        _audioSource.Stop();
+        
         if (volumeOverride > 0)
         {
             _audioSource.PlayOneShot(blockGeneralInteractionSound, volumeOverride);
@@ -69,5 +71,17 @@ public abstract class BlockInteractor : MonoBehaviour
         {
             _audioSource.PlayOneShot(blockGeneralInteractionSound);
         }
+    }
+
+    public void PlayMiscSound(AudioClip clip)
+    {
+        _audioSource.Stop();
+
+        _audioSource.PlayOneShot(clip);
+    }
+
+    public void StopGeneralSound()
+    {
+        _audioSource.Stop();
     }
 }

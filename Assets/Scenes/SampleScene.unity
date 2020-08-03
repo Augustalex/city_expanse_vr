@@ -475,7 +475,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &234377180
 Transform:
   m_ObjectHideFlags: 0
@@ -946,11 +946,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
-  blockGeneralInteractionSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d,
+  blockGeneralInteractionSound: {fileID: 8300000, guid: baf4bce8ba882bc47a6069a0b0ef846d,
     type: 3}
   volumeOverride: 0.5
   meteorTemplate: {fileID: 6276573657937102653, guid: 66105d64d7bffcb4daa596f586f4131b,
     type: 3}
+  kaboomSound: {fileID: 8300000, guid: 51d537794fa1b94449d59d725181cd82, type: 3}
 --- !u!114 &546754288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1592,6 +1593,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1978629951889767773, guid: 644b2490ba6ecae4db6ff17d33bd1245,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 1222390948}
     - target: {fileID: 4784501985589762823, guid: 644b2490ba6ecae4db6ff17d33bd1245,
         type: 3}
       propertyPath: target
@@ -1625,7 +1631,7 @@ PrefabInstance:
     - target: {fileID: 8097704663750696973, guid: 644b2490ba6ecae4db6ff17d33bd1245,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8097704663750697009, guid: 644b2490ba6ecae4db6ff17d33bd1245,
         type: 3}
@@ -3114,7 +3120,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1529638746
 MonoBehaviour:
   m_ObjectHideFlags: 0

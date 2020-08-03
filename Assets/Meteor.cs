@@ -5,6 +5,10 @@ public class Meteor : MonoBehaviour
 {
     public GameObject fireBallTemplate;
 
+    public event Action BeforeDestroy;
+    public event Action Hit;
+
+    
     private Vector3 _target;
     private float _startTime;
     private const float Duration = 5;
@@ -19,7 +23,7 @@ public class Meteor : MonoBehaviour
         if (_started)
         {
             var progress = Mathf.Clamp((Time.fixedTime - _startTime) / Duration, 0, 1.5f);
-            transform.position = Vector3.Slerp(_startingPosition, _target, progress);
+            transform.position = Vector3.Lerp(_startingPosition, _target, progress);
 
             if (progress > 1)
             {
@@ -31,6 +35,8 @@ public class Meteor : MonoBehaviour
         {
             StartFireBall();
             _fireBallStarted = true;
+            
+            OnHit();
         }
     }
 
@@ -63,7 +69,8 @@ public class Meteor : MonoBehaviour
     private void ResetWorld()
     {
         FindObjectOfType<WorldPlane>().ResetAtSize(WorldPlane.Size.Large);
-        Destroy(gameObject);    
+        OnBeforeDestroy();
+        Destroy(gameObject);
     }
 
     public void Shoot(Vector3 shootFrom)
@@ -79,11 +86,22 @@ public class Meteor : MonoBehaviour
 
     private void ResetPosition(Vector3 position)
     {
-        transform.position = position;
+        transform.LookAt(_target);
+        transform.position = position + transform.forward * 1f;
     }
 
     public void SetTarget(Vector3 target)
     {
         _target = target;
+    }
+
+    private void OnBeforeDestroy()
+    {
+        BeforeDestroy?.Invoke();
+    }
+
+    protected virtual void OnHit()
+    {
+        Hit?.Invoke();
     }
 }

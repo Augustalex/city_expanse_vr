@@ -11,7 +11,7 @@ public class FireBall : MonoBehaviour
 
     void Update()
     {
-        if (transform.localScale.x > 2.2f)
+        if (transform.localScale.x > 4.2f)
         {
             if (!_destroyed)
             {
@@ -23,8 +23,8 @@ public class FireBall : MonoBehaviour
         }
         else
         {
-            transform.localScale += Vector3.one * (1.05f * Time.deltaTime);
-            transform.localScale *= 1 + Time.deltaTime * .5f;
+            transform.localScale += new Vector3(1, .25f, 1) * (.5f * Time.deltaTime);
+            transform.localScale *= 1 + Time.deltaTime * .1f;
 
             OnExpand();
         }
