@@ -17,6 +17,7 @@ public class InteractorHolder : MonoBehaviour
     private RaiseLandBlockInteractor _raiseLandInteractor;
     private RaiseWaterBlockInteractor _raiseWaterInteractor;
     private PlaceGreensBlockInteractor _placeGreensInteractor;
+    private SendMeteorBlockInteractor _sendMeteorInteractor;
 
     public enum BlockInteractors
     {
@@ -24,7 +25,8 @@ public class InteractorHolder : MonoBehaviour
         FillWater,
         RaiseLand,
         RaiseWater,
-        PlaceGreens
+        PlaceGreens,
+        SendMeteor
     }
 
     private void Start()
@@ -43,13 +45,17 @@ public class InteractorHolder : MonoBehaviour
         _placeGreensInteractor = GetComponent<PlaceGreensBlockInteractor>();
         _placeGreensInteractor.enabled = false;
 
+        _sendMeteorInteractor = GetComponent<SendMeteorBlockInteractor>();
+        _sendMeteorInteractor.enabled = false;
+
         _interactorComponents.AddRange(new List<BlockInteractor>
             {
                 _digInteractor,
                 _waterInteractor,
                 _raiseLandInteractor,
                 _raiseWaterInteractor,
-                _placeGreensInteractor
+                _placeGreensInteractor,
+                _sendMeteorInteractor
             }
         );
     }
@@ -85,6 +91,11 @@ public class InteractorHolder : MonoBehaviour
         {
             _interactorComponents.ForEach(i => i.enabled = false);
             _placeGreensInteractor.enabled = true;
+        }
+        else if (blockInteractor == BlockInteractors.SendMeteor)
+        {
+            _interactorComponents.ForEach(i => i.enabled = false);
+            _sendMeteorInteractor.enabled = true;
         }
     }
 }
