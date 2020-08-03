@@ -34,7 +34,7 @@ public class HouseSpawn : MonoBehaviour
 
         var houseTemplate = templates[Random.Range(0, templates.Length)];
         var house = Instantiate(houseTemplate, transform, false);
-
+                    
         _activeHouse = house;
         _size = size;
     }

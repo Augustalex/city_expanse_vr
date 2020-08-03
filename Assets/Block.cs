@@ -103,7 +103,7 @@ public class Block : MonoBehaviour
     {
         _occupiedBy = house;
 
-        var animationHeight = .05f;
+        var animationHeight = .4f;
         house.transform.position = transform.position + Vector3.up * (.05f + animationHeight);
     }
 

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - WorldPlane
   - HouseSpawn
+  - SpawnSmoke
   layers:
   - Default
   - TransparentFX
