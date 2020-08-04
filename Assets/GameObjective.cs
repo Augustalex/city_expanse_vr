@@ -17,7 +17,8 @@ public class GameObjective : MonoBehaviour
     private Objective _currentObjective = Objective.OneMegaHouse;
     private WorldPlane _worldPlane;
     private bool _initialized;
-
+    private const bool Disabled = true;
+    
     void Start()
     {
         _worldPlane = GetComponent<WorldPlane>();
@@ -25,6 +26,8 @@ public class GameObjective : MonoBehaviour
 
     public bool Reached()
     {
+        if (Disabled) return false;
+        
         if (_currentObjective == Objective.OneHouse)
         {
             return _worldPlane.GetBlocksWithHouses().Count > 0;

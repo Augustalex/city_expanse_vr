@@ -28,7 +28,7 @@ public class City : MonoBehaviour
             {
                 SpawnOneHouse();
             }
-            else if (randomValue < .9 && CanSpawnAnotherBigHouse())
+            else if (randomValue < .9)
             {
                 SpawnBigHouse();
             }
@@ -66,15 +66,16 @@ public class City : MonoBehaviour
         var candidates = _worldPlane.GetVacantBlocks()
             .Where(block =>
             {
-                var waterBlocks = _worldPlane.GetWaterBlocks();
-                return waterBlocks.Count(waterBlock => block.DistanceToOtherBlock(waterBlock) < 2) == 0;
-            })
-            .Where(block =>
-            {
+                if (!block.IsGrass()) return false;
+                
                 var blocksWithHouse = _worldPlane
                     .GetBlocksWithHouses();
 
-                return blocksWithHouse.Count(houseBlock => block.DistanceToOtherBlock(houseBlock) <= 3) >= 15;
+                var hasLargeEnoughClosePopulation = blocksWithHouse.Count(houseBlock => block.DistanceToOtherBlock(houseBlock) <= 1.5f) >= 3;
+                if (!hasLargeEnoughClosePopulation) return false;
+
+                var hasEnoughSurroundingNature = _worldPlane.NatureScore(block.GetPosition(), 6.5f) > 30;
+                return hasEnoughSurroundingNature;
             })
             .ToList();
 
@@ -124,10 +125,5 @@ public class City : MonoBehaviour
 
             _lastPlacedHouse = Time.fixedTime;
         }
-    }
-
-    public bool CanSpawnAnotherBigHouse()
-    {
-        return _worldPlane.NatureScore() > 0;
     }
 }

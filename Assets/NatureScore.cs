@@ -14,7 +14,7 @@ public class NatureScore : MonoBehaviour
         var delta = Time.fixedTime - _lastCaluclated;
         if (delta > 2)
         {
-            GetComponent<Text>().text = "Nature score: " + worldPlane.NatureScore().ToString(); 
+            GetComponent<Text>().text = "Nature score: " + worldPlane.NatureScore(new Vector3(0,0,0), 1000).ToString(); 
             _lastCaluclated = Time.fixedTime;
         }
     }

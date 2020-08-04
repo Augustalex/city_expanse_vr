@@ -28,15 +28,27 @@ public class Block : MonoBehaviour
 
     public void DestroySelf()
     {
-        Destroy(BlockRoot());
         if (_occupiedBy != null)
         {
             Destroy(_occupiedBy);
+        }
+        
+        var root = BlockRoot();
+        if (root != null)
+        {
+            Destroy(root);
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 
     private GameObject BlockRoot()
     {
+        if (gameObject == null) return null;
+        if (transform.parent == null) return null;
+        
         return transform.parent.gameObject;
     }
 

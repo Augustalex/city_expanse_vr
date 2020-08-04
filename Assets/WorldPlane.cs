@@ -165,23 +165,28 @@ public class WorldPlane : MonoBehaviour
         return stack.Select(pair => pair.Value).ToList();
     }
 
-    public int NatureScore()
+    public int NatureScore(Vector3 originPosition, float radius)
     {
-        return _blocks.Values.Sum(block =>
+        return _blocks
+            .Where(pair => Vector3.Distance(originPosition, pair.Key) < radius)
+            .Select(pair => pair.Value)
+            .Sum(block =>
         {
             if (block.IsWater() && block.GetPosition().y > 4) return 4;
             if (block.IsWater() && block.GetPosition().y > 2) return 2;
             if (block.IsWater()) return 1;
 
-            if (block.OccupiedByGreens() && block.GetPosition().y > 2) return 4;
-            if (block.OccupiedByGreens()) return 2;
+            if (block.OccupiedByGreens() && block.GetPosition().y > 0) return 6;
+            if (block.OccupiedByGreens()) return 4;
 
-            if (block.OccupiedByHouse() && block.GetOccupantHouse().IsMegaBig()) return -100;
-            if (block.OccupiedByHouse() && block.GetOccupantHouse().IsBig()) return -20;
+            if (block.OccupiedByHouse() && block.GetOccupantHouse().IsMegaBig()) return -20;
+            if (block.OccupiedByHouse() && block.GetOccupantHouse().IsBig()) return -10;
             if (block.OccupiedByHouse() && block.GetOccupantHouse()) return -1;
 
-            if (block.GetPosition().y > 4) return 2;
-            if (block.GetPosition().y > 2) return 1;
+            if (block.GetPosition().y > 10) return 50;
+            if (block.GetPosition().y > 4) return 10;
+            if (block.GetPosition().y > 2) return 4;
+            if (block.GetPosition().y > 0) return 2;
 
             return 0;
         });

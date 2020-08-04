@@ -20,7 +20,7 @@ public class TileClicker : MonoBehaviour
         {
             RaycastHit hit;
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, 100.0f))
+            if (Physics.Raycast(ray, out hit, 1000.0f))
             {   
                 _interactorHolder.GetInteractor().Interact(hit.collider.gameObject);
             }
