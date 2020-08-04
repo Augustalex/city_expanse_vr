@@ -14,7 +14,7 @@ public class BlockInteractionPalette : MonoBehaviour
         {
             _activeInteractor = null;
             previousInteractor.Deactivate();
-            previousInteractor.transform.position = interactor.transform.position;
+            previousInteractor.ResetPosition();
         }
 
         interactor.Activate();

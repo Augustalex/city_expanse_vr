@@ -15,12 +15,16 @@ public abstract class BlockInteractor : MonoBehaviour
     private AudioSource _audioSource;
     private FollowObject _followObject;
     private bool _frozen = false;
+    private Vector3 _originalPosition;
+    private Vector3 _originalScale;
 
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
         _followObject = GetComponent<FollowObject>();
-
+        _originalPosition = transform.position;
+        _originalScale = transform.localScale;
+        
         if (isStartingInteractor)
         {
             GetComponentInParent<BlockInteractionPalette>().Select(this);
@@ -34,12 +38,15 @@ public abstract class BlockInteractor : MonoBehaviour
     {
         _followObject.enabled = true;
         _frozen = false;
+        transform.localScale = _originalScale * .6f;
     }
 
     public void Deactivate()
     {
         _followObject.enabled = false;
         _frozen = true;
+        transform.localScale = _originalScale;
+
         StartCoroutine(UnfreezeSoon());
 
         IEnumerator UnfreezeSoon()
@@ -83,5 +90,10 @@ public abstract class BlockInteractor : MonoBehaviour
     public void StopGeneralSound()
     {
         _audioSource.Stop();
+    }
+
+    public void ResetPosition()
+    {
+        transform.position = _originalPosition;
     }
 }

@@ -21,7 +21,7 @@ public class City : MonoBehaviour
     void Update()
     {
         var delta = Time.fixedTime - _lastPlacedHouse;
-        if (delta > .1f && Random.value < .1)
+        if (delta > 4f && Random.value < .1)
         {
             var randomValue = Random.value;
             if (randomValue < .5)

@@ -23,7 +23,7 @@ public class FireBall : MonoBehaviour
         }
         else
         {
-            transform.localScale += new Vector3(1, .25f, 1) * (.5f * Time.deltaTime);
+            transform.localScale += new Vector3(1, .2f, 1) * (.5f * Time.deltaTime);
             transform.localScale *= 1 + Time.deltaTime * .1f;
 
             OnExpand();
