@@ -1,0 +1,9 @@
+Heimer feedback
+- Kanske ha världen formad som en hexagon, Catan style
+- Risk att interactions med människorna blir som i B&W, att du bara punishar dem, att interaktionen är ganska shallow
+- Ha en tydligare *UPGRADE!!* feeling när din stad tar sig till nästa nivå. Nu känns de nya husen som bara ett annat hus.
+- Destruction knappen borde vara mycket tydligare, som en stor röd knapp bara
+
+Buggar:
+- Raise water borde fill holes as well
+- När man hade hus så Reset'ades inte världen korrekt
