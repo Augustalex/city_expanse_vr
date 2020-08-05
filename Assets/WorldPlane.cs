@@ -99,24 +99,24 @@ public class WorldPlane : MonoBehaviour
     {
         var gridPosition = blockAtBottom.GetGridPosition() + Vector3.up;
         blockToAdd.SetGridPosition(gridPosition);
+        blocksRepository.SetAtPosition(blockToAdd, gridPosition);
         MakeBlockMoreUnique(blockToAdd, gridPosition);
         
         blockAtBottom.PlaceOnTopOfSelf(blockToAdd, blockToAddRoot);
-
-        blocksRepository.SetAtPosition(blockToAdd, gridPosition);
     }
 
     public void AddAndPositionBlock(Block block, Vector3 gridPosition)
     {
-        PositionBlock(block, gridPosition);
-        blocksRepository.SetAtPosition(block, gridPosition);
         MakeBlockMoreUnique(block, gridPosition);
+        blocksRepository.SetAtPosition(block, gridPosition);
+        
+        PositionBlock(block, gridPosition);
     }
 
     private void PositionBlock(Block block, Vector3 gridPosition)
     {
         block.SetGridPosition(gridPosition);
-        block.BlockRoot().transform.position = ToRealCoordinates(gridPosition);
+        block.transform.position = ToRealCoordinates(gridPosition); // TODO Should fix so that the block.BlockRoot() is the one being moved, but right now there is a weird bug when doing that...
     }
     
     private void MakeBlockMoreUnique(Block block, Vector3 position)
@@ -173,7 +173,7 @@ public class WorldPlane : MonoBehaviour
             .Where(b => b.blockType == Block.BlockType.Grass)
             .ToList();
     }
-
+    
     public List<Block> GetNearbyVacantLots(Vector3 position)
     {
         return GetNearbyLots(position)
