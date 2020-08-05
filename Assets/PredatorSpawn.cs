@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(HouseSpawn))]
+[RequireComponent(typeof(GreensSpawn))]
 [RequireComponent(typeof(BlockRelative))]
 public class PredatorSpawn : MonoBehaviour
 {

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class WorldPlane : MonoBehaviour
 {
@@ -90,18 +88,18 @@ public class WorldPlane : MonoBehaviour
         if (!block.IsWater()) return false;
 
         var position = block.GetGridPosition();
-        
+
         var lowestWater = GetStack(position).First(otherBlock => otherBlock.IsWater());
         return Math.Abs(lowestWater.GetGridPosition().y - position.y) < .5f;
     }
-    
+
     public void AddBlockOnTopOf(Block blockToAdd, GameObject blockToAddRoot, Block blockAtBottom)
     {
         var gridPosition = blockAtBottom.GetGridPosition() + Vector3.up;
         blockToAdd.SetGridPosition(gridPosition);
         blocksRepository.SetAtPosition(blockToAdd, gridPosition);
         MakeBlockMoreUnique(blockToAdd, gridPosition);
-        
+
         blockAtBottom.PlaceOnTopOfSelf(blockToAdd, blockToAddRoot);
     }
 
@@ -109,16 +107,18 @@ public class WorldPlane : MonoBehaviour
     {
         MakeBlockMoreUnique(block, gridPosition);
         blocksRepository.SetAtPosition(block, gridPosition);
-        
+
         PositionBlock(block, gridPosition);
     }
 
     private void PositionBlock(Block block, Vector3 gridPosition)
     {
         block.SetGridPosition(gridPosition);
-        block.transform.position = ToRealCoordinates(gridPosition); // TODO Should fix so that the block.BlockRoot() is the one being moved, but right now there is a weird bug when doing that...
+        block.transform.position =
+            ToRealCoordinates(
+                gridPosition); // TODO Should fix so that the block.BlockRoot() is the one being moved, but right now there is a weird bug when doing that...
     }
-    
+
     private void MakeBlockMoreUnique(Block block, Vector3 position)
     {
         block.RandomRotateAlongY();
@@ -128,13 +128,13 @@ public class WorldPlane : MonoBehaviour
     public void ReplaceBlock(Block toBeReplaced, Block replacement)
     {
         var gridPosition = toBeReplaced.GetGridPosition();
-        
+
         RemoveBlockAt(gridPosition);
         AddAndPositionBlock(replacement, gridPosition);
 
         toBeReplaced.DestroySelf();
     }
-    
+
     private void MakeSureTopGrassBlocksHaveCorrectTexture(Vector3 position)
     {
         var stack = blocksRepository.StreamPairs().Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
@@ -171,21 +171,21 @@ public class WorldPlane : MonoBehaviour
             .Where(pair => Vector3.Distance(position, pair.Key) < radius)
             .Select(pair => pair.Value);
     }
-    
+
     public IEnumerable<Block> GetNearbyBlocks(Vector3 position)
     {
         return GetNeighbouringPositions(position)
             .Where(newPosition => blocksRepository.HasAtPosition(newPosition))
             .Select(newPosition => blocksRepository.GetAtPosition(newPosition));
     }
-    
+
     public List<Block> GetNearbyLots(Vector3 position)
     {
         return GetNearbyBlocks(position)
             .Where(b => b.blockType == Block.BlockType.Grass)
             .ToList();
     }
-    
+
     public List<Block> GetNearbyVacantLots(Vector3 position)
     {
         return GetNearbyLots(position)
@@ -229,28 +229,31 @@ public class WorldPlane : MonoBehaviour
             .Where(pair => Vector3.Distance(originPosition, pair.Key) < radius)
             .Select(pair => pair.Value)
             .Sum(block =>
-        {
-            if (block.IsWater() && block.GetGridPosition().y > 4) return 4;
-            if (block.IsWater() && block.GetGridPosition().y > 2) return 2;
-            if (block.IsWater()) return 1;
+            {
+                if (block.OccupiedByHouse() && block.GetOccupantHouse().IsMegaBig()) return -20;
+                if (block.OccupiedByHouse() && block.GetOccupantHouse().IsBig()) return -10;
+                if (block.OccupiedByHouse() && block.GetOccupantHouse()) return -1;
+                
+                if (block.OccupiedByGreens() && block.GetGridPosition().y > 10) return 20;
+                if (block.OccupiedByGreens() && block.GetGridPosition().y > 4) return 10;
+                if (block.OccupiedByGreens() && block.GetGridPosition().y > 2) return 6;
+                if (block.OccupiedByGreens() && block.GetGridPosition().y > 0) return 4;
+                if (block.OccupiedByGreens()) return 2;
+                
+                if (block.IsGrass() && block.GetGridPosition().y > 10) return 4;
+                if (block.IsGrass() && block.GetGridPosition().y > 4) return 2;
+                if (block.IsGrass() && block.GetGridPosition().y > 2) return 1;
+                if (block.IsGrass() && block.GetGridPosition().y > 0) return .5f;
+                
+                if (block.IsWater() && block.GetGridPosition().y > 10) return 4;
+                if (block.IsWater() && block.GetGridPosition().y > 4) return 4;
+                if (block.IsWater() && block.GetGridPosition().y > 2) return 2;
+                if (block.IsWater()) return 1;
+                
+                if (block.IsSand()) return -1;
 
-            if (block.OccupiedByGreens() && block.GetGridPosition().y > 10) return 20;
-            if (block.OccupiedByGreens() && block.GetGridPosition().y > 4) return 10;
-            if (block.OccupiedByGreens() && block.GetGridPosition().y > 2) return 6;
-            if (block.OccupiedByGreens() && block.GetGridPosition().y > 0) return 4;
-            if (block.OccupiedByGreens()) return 2;
-
-            if (block.OccupiedByHouse() && block.GetOccupantHouse().IsMegaBig()) return -20;
-            if (block.OccupiedByHouse() && block.GetOccupantHouse().IsBig()) return -10;
-            if (block.OccupiedByHouse() && block.GetOccupantHouse()) return -1;
-
-            if (block.GetGridPosition().y > 10) return 4;
-            if (block.GetGridPosition().y > 4) return 2;
-            if (block.GetGridPosition().y > 2) return 1;
-            if (block.GetGridPosition().y > 0) return .5f;
-
-            return 0;
-        });
+                return 0;
+            });
     }
 
     public void ResetAtSize(Size size)
@@ -267,9 +270,9 @@ public class WorldPlane : MonoBehaviour
                 Debug.Log("Not all blocks were successfully destroyed");
             }
         }
-        
+
         blocksRepository.RemoveAll();
-        
+
         CreateWorld(SizeToDimensions(size));
     }
 
@@ -325,5 +328,10 @@ public class WorldPlane : MonoBehaviour
             return row >= 0 && row < _currentDimensions.x
                             && column >= -1 && column < _currentDimensions.y;
         }
+    }
+
+    public int CountBlocksOfType(Block.BlockType blockType)
+    {
+        return blocksRepository.StreamBlocks().Count(block => block.blockType == blockType);
     }
 }

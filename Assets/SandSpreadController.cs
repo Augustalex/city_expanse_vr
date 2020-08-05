@@ -2,7 +2,7 @@
 
 public class SandSpreadController : MonoBehaviour
 {
-    public float chance = .001f;
+    public float chance = .003f;
     public float natureScoreRadius = 6.5f;
     public int houseCountThreshold = 10;
     public float startingThreshold = .005f;

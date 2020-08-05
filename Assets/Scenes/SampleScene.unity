@@ -3797,7 +3797,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chance: 0.001
   natureScoreRadius: 6.5
-  houseCountThreshold: 10
+  houseCountThreshold: 5
   startingThreshold: 0.005
   spreadResistanceThreshold: 25
   spreadCombatThreshold: 30

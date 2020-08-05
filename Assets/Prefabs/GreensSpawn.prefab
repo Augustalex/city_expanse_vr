@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6377690525832584305}
   - component: {fileID: -3247087790144018507}
   - component: {fileID: -8536964791283319856}
-  - component: {fileID: -226279929557468666}
   - component: {fileID: 7372995894491241845}
   m_Layer: 0
   m_Name: GreensSpawn
@@ -79,22 +78,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   block: {fileID: 0}
---- !u!114 &-226279929557468666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2723339866174918418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd1a87a5a5f46e344b11812658340657, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tinyHouseTemplates: []
-  largeHouseTemplates: []
-  megaHouseTemplates: []
-  upgradeSound: {fileID: 0}
 --- !u!114 &7372995894491241845
 MonoBehaviour:
   m_ObjectHideFlags: 0

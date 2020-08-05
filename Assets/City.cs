@@ -36,13 +36,18 @@ public class City : MonoBehaviour
             SpawnBigHouse();
         }
 
-        if (_sandSpawned ? Random.value < _sandSpreadController.startingThreshold : Random.value < _sandSpreadController.continuationThreshold)
+        if (_sandSpawned
+            ? Random.value < _sandSpreadController.startingThreshold
+            : Random.value < _sandSpreadController.continuationThreshold)
         {
             var houseCount = _worldPlane.GetBlocksWithHouses().Count;
             if (houseCount > _sandSpreadController.houseCountThreshold)
             {
-                SpawnSandBlock();
-                _sandSpawned = true;
+                if (_worldPlane.CountBlocksOfType(Block.BlockType.Sand) == 0)
+                {
+                    SpawnSandBlock();
+                    _sandSpawned = true;
+                }
             }
         }
     }

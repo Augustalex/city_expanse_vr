@@ -193,4 +193,9 @@ public class Block : MonoBehaviour
     {
         return _occupiedBy.GetComponent<GreensSpawn>();
     }
+
+    public bool IsSand()
+    {
+        return blockType == BlockType.Sand;
+    }
 }
