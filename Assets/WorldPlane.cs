@@ -165,6 +165,13 @@ public class WorldPlane : MonoBehaviour
             .ToList();
     }
 
+    public IEnumerable<Block> GetNearbyBlocksWithinRange(Vector3 position, float radius)
+    {
+        return blocksRepository.StreamPairs()
+            .Where(pair => Vector3.Distance(position, pair.Key) < radius)
+            .Select(pair => pair.Value);
+    }
+    
     public IEnumerable<Block> GetNearbyBlocks(Vector3 position)
     {
         return GetNeighbouringPositions(position)

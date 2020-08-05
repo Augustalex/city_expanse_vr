@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HouseSpawn : MonoBehaviour
@@ -23,7 +22,7 @@ public class HouseSpawn : MonoBehaviour
         
         _lifeStartedAt = Time.fixedTime;
     }
-
+    
     public bool GoodTimeToUpgrade()
     {
         return Time.fixedTime - _lifeStartedAt > 1f;

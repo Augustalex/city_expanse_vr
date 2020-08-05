@@ -25,6 +25,8 @@ GameObject:
   - component: {fileID: 3313396182424439710}
   - component: {fileID: 6377690525832584305}
   - component: {fileID: 5087854980000907238}
+  - component: {fileID: 1316940166206059821}
+  - component: {fileID: 8821811286696954319}
   m_Layer: 0
   m_Name: HouseSpawn
   m_TagString: HouseSpawn
@@ -179,6 +181,33 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1316940166206059821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2723339866174918418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 770b6f16a9866dd46b80bf5c1f631c94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  block: {fileID: 0}
+--- !u!114 &8821811286696954319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2723339866174918418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67c684bcc2e64285b5730d797646fe63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  personTemplate: {fileID: 1890044539529353544, guid: 023cb22fa6c4617468021737bcca4532,
+    type: 3}
 --- !u!65 &4151253390124884886
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -27,7 +27,7 @@ public class Block : MonoBehaviour
         {
             Destroy(_occupiedBy);
         }
-        
+
         var root = BlockRoot();
         if (root != null)
         {
@@ -78,7 +78,7 @@ public class Block : MonoBehaviour
     {
         return _permaFrozen;
     }
-    
+
     public void SetGridPosition(Vector3 blockPosition)
     {
         _gridPosition = blockPosition;
@@ -89,12 +89,18 @@ public class Block : MonoBehaviour
         return _gridPosition;
     }
 
-    public void Occupy(GameObject house)
+    public void Occupy(GameObject occupant)
     {
-        _occupiedBy = house;
+        _occupiedBy = occupant;
+        
+        var blockRelative = occupant.GetComponent<BlockRelative>();
+        if (blockRelative)
+        {
+            blockRelative.block = this;
+        }
 
         var animationHeight = .4f;
-        house.transform.position = transform.position + Vector3.up * (.05f + animationHeight);
+        occupant.transform.position = transform.position + Vector3.up * (.05f + animationHeight);
     }
 
     public void PlaceOnTopOfSelf(Block otherBlock, GameObject occupantRoot)
@@ -177,9 +183,14 @@ public class Block : MonoBehaviour
     {
         return blockType == BlockType.Water;
     }
-    
+
     public bool OccupiedByGreens()
     {
         return _occupiedBy != null && _occupiedBy.GetComponent<GreensSpawn>() != null;
+    }
+
+    public GreensSpawn GetOccupantGreens()
+    {
+        return _occupiedBy.GetComponent<GreensSpawn>();
     }
 }
