@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 public class RaiseLandBlockInteractor : BlockInteractor
 {
     public GameObject grassBlockTemplate;
-
+    
     private void OnTriggerEnter(Collider other)
     {
         Interact(other.gameObject);
@@ -25,7 +25,7 @@ public class RaiseLandBlockInteractor : BlockInteractor
         {
             var grass = Instantiate(grassBlockTemplate);
             var grassBlock = grass.GetComponentInChildren<Block>();
-            blockComponent.PlaceOnTopOfSelf(grassBlock, grass);
+            GetWorldPlane().AddBlockOnTopOf(grassBlock, grass, blockComponent);
             PlayGeneralSound();
         }
     }

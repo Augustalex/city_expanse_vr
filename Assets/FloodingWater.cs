@@ -24,7 +24,7 @@ public class FloodingWater : MonoBehaviour
         {
             FloodGroundLevel();
         }
-        else if (_block.IsLowestWater())
+        else if (_worldPlane.IsBlockLowestWater(_block))
         {
             FloodDown();
         }
@@ -34,10 +34,10 @@ public class FloodingWater : MonoBehaviour
 
     private void FloodDown()
     {
-        var blockHeight = _block.GetPosition().y;
+        var blockHeight = _block.GetGridPosition().y;
         var nearbyBlocks = _worldPlane
-            .GetNearbyLots(_block.GetPosition())
-            .Where(otherBlock => otherBlock.GetPosition().y < blockHeight);
+            .GetNearbyLots(_block.GetGridPosition())
+            .Where(otherBlock => otherBlock.GetGridPosition().y < blockHeight);
 
         foreach (var nearbyBlock in nearbyBlocks)
         {
@@ -53,16 +53,16 @@ public class FloodingWater : MonoBehaviour
                 if (!nearbyBlock.IsGroundLevel())
                 {
                     var waterBlockBelow = newWaterBlock(true);
-                    nearbyBlock.TurnOverSpotTo(waterBlockBelow);
+                    _worldPlane.ReplaceBlock(nearbyBlock, waterBlockBelow);
 
                     lowestBlock = waterBlockBelow;
                 }
 
-                for (var y = lowestBlock.GetPosition().y + 1; y <= blockHeight; y++)
+                for (var y = lowestBlock.GetGridPosition().y + 1; y <= blockHeight; y++)
                 {
                     var water = newWaterObject(y != blockHeight);
                     var waterBlock = water.GetComponentInChildren<Block>();
-                    lowestBlock.PlaceOnTopOfSelf(waterBlock, water);
+                    _worldPlane.AddBlockOnTopOf(waterBlock, water, lowestBlock);
 
                     lowestBlock = waterBlock;
                 }
@@ -89,11 +89,11 @@ public class FloodingWater : MonoBehaviour
 
     private void FloodGroundLevel()
     {
-        var nearbyEmptyPositions = _worldPlane.GetNearbyEmptyPositions(_block.GetPosition());
+        var nearbyEmptyPositions = _worldPlane.GetNearbyEmptyPositions(_block.GetGridPosition());
         foreach (var position in nearbyEmptyPositions)
         {
             var waterBlock = newWaterBlock(false);
-            _worldPlane.AddBlockToPosition(waterBlock, position);
+            _worldPlane.AddAndPositionBlock(waterBlock, position);
             waterBlock.ShortFreeze();
         }
     }

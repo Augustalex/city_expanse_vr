@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 
 public class WorldPlane : MonoBehaviour
 {
+    public BlocksRepository blocksRepository = new BlocksRepository();
     public GameObject blockTemplate;
     public Transform TopLeftPoint;
 
@@ -17,7 +18,6 @@ public class WorldPlane : MonoBehaviour
         Large
     }
 
-    private Dictionary<Vector3, Block> _blocks = new Dictionary<Vector3, Block>();
     private Vector2 _currentDimensions;
 
     public Vector3 ToRealCoordinates(Vector3 position)
@@ -39,9 +39,15 @@ public class WorldPlane : MonoBehaviour
         );
     }
 
+    public void RemoveAndDestroyBlock(Block block)
+    {
+        block.DestroySelf();
+        RemoveBlockAt(block.GetGridPosition());
+    }
+
     public void RemoveBlockAt(Vector3 position)
     {
-        _blocks.Remove(position);
+        blocksRepository.Remove(position);
     }
 
     private IEnumerable<Vector3> GetNeighbouringPositions(Vector3 position)
@@ -75,23 +81,63 @@ public class WorldPlane : MonoBehaviour
     public List<Vector3> GetNearbyEmptyPositions(Vector3 position)
     {
         return GetNeighbouringPositions(position)
-            .Where(newPosition => !_blocks.ContainsKey(newPosition))
+            .Where(newPosition => !blocksRepository.HasAtPosition(newPosition))
             .ToList();
     }
 
-    public void AddBlockToPosition(Block block, Vector3 position)
+    public bool IsBlockLowestWater(Block block)
     {
-        block.SetPosition(position);
+        if (!block.IsWater()) return false;
+
+        var position = block.GetGridPosition();
+        
+        var lowestWater = GetStack(position).First(otherBlock => otherBlock.IsWater());
+        return Math.Abs(lowestWater.GetGridPosition().y - position.y) < .5f;
+    }
+    
+    public void AddBlockOnTopOf(Block blockToAdd, GameObject blockToAddRoot, Block blockAtBottom)
+    {
+        var gridPosition = blockAtBottom.GetGridPosition() + Vector3.up;
+        blockToAdd.SetGridPosition(gridPosition);
+        MakeBlockMoreUnique(blockToAdd, gridPosition);
+        
+        blockAtBottom.PlaceOnTopOfSelf(blockToAdd, blockToAddRoot);
+
+        blocksRepository.SetAtPosition(blockToAdd, gridPosition);
+    }
+
+    public void AddAndPositionBlock(Block block, Vector3 gridPosition)
+    {
+        PositionBlock(block, gridPosition);
+        blocksRepository.SetAtPosition(block, gridPosition);
+        MakeBlockMoreUnique(block, gridPosition);
+    }
+
+    private void PositionBlock(Block block, Vector3 gridPosition)
+    {
+        block.SetGridPosition(gridPosition);
+        block.BlockRoot().transform.position = ToRealCoordinates(gridPosition);
+    }
+    
+    private void MakeBlockMoreUnique(Block block, Vector3 position)
+    {
         block.RandomRotateAlongY();
-
-        _blocks[position] = block;
-
         MakeSureTopGrassBlocksHaveCorrectTexture(position);
     }
 
+    public void ReplaceBlock(Block toBeReplaced, Block replacement)
+    {
+        var gridPosition = toBeReplaced.GetGridPosition();
+        
+        RemoveBlockAt(gridPosition);
+        AddAndPositionBlock(replacement, gridPosition);
+
+        toBeReplaced.DestroySelf();
+    }
+    
     private void MakeSureTopGrassBlocksHaveCorrectTexture(Vector3 position)
     {
-        var stack = _blocks.Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
+        var stack = blocksRepository.StreamPairs().Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
 
         var list = stack.OrderByDescending(pair => pair.Key.y).ToList();
         for (var i = 0; i < list.Count; i++)
@@ -114,7 +160,7 @@ public class WorldPlane : MonoBehaviour
 
     public List<Block> GetWaterBlocks()
     {
-        return _blocks.Values
+        return blocksRepository.StreamBlocks()
             .Where(b => b.blockType == Block.BlockType.Water)
             .ToList();
     }
@@ -122,8 +168,8 @@ public class WorldPlane : MonoBehaviour
     public List<Block> GetNearbyLots(Vector3 position)
     {
         return GetNeighbouringPositions(position)
-            .Where(newPosition => _blocks.ContainsKey(newPosition))
-            .Select(newPosition => _blocks[newPosition])
+            .Where(newPosition => blocksRepository.HasAtPosition(newPosition))
+            .Select(newPosition => blocksRepository.GetAtPosition(newPosition))
             .Where(b => b.blockType == Block.BlockType.Grass)
             .ToList();
     }
@@ -137,7 +183,7 @@ public class WorldPlane : MonoBehaviour
 
     public List<Block> GetVacantBlocks()
     {
-        return _blocks
+        return blocksRepository.StreamPairs()
             .Where(pair => pair.Value.IsVacant())
             .Select(pair => pair.Value)
             .ToList();
@@ -145,12 +191,12 @@ public class WorldPlane : MonoBehaviour
 
     public List<Block> GetBlocksWithHouses()
     {
-        return _blocks.Values.Where(block => block.OccupiedByHouse()).ToList();
+        return blocksRepository.StreamBlocks().Where(block => block.OccupiedByHouse()).ToList();
     }
 
     public int GetStackHeight(Vector3 position)
     {
-        var stack = _blocks.Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
+        var stack = blocksRepository.StreamPairs().Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
 
         var list = stack.ToList();
         if (list.Count == 0) return 0;
@@ -160,33 +206,36 @@ public class WorldPlane : MonoBehaviour
 
     public List<Block> GetStack(Vector3 position)
     {
-        var stack = _blocks.Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
+        var stack = blocksRepository.StreamPairs().Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
 
         return stack.Select(pair => pair.Value).ToList();
     }
 
-    public int NatureScore(Vector3 originPosition, float radius)
+    public float NatureScore(Vector3 originPosition, float radius)
     {
-        return _blocks
+        return blocksRepository.StreamPairs()
             .Where(pair => Vector3.Distance(originPosition, pair.Key) < radius)
             .Select(pair => pair.Value)
             .Sum(block =>
         {
-            if (block.IsWater() && block.GetPosition().y > 4) return 4;
-            if (block.IsWater() && block.GetPosition().y > 2) return 2;
+            if (block.IsWater() && block.GetGridPosition().y > 4) return 4;
+            if (block.IsWater() && block.GetGridPosition().y > 2) return 2;
             if (block.IsWater()) return 1;
 
-            if (block.OccupiedByGreens() && block.GetPosition().y > 0) return 6;
-            if (block.OccupiedByGreens()) return 4;
+            if (block.OccupiedByGreens() && block.GetGridPosition().y > 10) return 20;
+            if (block.OccupiedByGreens() && block.GetGridPosition().y > 4) return 10;
+            if (block.OccupiedByGreens() && block.GetGridPosition().y > 2) return 6;
+            if (block.OccupiedByGreens() && block.GetGridPosition().y > 0) return 4;
+            if (block.OccupiedByGreens()) return 2;
 
             if (block.OccupiedByHouse() && block.GetOccupantHouse().IsMegaBig()) return -20;
             if (block.OccupiedByHouse() && block.GetOccupantHouse().IsBig()) return -10;
             if (block.OccupiedByHouse() && block.GetOccupantHouse()) return -1;
 
-            if (block.GetPosition().y > 10) return 50;
-            if (block.GetPosition().y > 4) return 10;
-            if (block.GetPosition().y > 2) return 4;
-            if (block.GetPosition().y > 0) return 2;
+            if (block.GetGridPosition().y > 10) return 4;
+            if (block.GetGridPosition().y > 4) return 2;
+            if (block.GetGridPosition().y > 2) return 1;
+            if (block.GetGridPosition().y > 0) return .5f;
 
             return 0;
         });
@@ -194,25 +243,22 @@ public class WorldPlane : MonoBehaviour
 
     public void ResetAtSize(Size size)
     {
-        StartCoroutine(DestroyWorld());
-
-        IEnumerator DestroyWorld()
+        var allBlocks = blocksRepository.StreamBlocks().ToList();
+        foreach (var block in allBlocks)
         {
-            var blocksInRandomOrder = _blocks.Values.OrderBy(i => Guid.NewGuid()).ToList();
-            foreach (var block in blocksInRandomOrder)
+            try
             {
-                block.DestroySelf();
-
-                yield return new WaitForSeconds(Random.value * 100f);
+                RemoveAndDestroyBlock(block);
             }
-
-            if (blocksInRandomOrder.Count > 0)
+            catch
             {
-                yield return new WaitForSeconds(2);
+                Debug.Log("Not all blocks were successfully destroyed");
             }
-
-            CreateWorld(SizeToDimensions(size));
         }
+        
+        blocksRepository.RemoveAll();
+        
+        CreateWorld(SizeToDimensions(size));
     }
 
 
@@ -246,7 +292,7 @@ public class WorldPlane : MonoBehaviour
                 var blockObject = Instantiate(blockTemplate);
                 var block = blockObject.GetComponentInChildren<Block>();
 
-                AddBlockToPosition(block, blockPosition);
+                AddAndPositionBlock(block, blockPosition);
             }
         }
     }

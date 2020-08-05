@@ -18,7 +18,7 @@ public class FillWaterBlockInteractor : BlockInteractor
         {
             var water = Instantiate(waterBlockTemplate);
             var waterBlock = water.GetComponentInChildren<Block>();
-            blockComponent.TurnOverSpotTo(waterBlock);
+            GetWorldPlane().ReplaceBlock(blockComponent, waterBlock);
             waterBlock.ShortFreeze();
             PlayGeneralSound();
         }   

@@ -17,6 +17,7 @@ public abstract class BlockInteractor : MonoBehaviour
     private bool _frozen = false;
     private Vector3 _originalPosition;
     private Vector3 _originalScale;
+    private WorldPlane _worldPlane;
 
     private void Start()
     {
@@ -24,7 +25,8 @@ public abstract class BlockInteractor : MonoBehaviour
         _followObject = GetComponent<FollowObject>();
         _originalPosition = transform.position;
         _originalScale = transform.localScale;
-        
+        _worldPlane = GameObject.FindWithTag("WorldPlane").GetComponent<WorldPlane>();
+
         if (isStartingInteractor)
         {
             GetComponentInParent<BlockInteractionPalette>().Select(this);
@@ -95,5 +97,10 @@ public abstract class BlockInteractor : MonoBehaviour
     public void ResetPosition()
     {
         transform.position = _originalPosition;
+    }
+
+    protected WorldPlane GetWorldPlane()
+    {
+        return _worldPlane;
     }
 }

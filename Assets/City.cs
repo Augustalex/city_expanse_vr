@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -11,31 +9,27 @@ public class City : MonoBehaviour
     public GameObject tinyHouseTemplate;
     private WorldPlane _worldPlane;
     private double _lastPlacedHouse;
+    private double _lastUpgradedBigHouse;
 
     void Start()
     {
         _worldPlane = GetComponent<WorldPlane>();
-        _lastPlacedHouse = Time.fixedTime;
+        _lastPlacedHouse = Time.fixedTime - 10;
+        _lastUpgradedBigHouse = Time.fixedTime;
     }
 
     void Update()
     {
         var delta = Time.fixedTime - _lastPlacedHouse;
-        if (delta > 4f && Random.value < .1)
+        if (delta > 10f && Random.value < .1)
         {
-            var randomValue = Random.value;
-            if (randomValue < .5)
-            {
-                SpawnOneHouse();
-            }
-            else if (randomValue < .9)
-            {
-                SpawnBigHouse();
-            }
-            else
-            {
-                SpawnMegaHouse();
-            }
+            SpawnOneHouse();
+        }
+
+        var upgradeDelta = Time.fixedTime - _lastUpgradedBigHouse;
+        if (upgradeDelta > 1.5f)
+        {
+            SpawnBigHouse();
         }
     }
 
@@ -43,14 +37,19 @@ public class City : MonoBehaviour
     {
         var candidates = _worldPlane.GetWaterBlocks()
             .SelectMany(waterBlock =>
-                _worldPlane.GetNearbyVacantLots(waterBlock.GetPosition())
+                _worldPlane.GetNearbyVacantLots(waterBlock.GetGridPosition())
                     .Select(block => new Tuple<Block, Block>(waterBlock, block)))
             .ToList();
+        var bigHouseCandidates = _worldPlane.GetBlocksWithHouses()
+            .Where(block => block.GetOccupantHouse().IsBig())
+            .SelectMany(block => _worldPlane.GetNearbyVacantLots(block.GetGridPosition())
+                .Select(otherBlock => new Tuple<Block, Block>(block, otherBlock)));
+        var allCandidates = candidates.Concat(bigHouseCandidates).ToList();
 
-        var candidatesCount = candidates.Count;
+        var candidatesCount = allCandidates.Count;
         if (candidatesCount > 0)
         {
-            var (waterBlock, vacantLot) = candidates[Random.Range(0, candidatesCount)];
+            var (waterBlock, vacantLot) = allCandidates[Random.Range(0, candidatesCount)];
             var house = Instantiate(tinyHouseTemplate);
             vacantLot.Occupy(house);
             var target = waterBlock.transform.position;
@@ -63,18 +62,19 @@ public class City : MonoBehaviour
 
     private void SpawnBigHouse()
     {
-        var candidates = _worldPlane.GetVacantBlocks()
+        var candidates = _worldPlane.GetBlocksWithHouses()
             .Where(block =>
             {
-                if (!block.IsGrass()) return false;
-                
-                var blocksWithHouse = _worldPlane
-                    .GetBlocksWithHouses();
+                var occupantHouse = block.GetOccupantHouse();
+                if (!occupantHouse.IsSmall()) return false;
+                if (!occupantHouse.GoodTimeToUpgrade()) return false;
+                // var blocksWithHouse = _worldPlane
+                // .GetBlocksWithHouses();
 
-                var hasLargeEnoughClosePopulation = blocksWithHouse.Count(houseBlock => block.DistanceToOtherBlock(houseBlock) <= 1.5f) >= 3;
-                if (!hasLargeEnoughClosePopulation) return false;
+                // var hasLargeEnoughClosePopulation = blocksWithHouse.Count(houseBlock => block.DistanceToOtherBlock(houseBlock) <= 1.5f) >= 3;
+                // if (!hasLargeEnoughClosePopulation) return false;
 
-                var hasEnoughSurroundingNature = _worldPlane.NatureScore(block.GetPosition(), 6.5f) > 30;
+                var hasEnoughSurroundingNature = _worldPlane.NatureScore(block.GetGridPosition(), 5f) > 50;
                 return hasEnoughSurroundingNature;
             })
             .ToList();
@@ -82,13 +82,10 @@ public class City : MonoBehaviour
         var candidatesCount = candidates.Count;
         if (candidatesCount > 0)
         {
-            var vacantLot = candidates[Random.Range(0, candidatesCount)];
-            var house = Instantiate(tinyHouseTemplate);
-            house.GetComponent<HouseSpawn>().SetToBig();
+            var houseToUpgrade = candidates[Random.Range(0, candidatesCount)];
+            houseToUpgrade.GetOccupantHouse().Upgrade();
 
-            vacantLot.Occupy(house);
-
-            _lastPlacedHouse = Time.fixedTime;
+            _lastUpgradedBigHouse = Time.fixedTime;
         }
     }
 

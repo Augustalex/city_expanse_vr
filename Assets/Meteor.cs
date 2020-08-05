@@ -17,6 +17,12 @@ public class Meteor : MonoBehaviour
     private bool _landed;
     private bool _fireBallStarted;
     private GameObject _fireBall;
+    private WorldPlane _worldPlane;
+
+    private void Start()
+    {
+        _worldPlane = GameObject.FindWithTag("WorldPlane").GetComponent<WorldPlane>();
+    }
 
     private void Update()
     {
@@ -61,7 +67,7 @@ public class Meteor : MonoBehaviour
             var block = hit.gameObject.GetComponentInChildren<Block>();
             if (block)
             {
-                block.RemoveAndDestroySelf();
+                _worldPlane.RemoveAndDestroyBlock(block);
             }
         }
     }

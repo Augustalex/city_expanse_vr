@@ -7,3 +7,16 @@ Heimer feedback
 Buggar:
 - Raise water borde fill holes as well
 - När man hade hus så Reset'ades inte världen korrekt
+
+--- Efter diskussion med Johan
+Ibland kan det vara kul om det finns något i början så man kommer igång
+- Randomiza öar
+- Stor hexagon ö
+
+Interaktioner med karaktärer kan bli platt...
+- Karaktärer visar hur de känner (typ jag önskar det vore fler folk omkring, jag vill set vattnet)
+- Interaktionerna hjälper dem med det
+
+UX:
+- Välja material på handen
+- Byta material på handen när man byter verktyg

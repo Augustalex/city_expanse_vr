@@ -16,15 +16,9 @@ public class Block : MonoBehaviour
     public BlockType blockType = BlockType.Grass;
 
     private bool _frozen;
-    private Vector3 _position;
+    private Vector3 _gridPosition;
     private GameObject _occupiedBy;
     private bool _permaFrozen;
-
-    public void RemoveAndDestroySelf()
-    {
-        GetWorldPlane().RemoveBlockAt(_position);
-        DestroySelf();
-    }
 
     public void DestroySelf()
     {
@@ -38,27 +32,21 @@ public class Block : MonoBehaviour
         {
             Destroy(root);
         }
-        else
+    }
+
+    public GameObject BlockRoot()
+    {
+        try
         {
-            Destroy(gameObject);
+            if (gameObject == null) return null;
+            if (transform.parent == null) return null;
+
+            return transform.parent.gameObject;
         }
-    }
-
-    private GameObject BlockRoot()
-    {
-        if (gameObject == null) return null;
-        if (transform.parent == null) return null;
-        
-        return transform.parent.gameObject;
-    }
-
-    public void TurnOverSpotTo(Block otherBlock)
-    {
-        var worldPlane = GetWorldPlane();
-        worldPlane.RemoveBlockAt(_position);
-        worldPlane.AddBlockToPosition(otherBlock, _position); // TODO Is there someway to remove this circular dependency perhaps. It is very confusing!
-
-        DestroySelf();
+        catch
+        {
+            return null;
+        }
     }
 
     public bool IsVacant()
@@ -89,26 +77,15 @@ public class Block : MonoBehaviour
     {
         return _permaFrozen;
     }
-
-    public WorldPlane GetWorldPlane()
+    
+    public void SetGridPosition(Vector3 blockPosition)
     {
-        return GameObject.FindWithTag("WorldPlane").GetComponent<WorldPlane>();
+        _gridPosition = blockPosition;
     }
 
-    public void SetPosition(Vector3 blockPosition)
+    public Vector3 GetGridPosition()
     {
-        _position = blockPosition;
-        transform.parent.position = RealPosition();
-    }
-
-    public Vector3 GetPosition()
-    {
-        return _position;
-    }
-
-    private Vector3 RealPosition()
-    {
-        return GetWorldPlane().ToRealCoordinates(_position);
+        return _gridPosition;
     }
 
     public void Occupy(GameObject house)
@@ -128,7 +105,6 @@ public class Block : MonoBehaviour
 
         _occupiedBy = occupantRoot;
 
-        GetWorldPlane().AddBlockToPosition(otherBlock, _position + Vector3.up);
         otherBlock.transform.position = transform.position + new Vector3(0, .1f, 0);
 
         otherBlock.ShortFreeze();
@@ -153,7 +129,7 @@ public class Block : MonoBehaviour
 
     public bool IsGroundLevel()
     {
-        return Math.Abs(_position.y) < .5f;
+        return Math.Abs(_gridPosition.y) < .5f;
     }
 
     public void RandomRotateAlongY()
@@ -178,11 +154,11 @@ public class Block : MonoBehaviour
 
     public int DistanceToOtherBlock(Block otherBlock)
     {
-        var position = GetPosition();
+        var position = GetGridPosition();
         var x0 = position.x - Mathf.Floor(position.z / 2);
         var y0 = position.z;
 
-        var otherPosition = otherBlock.GetPosition();
+        var otherPosition = otherBlock.GetGridPosition();
         var x1 = otherPosition.x - Mathf.Floor(otherPosition.z / 2);
         var y1 = otherPosition.z;
         var dx = x1 - x0;
@@ -200,15 +176,7 @@ public class Block : MonoBehaviour
     {
         return blockType == BlockType.Water;
     }
-
-    public bool IsLowestWater()
-    {
-        if (!IsWater()) return false;
-
-        var lowestWater = GetWorldPlane().GetStack(_position).First(block => block.IsWater());
-        return Math.Abs(lowestWater.GetPosition().y - _position.y) < .5f;
-    }
-
+    
     public bool OccupiedByGreens()
     {
         return _occupiedBy != null && _occupiedBy.GetComponent<GreensSpawn>() != null;
