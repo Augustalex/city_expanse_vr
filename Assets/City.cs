@@ -7,15 +7,19 @@ using Random = UnityEngine.Random;
 public class City : MonoBehaviour
 {
     public GameObject tinyHouseTemplate;
+    public GameObject sandBlockTemplate;
     private WorldPlane _worldPlane;
     private double _lastPlacedHouse;
     private double _lastUpgradedBigHouse;
+    private bool _sandSpawned;
+    private SandSpreadController _sandSpreadController;
 
     void Start()
     {
         _worldPlane = GetComponent<WorldPlane>();
         _lastPlacedHouse = Time.fixedTime - 10;
         _lastUpgradedBigHouse = Time.fixedTime;
+        _sandSpreadController = FindObjectOfType<SandSpreadController>();
     }
 
     void Update()
@@ -31,6 +35,26 @@ public class City : MonoBehaviour
         {
             SpawnBigHouse();
         }
+
+        if (_sandSpawned ? Random.value < _sandSpreadController.startingThreshold : Random.value < _sandSpreadController.continuationThreshold)
+        {
+            var houseCount = _worldPlane.GetBlocksWithHouses().Count;
+            if (houseCount > _sandSpreadController.houseCountThreshold)
+            {
+                SpawnSandBlock();
+                _sandSpawned = true;
+            }
+        }
+    }
+
+    private void SpawnSandBlock()
+    {
+        var sandBlockRoot = Instantiate(sandBlockTemplate);
+        var block = _worldPlane.GetVacantBlocks()
+            .OrderBy(_ => Random.value)
+            .First();
+        var sandBlock = sandBlockRoot.GetComponentInChildren<Block>();
+        _worldPlane.ReplaceBlock(block, sandBlock);
     }
 
     private void SpawnOneHouse()

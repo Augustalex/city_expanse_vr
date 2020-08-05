@@ -165,11 +165,16 @@ public class WorldPlane : MonoBehaviour
             .ToList();
     }
 
-    public List<Block> GetNearbyLots(Vector3 position)
+    public IEnumerable<Block> GetNearbyBlocks(Vector3 position)
     {
         return GetNeighbouringPositions(position)
             .Where(newPosition => blocksRepository.HasAtPosition(newPosition))
-            .Select(newPosition => blocksRepository.GetAtPosition(newPosition))
+            .Select(newPosition => blocksRepository.GetAtPosition(newPosition));
+    }
+    
+    public List<Block> GetNearbyLots(Vector3 position)
+    {
+        return GetNearbyBlocks(position)
             .Where(b => b.blockType == Block.BlockType.Grass)
             .ToList();
     }

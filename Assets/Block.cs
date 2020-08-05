@@ -10,7 +10,8 @@ public class Block : MonoBehaviour
     public enum BlockType
     {
         Grass,
-        Water
+        Water,
+        Sand
     }
 
     public BlockType blockType = BlockType.Grass;
