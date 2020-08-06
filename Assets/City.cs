@@ -72,13 +72,14 @@ public class City : MonoBehaviour
         var bigHouseCandidates = _worldPlane.GetBlocksWithHouses()
             .Where(block => block.GetOccupantHouse().IsBig())
             .SelectMany(block => _worldPlane.GetNearbyVacantLots(block.GetGridPosition())
-                .Select(otherBlock => new Tuple<Block, Block>(block, otherBlock)));
-        var allCandidates = candidates.Concat(bigHouseCandidates).ToList();
+                .Select(otherBlock => new Tuple<Block, Block>(block, otherBlock)))
+            .ToList();
 
-        var candidatesCount = allCandidates.Count;
+        var selectCandidates = bigHouseCandidates.Count > 0 ? bigHouseCandidates : candidates;
+        var candidatesCount = selectCandidates.Count;
         if (candidatesCount > 0)
         {
-            var (waterBlock, vacantLot) = allCandidates[Random.Range(0, candidatesCount)];
+            var (waterBlock, vacantLot) = selectCandidates[Random.Range(0, candidatesCount)];
             var house = Instantiate(tinyHouseTemplate);
             vacantLot.Occupy(house);
             var target = waterBlock.transform.position;

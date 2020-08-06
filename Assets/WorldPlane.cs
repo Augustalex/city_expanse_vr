@@ -334,4 +334,16 @@ public class WorldPlane : MonoBehaviour
     {
         return blocksRepository.StreamBlocks().Count(block => block.blockType == blockType);
     }
+
+    public IEnumerable<Block> GetBlocksWithHousesNotNearWater()
+    {
+        return GetBlocksWithHouses()
+            .Where(block =>
+            {
+                var amountOfNeighbouringWaterBlocks = GetNearbyBlocks(block.GetGridPosition())
+                    .Count(otherBlock => otherBlock.IsWater());
+
+                return amountOfNeighbouringWaterBlocks == 0;
+            });
+    }
 }

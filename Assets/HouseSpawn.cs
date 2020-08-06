@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(BlockRelative))]
 public class HouseSpawn : MonoBehaviour
 {
     public GameObject[] tinyHouseTemplates;

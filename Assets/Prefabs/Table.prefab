@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 3645905919876899985}
   - component: {fileID: 3645905919876899983}
   - component: {fileID: 3645905919876899982}
+  - component: {fileID: 1741071622}
+  - component: {fileID: 1741071623}
+  - component: {fileID: 1938655333979525260}
   m_Layer: 0
   m_Name: Table
   m_TagString: WorldPlane
@@ -90,6 +93,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5165ac86d5bcc1a448f496170d5ba7c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1741071622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3645905919876899984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 350e40fb12124b6694fad73db7ace083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chance: 0.001
+  natureScoreRadius: 6.5
+  houseCountThreshold: 5
+  startingThreshold: 0.005
+  spreadResistanceThreshold: 25
+  spreadCombatThreshold: 30
+  continuationThreshold: 0.0001
+--- !u!114 &1741071623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3645905919876899984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09991bb639e84b78b7436811a1888fb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  predators: 0
+  persons: 0
+--- !u!114 &1938655333979525260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3645905919876899984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa7fb0ad83d62ff43bacb10435d8b290, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soilTemplate: {fileID: 612181966713644638, guid: a88fb56da276d2942a160dbd588e5977,
+    type: 3}
+  farmSpawnTemplate: {fileID: 2723339866174918418, guid: 70ccf05065593064e8508a04196f6444,
+    type: 3}
 --- !u!1 &3645905920731418986
 GameObject:
   m_ObjectHideFlags: 0

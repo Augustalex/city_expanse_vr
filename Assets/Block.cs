@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
-using System.Linq.Expressions;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,7 +9,8 @@ public class Block : MonoBehaviour
     {
         Grass,
         Water,
-        Sand
+        Sand,
+        Soil
     }
 
     public BlockType blockType = BlockType.Grass;
@@ -20,12 +19,15 @@ public class Block : MonoBehaviour
     private Vector3 _gridPosition;
     private GameObject _occupiedBy;
     private bool _permaFrozen;
+    public event Action BeforeDestroy;
 
     public void DestroySelf()
     {
+        OnBeforeDestroy();
+        
         if (_occupiedBy != null)
         {
-            Destroy(_occupiedBy);
+            DestroyOccupant();
         }
 
         var root = BlockRoot();
@@ -119,11 +121,6 @@ public class Block : MonoBehaviour
 
     public void DestroyOccupant()
     {
-        if (!OccupiedByHouse())
-        {
-            throw new NotImplementedException("Destroying an occupant that is not a house is not supported!");
-        }
-
         Destroy(_occupiedBy);
         _occupiedBy = null;
     }
@@ -197,5 +194,15 @@ public class Block : MonoBehaviour
     public bool IsSand()
     {
         return blockType == BlockType.Sand;
+    }
+
+    public GameObject GetOccupant()
+    {
+        return _occupiedBy;
+    }
+
+    private void OnBeforeDestroy()
+    {
+        BeforeDestroy?.Invoke();
     }
 }
