@@ -1,7 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BlockRelative))]
 public class HouseSpawn : MonoBehaviour
 {
     public GameObject[] tinyHouseTemplates;
@@ -23,7 +23,7 @@ public class HouseSpawn : MonoBehaviour
         
         _lifeStartedAt = Time.fixedTime;
     }
-
+    
     public bool GoodTimeToUpgrade()
     {
         return Time.fixedTime - _lifeStartedAt > 1f;

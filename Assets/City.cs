@@ -7,15 +7,19 @@ using Random = UnityEngine.Random;
 public class City : MonoBehaviour
 {
     public GameObject tinyHouseTemplate;
+    public GameObject sandBlockTemplate;
     private WorldPlane _worldPlane;
     private double _lastPlacedHouse;
     private double _lastUpgradedBigHouse;
+    private bool _sandSpawned;
+    private SandSpreadController _sandSpreadController;
 
     void Start()
     {
         _worldPlane = GetComponent<WorldPlane>();
         _lastPlacedHouse = Time.fixedTime - 10;
         _lastUpgradedBigHouse = Time.fixedTime;
+        _sandSpreadController = FindObjectOfType<SandSpreadController>();
     }
 
     void Update()
@@ -31,6 +35,31 @@ public class City : MonoBehaviour
         {
             SpawnBigHouse();
         }
+
+        if (_sandSpawned
+            ? Random.value < _sandSpreadController.startingThreshold
+            : Random.value < _sandSpreadController.continuationThreshold)
+        {
+            var houseCount = _worldPlane.GetBlocksWithHouses().Count;
+            if (houseCount > _sandSpreadController.houseCountThreshold)
+            {
+                if (_worldPlane.CountBlocksOfType(Block.BlockType.Sand) == 0)
+                {
+                    SpawnSandBlock();
+                    _sandSpawned = true;
+                }
+            }
+        }
+    }
+
+    private void SpawnSandBlock()
+    {
+        var sandBlockRoot = Instantiate(sandBlockTemplate);
+        var block = _worldPlane.GetVacantBlocks()
+            .OrderBy(_ => Random.value)
+            .First();
+        var sandBlock = sandBlockRoot.GetComponentInChildren<Block>();
+        _worldPlane.ReplaceBlock(block, sandBlock);
     }
 
     private void SpawnOneHouse()
@@ -43,13 +72,14 @@ public class City : MonoBehaviour
         var bigHouseCandidates = _worldPlane.GetBlocksWithHouses()
             .Where(block => block.GetOccupantHouse().IsBig())
             .SelectMany(block => _worldPlane.GetNearbyVacantLots(block.GetGridPosition())
-                .Select(otherBlock => new Tuple<Block, Block>(block, otherBlock)));
-        var allCandidates = candidates.Concat(bigHouseCandidates).ToList();
+                .Select(otherBlock => new Tuple<Block, Block>(block, otherBlock)))
+            .ToList();
 
-        var candidatesCount = allCandidates.Count;
+        var selectCandidates = bigHouseCandidates.Count > 0 ? bigHouseCandidates : candidates;
+        var candidatesCount = selectCandidates.Count;
         if (candidatesCount > 0)
         {
-            var (waterBlock, vacantLot) = allCandidates[Random.Range(0, candidatesCount)];
+            var (waterBlock, vacantLot) = selectCandidates[Random.Range(0, candidatesCount)];
             var house = Instantiate(tinyHouseTemplate);
             vacantLot.Occupy(house);
             var target = waterBlock.transform.position;
