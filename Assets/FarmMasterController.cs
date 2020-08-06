@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class FarmMasterController : MonoBehaviour
@@ -16,5 +17,13 @@ public class FarmMasterController : MonoBehaviour
     public static FarmMasterController Get()
     {
         return FindObjectOfType<FarmMasterController>();
-    } 
+    }
+
+    public int CountFarms()
+    {
+        return WorldPlane.Get()
+            .blocksRepository
+            .StreamBlocks()
+            .Count(block => block.GetComponent<FarmSpawn>() != null);
+    }
 }

@@ -3777,26 +3777,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
---- !u!1 &1741071621 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3645905919876899984, guid: 63f229cc46e53ef47a8bc7f7667512ce,
-    type: 3}
-  m_PrefabInstance: {fileID: 3645905921843291902}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1741071622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1741071621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d894a787bfe14f7babe00b823c2b4709, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  farmControllerTemplate: {fileID: 5091041616437339637, guid: cbad032dc71a7e24b9e1c765169ec1a9,
-    type: 3}
 --- !u!1 &1800596255
 GameObject:
   m_ObjectHideFlags: 0
@@ -4471,7 +4451,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 3645905921843291902}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1741071621}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0b8fe9b2d60d2348a741143aa621e75, type: 3}

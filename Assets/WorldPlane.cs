@@ -18,6 +18,11 @@ public class WorldPlane : MonoBehaviour
 
     private Vector2 _currentDimensions;
 
+    public static WorldPlane Get()
+    {
+        return FindObjectOfType<WorldPlane>();
+    }
+    
     public Vector3 ToRealCoordinates(Vector3 position)
     {
         var placementScale = blockTemplate.GetComponent<PlacementScale>();

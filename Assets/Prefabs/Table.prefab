@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1741071622}
   - component: {fileID: 1741071623}
   - component: {fileID: 1938655333979525260}
+  - component: {fileID: 2434737929171699065}
   m_Layer: 0
   m_Name: Table
   m_TagString: WorldPlane
@@ -69,6 +70,7 @@ MonoBehaviour:
     type: 3}
   sandBlockTemplate: {fileID: 612181966713644638, guid: 90738e66673ec454b92002eb0d8e2672,
     type: 3}
+  selfSustainedHouses: 1
 --- !u!114 &3645905919876899983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,9 +140,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa7fb0ad83d62ff43bacb10435d8b290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soilTemplate: {fileID: 612181966713644638, guid: a88fb56da276d2942a160dbd588e5977,
-    type: 3}
-  farmSpawnTemplate: {fileID: 2723339866174918418, guid: 70ccf05065593064e8508a04196f6444,
+--- !u!114 &2434737929171699065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3645905919876899984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d894a787bfe14f7babe00b823c2b4709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  farmControllerTemplate: {fileID: 5091041616437339637, guid: cbad032dc71a7e24b9e1c765169ec1a9,
     type: 3}
 --- !u!1 &3645905920731418986
 GameObject:

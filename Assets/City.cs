@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -8,6 +9,9 @@ public class City : MonoBehaviour
 {
     public GameObject tinyHouseTemplate;
     public GameObject sandBlockTemplate;
+
+    public int selfSustainedHouses = 1;
+
     private WorldPlane _worldPlane;
     private double _lastPlacedHouse;
     private double _lastUpgradedBigHouse;
@@ -27,7 +31,15 @@ public class City : MonoBehaviour
         var delta = Time.fixedTime - _lastPlacedHouse;
         if (delta > 10f && Random.value < .1)
         {
-            SpawnOneHouse();
+            if (CanSpawnAnotherHouse())
+            {
+                SpawnOneHouse();
+            }
+        }
+
+        if (Random.value < .001f)
+        {
+            SpawnInnerCityHouse();
         }
 
         var upgradeDelta = Time.fixedTime - _lastUpgradedBigHouse;
@@ -52,6 +64,14 @@ public class City : MonoBehaviour
         }
     }
 
+    private bool CanSpawnAnotherHouse()
+    {
+        var houses = _worldPlane.GetBlocksWithHouses();
+        var bigHouses = _worldPlane.GetBlocksWithHouses().Where(houseBlock => houseBlock.GetOccupantHouse().IsBig());
+        var farms = FarmMasterController.Get().CountFarms();
+        return houses.Count < selfSustainedHouses + (bigHouses.Count() * 2) + (farms * 2);
+    }
+
     private void SpawnSandBlock()
     {
         var sandBlockRoot = Instantiate(sandBlockTemplate);
@@ -69,20 +89,37 @@ public class City : MonoBehaviour
                 _worldPlane.GetNearbyVacantLots(waterBlock.GetGridPosition())
                     .Select(block => new Tuple<Block, Block>(waterBlock, block)))
             .ToList();
-        var bigHouseCandidates = _worldPlane.GetBlocksWithHouses()
-            .Where(block => block.GetOccupantHouse().IsBig())
-            .SelectMany(block => _worldPlane.GetNearbyVacantLots(block.GetGridPosition())
-                .Select(otherBlock => new Tuple<Block, Block>(block, otherBlock)))
-            .ToList();
 
-        var selectCandidates = bigHouseCandidates.Count > 0 ? bigHouseCandidates : candidates;
-        var candidatesCount = selectCandidates.Count;
+        var candidatesCount = candidates.Count;
         if (candidatesCount > 0)
         {
-            var (waterBlock, vacantLot) = selectCandidates[Random.Range(0, candidatesCount)];
+            var (waterBlock, vacantLot) = candidates[Random.Range(0, candidatesCount)];
             var house = Instantiate(tinyHouseTemplate);
             vacantLot.Occupy(house);
             var target = waterBlock.transform.position;
+            target.y = house.transform.position.y;
+            house.transform.LookAt(target);
+
+            _lastPlacedHouse = Time.fixedTime;
+        }
+    }
+
+    private void SpawnInnerCityHouse()
+    {
+        var bigHouseCandidates = _worldPlane.GetBlocksWithHouses()
+            .Where(block => block.GetOccupantHouse().IsBig())
+            .SelectMany(bigHouse => _worldPlane.GetNearbyVacantLots(bigHouse.GetGridPosition())
+                .Select(otherBlock => new Tuple<Block, Block>(bigHouse, otherBlock)))
+            .ToList();
+
+        var candidatesCount = bigHouseCandidates.Count;
+        if (candidatesCount > 0)
+        {
+            var (bigHouse, vacantLot) = bigHouseCandidates[Random.Range(0, candidatesCount)];
+            var house = Instantiate(tinyHouseTemplate);
+            vacantLot.Occupy(house);
+            
+            var target = bigHouse.transform.position;
             target.y = house.transform.position.y;
             house.transform.LookAt(target);
 
