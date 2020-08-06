@@ -36,4 +36,9 @@ public class FarmSpawn : MonoBehaviour
     {
         transform.position += Vector3.up * .2f;
     }
+
+    public bool IsGrown()
+    {
+        return _state == FarmState.FullyGrown;
+    }
 }

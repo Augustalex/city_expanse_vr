@@ -58,7 +58,10 @@ public class FarmController : MonoBehaviour
                 var farmSpawn = soil.GetOccupant().GetComponent<FarmSpawn>();
                 if (farmSpawn)
                 {
-                    farmSpawn.Grow();
+                    if (FeatureToggles.Get().farmsGrowAtRandom)
+                    {
+                        farmSpawn.Grow();
+                    }
                 }
             }
         }
