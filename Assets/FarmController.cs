@@ -66,6 +66,7 @@ public class FarmController : MonoBehaviour
             }
         }
 
+        Debug.Log("_soils.Count < MaxFarmCount * .6f: " + (_soils.Count < MaxFarmCount * .6f));
         if (_soils.Count < MaxFarmCount * .6f || (_siloBuilt && _soils.Count <= MaxFarmCount))
         {
             if (Random.value < .001f)

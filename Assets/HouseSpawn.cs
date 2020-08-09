@@ -13,6 +13,7 @@ public class HouseSpawn : MonoBehaviour
     private int _size;
     private FireworksEffect _fireworksEffect;
     private float _lifeStartedAt;
+    private bool _innerCity;
 
     void Awake()
     {
@@ -96,5 +97,15 @@ public class HouseSpawn : MonoBehaviour
     public void SetToMegaBig()
     {
         SetupHouse(2, megaHouseTemplates);
+    }
+
+    public void SetIsInnerCity()
+    {
+        _innerCity = true;
+    }
+
+    public bool IsInnerCityHouse()
+    {
+        return _innerCity;
     }
 }

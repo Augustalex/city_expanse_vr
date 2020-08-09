@@ -10,7 +10,7 @@ public class City : MonoBehaviour
     public GameObject tinyHouseTemplate;
     public GameObject sandBlockTemplate;
 
-    public int selfSustainedHouses = 1;
+    public int selfSustainedHouses = 3;
 
     private WorldPlane _worldPlane;
     private double _lastPlacedHouse;
@@ -136,6 +136,7 @@ public class City : MonoBehaviour
         {
             var (bigHouse, vacantLot) = bigHouseCandidates[Random.Range(0, candidatesCount)];
             var house = Instantiate(tinyHouseTemplate);
+            house.GetComponent<HouseSpawn>().SetIsInnerCity();
             vacantLot.Occupy(house);
             
             var target = bigHouse.transform.position;
@@ -160,7 +161,7 @@ public class City : MonoBehaviour
                 // var hasLargeEnoughClosePopulation = blocksWithHouse.Count(houseBlock => block.DistanceToOtherBlock(houseBlock) <= 1.5f) >= 3;
                 // if (!hasLargeEnoughClosePopulation) return false;
 
-                var hasEnoughSurroundingNature = _worldPlane.NatureScore(block.GetGridPosition(), 5f) > 50;
+                var hasEnoughSurroundingNature = _worldPlane.NatureScore(block.GetGridPosition(), 6f) > 35;
                 return hasEnoughSurroundingNature;
             })
             .ToList();
