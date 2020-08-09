@@ -17,7 +17,7 @@ public class HomeSphere : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         var delta = Time.fixedTime - _enterTime;
-        if (delta > 2)
+        if (delta > 1)
         {
             var followObjectComponent = other.GetComponent<FollowObject>();
             var isSomeInteractionObject = followObjectComponent != null && followObjectComponent.enabled;
