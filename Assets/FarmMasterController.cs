@@ -1,11 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class FarmMasterController : MonoBehaviour
 {
     public GameObject farmControllerTemplate;
-    
+    private static FarmMasterController _farmMasterControllerInstance;
+
+    private void Awake()
+    {
+        _farmMasterControllerInstance = this;
+    }
+
     public Block SetupFarmControllerForBlock(Block block)
     {
         var farmControllerHolder = Instantiate(Get().farmControllerTemplate);
@@ -16,7 +23,7 @@ public class FarmMasterController : MonoBehaviour
 
     public static FarmMasterController Get()
     {
-        return FindObjectOfType<FarmMasterController>();
+        return _farmMasterControllerInstance;
     }
 
     public int CountFarms()
@@ -24,6 +31,6 @@ public class FarmMasterController : MonoBehaviour
         return WorldPlane.Get()
             .blocksRepository
             .StreamBlocks()
-            .Count(block => block.GetComponent<FarmSpawn>() != null);
+            .Count(block => (block.GetOccupant()?.GetComponent<FarmSpawn>()?.IsGrown()) == true);
     }
 }

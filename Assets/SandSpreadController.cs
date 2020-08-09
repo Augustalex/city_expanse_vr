@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class SandSpreadController : MonoBehaviour
 {
@@ -9,4 +10,15 @@ public class SandSpreadController : MonoBehaviour
     public float spreadResistanceThreshold = 25;
     public float spreadCombatThreshold = 30;
     public float continuationThreshold = .0001f;
+    private static SandSpreadController _sandSpreadControllerInstance;
+
+    private void Awake()
+    {
+        _sandSpreadControllerInstance = this;
+    }
+
+    public static SandSpreadController Get()
+    {
+        return _sandSpreadControllerInstance;
+    }
 }

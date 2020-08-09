@@ -13,8 +13,8 @@ public class Spreading : MonoBehaviour
 
     private void Start()
     {
-        _sandSpreadController = FindObjectOfType<SandSpreadController>();
-        _worldPlane = FindObjectOfType<WorldPlane>();
+        _sandSpreadController = SandSpreadController.Get();
+        _worldPlane = WorldPlane.Get();
         _block = GetComponentInChildren<Block>();
     }
 

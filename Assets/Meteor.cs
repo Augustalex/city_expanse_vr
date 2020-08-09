@@ -21,7 +21,7 @@ public class Meteor : MonoBehaviour
 
     private void Start()
     {
-        _worldPlane = GameObject.FindWithTag("WorldPlane").GetComponent<WorldPlane>();
+        _worldPlane = WorldPlane.Get();
     }
 
     private void Update()
@@ -74,7 +74,7 @@ public class Meteor : MonoBehaviour
 
     private void ResetWorld()
     {
-        FindObjectOfType<WorldPlane>().ResetAtSize(WorldPlane.Size.Large);
+        _worldPlane.ResetAtSize(WorldPlane.Size.Large);
         OnBeforeDestroy();
         Destroy(gameObject);
     }

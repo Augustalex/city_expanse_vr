@@ -13,7 +13,7 @@ public class PredatorSpawn : MonoBehaviour
 
     void Start()
     {
-        _worldPlane = FindObjectOfType<WorldPlane>();
+        _worldPlane = WorldPlane.Get();
         _block = GetComponent<BlockRelative>().block;
     }
     

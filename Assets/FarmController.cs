@@ -18,7 +18,7 @@ public class FarmController : MonoBehaviour
 
     private void Awake()
     {
-        _worldPlane = FindObjectOfType<WorldPlane>();
+        _worldPlane = WorldPlane.Get();
     }
 
     public Block MakeToSoilWithFarm(Block block)

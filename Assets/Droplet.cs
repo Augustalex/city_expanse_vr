@@ -26,5 +26,15 @@ public class Droplet : MonoBehaviour
             farmSpawn.Grow();
             Destroy(gameObject);
         }
+        else
+        {
+            var block = other.GetComponent<Block>();
+            if (block && block.IsSand())
+            {
+                var grassBlockRoot = BlockFactory.Get().GrassBlock();
+                var grassBlock = grassBlockRoot.GetComponentInChildren<Block>();
+                WorldPlane.Get().ReplaceBlock(block, grassBlock);
+            }
+        }
     }
 }

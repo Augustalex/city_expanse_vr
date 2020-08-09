@@ -18,6 +18,8 @@ public class TileClicker : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
+            if (Input.GetKey(KeyCode.LeftControl)) return;
+            
             RaycastHit hit;
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, 1000.0f))

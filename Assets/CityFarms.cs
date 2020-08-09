@@ -9,7 +9,7 @@ public class CityFarms : MonoBehaviour
 
     void Start()
     {
-        _worldPlane = FindObjectOfType<WorldPlane>();
+        _worldPlane = WorldPlane.Get();
     }
 
     void Update()

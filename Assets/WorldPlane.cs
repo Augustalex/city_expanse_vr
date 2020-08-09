@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,12 +18,18 @@ public class WorldPlane : MonoBehaviour
     }
 
     private Vector2 _currentDimensions;
+    private static WorldPlane _worldPlaneInstance;
+
+    private void Awake()
+    {
+        _worldPlaneInstance = this;
+    }
 
     public static WorldPlane Get()
     {
-        return FindObjectOfType<WorldPlane>();
+        return _worldPlaneInstance;
     }
-    
+
     public Vector3 ToRealCoordinates(Vector3 position)
     {
         var placementScale = blockTemplate.GetComponent<PlacementScale>();
@@ -230,35 +237,70 @@ public class WorldPlane : MonoBehaviour
 
     public float NatureScore(Vector3 originPosition, float radius)
     {
-        return blocksRepository.StreamPairs()
-            .Where(pair => Vector3.Distance(originPosition, pair.Key) < radius)
-            .Select(pair => pair.Value)
+        var realCenterPosition = ToRealCoordinates(originPosition);
+        var sizeOfBlock = blockTemplate.transform.localScale.x;
+
+        var hits = Physics.OverlapSphere(realCenterPosition, sizeOfBlock * radius * .75f);
+
+        return hits
+            .Select(hit => hit.gameObject.GetComponent<Block>())
+            .Where(block => block != null)
             .Sum(block =>
             {
                 if (block.OccupiedByHouse() && block.GetOccupantHouse().IsMegaBig()) return -20;
                 if (block.OccupiedByHouse() && block.GetOccupantHouse().IsBig()) return -10;
                 if (block.OccupiedByHouse() && block.GetOccupantHouse()) return -1;
-                
+
                 if (block.OccupiedByGreens() && block.GetGridPosition().y > 10) return 20;
                 if (block.OccupiedByGreens() && block.GetGridPosition().y > 4) return 10;
                 if (block.OccupiedByGreens() && block.GetGridPosition().y > 2) return 6;
                 if (block.OccupiedByGreens() && block.GetGridPosition().y > 0) return 4;
                 if (block.OccupiedByGreens()) return 2;
-                
+
                 if (block.IsGrass() && block.GetGridPosition().y > 10) return 4;
                 if (block.IsGrass() && block.GetGridPosition().y > 4) return 2;
                 if (block.IsGrass() && block.GetGridPosition().y > 2) return 1;
                 if (block.IsGrass() && block.GetGridPosition().y > 0) return .5f;
-                
+
                 if (block.IsWater() && block.GetGridPosition().y > 10) return 4;
                 if (block.IsWater() && block.GetGridPosition().y > 4) return 4;
                 if (block.IsWater() && block.GetGridPosition().y > 2) return 2;
                 if (block.IsWater()) return 1;
-                
+
                 if (block.IsSand()) return -1;
 
                 return 0;
             });
+
+        // return blocksRepository.StreamPairs()
+        //     .Where(pair => Vector3.Distance(originPosition, pair.Key) < radius)
+        //     .Select(pair => pair.Value)
+        //     .Sum(block =>
+        //     {
+        //         if (block.OccupiedByHouse() && block.GetOccupantHouse().IsMegaBig()) return -20;
+        //         if (block.OccupiedByHouse() && block.GetOccupantHouse().IsBig()) return -10;
+        //         if (block.OccupiedByHouse() && block.GetOccupantHouse()) return -1;
+        //
+        //         if (block.OccupiedByGreens() && block.GetGridPosition().y > 10) return 20;
+        //         if (block.OccupiedByGreens() && block.GetGridPosition().y > 4) return 10;
+        //         if (block.OccupiedByGreens() && block.GetGridPosition().y > 2) return 6;
+        //         if (block.OccupiedByGreens() && block.GetGridPosition().y > 0) return 4;
+        //         if (block.OccupiedByGreens()) return 2;
+        //
+        //         if (block.IsGrass() && block.GetGridPosition().y > 10) return 4;
+        //         if (block.IsGrass() && block.GetGridPosition().y > 4) return 2;
+        //         if (block.IsGrass() && block.GetGridPosition().y > 2) return 1;
+        //         if (block.IsGrass() && block.GetGridPosition().y > 0) return .5f;
+        //
+        //         if (block.IsWater() && block.GetGridPosition().y > 10) return 4;
+        //         if (block.IsWater() && block.GetGridPosition().y > 4) return 4;
+        //         if (block.IsWater() && block.GetGridPosition().y > 2) return 2;
+        //         if (block.IsWater()) return 1;
+        //
+        //         if (block.IsSand()) return -1;
+        //
+        //         return 0;
+        //     });
     }
 
     public void ResetAtSize(Size size)
@@ -277,8 +319,21 @@ public class WorldPlane : MonoBehaviour
         }
 
         blocksRepository.RemoveAll();
+        blocksRepository = new BlocksRepository();
 
-        CreateWorld(SizeToDimensions(size));
+        // TODO Fix issue where houses won't spawn when got farms and when has Destroyed world with meteor at least once
+        // TODO Make it possible to spawn multiple big houses again
+        // TODO Make big houses have a LARGE negative impact on Nature score
+        // TODO Make world a lot bigger -> Make more clouds? Create clouds from soaking up water?
+        // TODO Navigation using hand controls.. how?
+        // TODO Debug performance issues -> Try replacing houses with low poly meshes! Try run some profiler? Maybe some cached matrix of all blocks and all it's different lookup variants?
+
+        StartCoroutine(CreateWorldAsync());
+
+        IEnumerator CreateWorldAsync()
+        {
+            yield return CreateWorld(SizeToDimensions(size));
+        }
     }
 
 
@@ -291,28 +346,44 @@ public class WorldPlane : MonoBehaviour
             case Size.Medium:
                 return new Vector2(9, 9);
             case Size.Large:
-                return new Vector2(17, 17);
+                return new Vector2(24, 24);
             default:
                 throw new Exception("There is no dimensions specified for size: " + size);
         }
     }
 
-    private void CreateWorld(Vector2 dimensions)
+    private IEnumerator CreateWorld(Vector2 dimensions)
     {
         _currentDimensions = dimensions;
 
-        for (var row = 0; row < dimensions.y; row++)
+        var yChunks = 8;
+        for (var yChunk = 1; yChunk <= yChunks; yChunk++)
         {
-            for (var column = -1; column < dimensions.x; column++)
+            var xChunks = 8;
+            for (var xChunk = 1; xChunk <= xChunks; xChunk++)
             {
-                var isMiddle = Math.Abs(row % 2) < .5f;
-                if (isMiddle && column == -1) continue;
+                var rowHeight = Mathf.Ceil(dimensions.y / yChunks);
+                var yStart = rowHeight * (yChunk - 1);
+                var yMax = rowHeight * yChunk;
+                for (var row = yStart; row < yMax; row++)
+                {
+                    var columnHeight = Mathf.Ceil(dimensions.x / xChunks);
+                    var xStart = columnHeight * (xChunk - 1);
+                    var xMax = columnHeight * xChunk;
+                    for (var column = Math.Abs(xStart) < .5f ? -1 : xStart; column < xMax; column++)
+                    {
+                        var isMiddle = Math.Abs(row % 2) < .5f;
+                        if (isMiddle && Math.Abs(column - (-1)) < .5f) continue;
 
-                var blockPosition = new Vector3(row, 0, column);
-                var blockObject = Instantiate(blockTemplate);
-                var block = blockObject.GetComponentInChildren<Block>();
+                        var blockPosition = new Vector3(row, 0, column);
+                        var blockObject = Instantiate(blockTemplate);
+                        var block = blockObject.GetComponentInChildren<Block>();
 
-                AddAndPositionBlock(block, blockPosition);
+                        AddAndPositionBlock(block, blockPosition);
+                    }
+                    
+                    yield return new WaitForEndOfFrame();
+                }
             }
         }
     }
@@ -350,5 +421,33 @@ public class WorldPlane : MonoBehaviour
 
                 return amountOfNeighbouringWaterBlocks == 0;
             });
+    }
+
+    public Vector3 GetRealCenterPoint()
+    {
+        var centerGridPosition = new Vector3(Mathf.Round(_currentDimensions.x * .5f), 0,
+            Mathf.Round(_currentDimensions.y * .5f));
+        return ToRealCoordinates(centerGridPosition);
+    }
+
+    public float Top()
+    {
+        return TopLeftPoint.position.z;
+    }
+
+    public float Right()
+    {
+        return TopLeftPoint.position.x;
+    }
+
+    public float Bottom()
+    {
+        return TopLeftPoint.position.z + blockTemplate.transform.localScale.z * _currentDimensions.y;
+    }
+
+    public float Left()
+    {
+        return TopLeftPoint.position.x +
+               blockTemplate.transform.localScale.x * _currentDimensions.x; //Should it be .y and not .x ...
     }
 }
