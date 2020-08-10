@@ -28,12 +28,23 @@ public class Droplet : MonoBehaviour
         }
         else
         {
-            var block = other.GetComponent<Block>();
-            if (block && block.IsSand())
+            var greenSpawn = other.GetComponent<GreensSpawn>();
+            if (greenSpawn && !greenSpawn.IsGrown())
             {
-                var grassBlockRoot = BlockFactory.Get().GrassBlock();
-                var grassBlock = grassBlockRoot.GetComponentInChildren<Block>();
-                WorldPlane.Get().ReplaceBlock(block, grassBlock);
+                greenSpawn.Grow();
+                Destroy(gameObject);
+            }
+            else
+            {
+                var block = other.GetComponent<Block>();
+                if (block && block.IsSand())
+                {
+                    var grassBlockRoot = BlockFactory.Get().GrassBlock();
+                    var grassBlock = grassBlockRoot.GetComponentInChildren<Block>();
+                    WorldPlane.Get().ReplaceBlock(block, grassBlock);
+    
+                    Destroy(gameObject);
+                }
             }
         }
     }
