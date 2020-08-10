@@ -10,8 +10,8 @@ public class City : MonoBehaviour
     public GameObject tinyHouseTemplate;
     public GameObject sandBlockTemplate;
 
-    public int selfSustainedHouses = 3;
-
+    private const int SelfSustainedHouses = 3;
+    
     private WorldPlane _worldPlane;
     private double _lastPlacedHouse;
     private bool _sandSpawned;
@@ -83,7 +83,7 @@ public class City : MonoBehaviour
         var farms = FarmMasterController.Get().CountFarms();
         
         var houses = _worldPlane.GetBlocksWithHouses();
-        return houses.Count < (selfSustainedHouses + (bigHouses.Count * 2) + (farms * 2));
+        return houses.Count < (SelfSustainedHouses + (bigHouses.Count * 2) + (farms * 2));
     }
 
     private void SpawnSandBlock()
