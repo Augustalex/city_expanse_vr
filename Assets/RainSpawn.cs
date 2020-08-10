@@ -5,7 +5,7 @@ public class RainSpawn : MonoBehaviour
     public GameObject dropletTemplate;
     void Update()
     {
-        if (Random.value < .1f)
+        if (Random.value < .5f)
         {
             SpawnDroplet(RandomLocationInArea());
         }
