@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -16,7 +17,7 @@ public class City : MonoBehaviour
     private double _lastPlacedHouse;
     private bool _sandSpawned;
     private SandSpreadController _sandSpreadController;
-    private bool _waitingToPlaceInnerCityHouse;
+    private float _lastPlacedInnerCityHouse;
 
     void Start()
     {
@@ -36,16 +37,13 @@ public class City : MonoBehaviour
             }
         }
 
-        if (delta > 5f && _waitingToPlaceInnerCityHouse)
+        var innerCityDelta = Time.fixedTime - _lastPlacedInnerCityHouse;
+        if (innerCityDelta > 10f && Random.value < .2f)
         {
             if (Random.value < .1f)
             {
                 SpawnInnerCityHouse();
             }
-        }
-        else
-        {
-            _waitingToPlaceInnerCityHouse = true;
         }
         
         if (Random.value < .01f && HasNoOtherBigHouses())
@@ -74,7 +72,7 @@ public class City : MonoBehaviour
         var amountOfBigHouses = _worldPlane.GetBlocksWithHouses()
             .Count(block => block.GetOccupantHouse().IsBig());
         
-        return amountOfBigHouses == 0;
+        return amountOfBigHouses < 2;
     }
 
     private bool CanSpawnAnotherHouse()
@@ -143,7 +141,7 @@ public class City : MonoBehaviour
             target.y = house.transform.position.y;
             house.transform.LookAt(target);
             
-            _waitingToPlaceInnerCityHouse = false;
+            _lastPlacedInnerCityHouse = Time.fixedTime;
         }
     }
 
