@@ -179,9 +179,14 @@ public class WorldPlane : MonoBehaviour
 
     public IEnumerable<Block> GetNearbyBlocksWithinRange(Vector3 position, float radius)
     {
-        return blocksRepository.StreamPairs()
-            .Where(pair => Vector3.Distance(position, pair.Key) < radius)
-            .Select(pair => pair.Value);
+        var realCenterPosition = ToRealCoordinates(position);
+        var sizeOfBlock = blockTemplate.transform.localScale.x;
+
+        var hits = Physics.OverlapSphere(realCenterPosition, sizeOfBlock * radius * .75f);
+
+        return hits
+            .Select(hit => hit.gameObject.GetComponent<Block>())
+            .Where(block => block != null);
     }
 
     public IEnumerable<Block> GetNearbyBlocks(Vector3 position)
@@ -270,36 +275,6 @@ public class WorldPlane : MonoBehaviour
 
                 return 0;
             });
-
-        // return blocksRepository.StreamPairs()
-        //     .Where(pair => Vector3.Distance(originPosition, pair.Key) < radius)
-        //     .Select(pair => pair.Value)
-        //     .Sum(block =>
-        //     {
-        //         if (block.OccupiedByHouse() && block.GetOccupantHouse().IsMegaBig()) return -20;
-        //         if (block.OccupiedByHouse() && block.GetOccupantHouse().IsBig()) return -10;
-        //         if (block.OccupiedByHouse() && block.GetOccupantHouse()) return -1;
-        //
-        //         if (block.OccupiedByGreens() && block.GetGridPosition().y > 10) return 20;
-        //         if (block.OccupiedByGreens() && block.GetGridPosition().y > 4) return 10;
-        //         if (block.OccupiedByGreens() && block.GetGridPosition().y > 2) return 6;
-        //         if (block.OccupiedByGreens() && block.GetGridPosition().y > 0) return 4;
-        //         if (block.OccupiedByGreens()) return 2;
-        //
-        //         if (block.IsGrass() && block.GetGridPosition().y > 10) return 4;
-        //         if (block.IsGrass() && block.GetGridPosition().y > 4) return 2;
-        //         if (block.IsGrass() && block.GetGridPosition().y > 2) return 1;
-        //         if (block.IsGrass() && block.GetGridPosition().y > 0) return .5f;
-        //
-        //         if (block.IsWater() && block.GetGridPosition().y > 10) return 4;
-        //         if (block.IsWater() && block.GetGridPosition().y > 4) return 4;
-        //         if (block.IsWater() && block.GetGridPosition().y > 2) return 2;
-        //         if (block.IsWater()) return 1;
-        //
-        //         if (block.IsSand()) return -1;
-        //
-        //         return 0;
-        //     });
     }
 
     public void ResetAtSize(Size size)
@@ -462,5 +437,10 @@ public class WorldPlane : MonoBehaviour
         return blocksRepository
             .StreamBlocks()
             .Where(block => block.HasOccupant() && block.GetOccupant().GetComponent<WoodcutterSpawn>());
+    }
+
+    public IEnumerable<Block> GetBlocksWithOccupants()
+    {
+        return blocksRepository.StreamBlocks().Where(block => block.HasOccupant());
     }
 }

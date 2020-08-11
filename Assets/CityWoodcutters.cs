@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -7,9 +8,24 @@ using Random = UnityEngine.Random;
 public class CityWoodcutters : MonoBehaviour
 {
     public GameObject woodcutterSpawnTemplate;
+    public GameObject stockpileTemplate;
+    public GameObject woodTemplate;
+    
     private WorldPlane _worldPlane;
     private bool _placedFirstFarm;
+    private bool _hasUnfulfilledRequestToStoreWood;
+    private static CityWoodcutters _cityWoodcuttersInstance;
 
+    private void Awake()
+    {
+        _cityWoodcuttersInstance = this;
+    }
+
+    public static CityWoodcutters Get()
+    {
+        return _cityWoodcuttersInstance;
+    }
+    
     void Start()
     {
         _worldPlane = WorldPlane.Get();
@@ -24,7 +40,7 @@ public class CityWoodcutters : MonoBehaviour
 
             var woodcutters = _worldPlane.GetBlocksWithWoodcutters().Count();
             var woodcutterToHouseRatio = (float)Mathf.Max(woodcutters, 1) / (float)houseCount;
-            if (woodcutterToHouseRatio > .25f) return;
+            if (woodcutterToHouseRatio > .1f) return;
             
             var greensAndVacantLot = _worldPlane
                 .GetBlocksWithGreens()
@@ -41,6 +57,49 @@ public class CityWoodcutters : MonoBehaviour
             {
                 SpawnWoodcutter(greensAndVacantLot);
             }
+        }
+
+        if (_hasUnfulfilledRequestToStoreWood)
+        {
+            _hasUnfulfilledRequestToStoreWood = false;
+
+            SpawnStockpile();
+        }
+    }
+
+    public void RequestStorageSpace()
+    {
+        var hasSpace = GetStockpilesWithStorageAvailable().Any();
+        if (!hasSpace)
+        {
+            _hasUnfulfilledRequestToStoreWood = true;
+        }
+    }
+
+    public void StoreWood()
+    {
+        var stockpile = GetStockpilesWithStorageAvailable().FirstOrDefault();
+        if (stockpile != null) stockpile.Store(woodTemplate);
+    }
+
+    public IEnumerable<StockpileSpawn> GetStockpilesWithStorageAvailable()
+    {
+        return _worldPlane.GetBlocksWithOccupants()
+            .Select(block => block.GetOccupant().GetComponent<StockpileSpawn>())
+            .Where(component => component != null && component.CanStoreMore());
+    }
+
+    private void SpawnStockpile()
+    {
+        var vacantLot = _worldPlane
+            .GetBlocksWithWoodcutters()
+            .SelectMany(block => _worldPlane.GetNearbyVacantLots(block.GetGridPosition()))
+            .OrderBy(_ => Random.value)
+            .FirstOrDefault();
+
+        if (vacantLot != null)
+        {
+            vacantLot.CreateAndOccupy(stockpileTemplate);
         }
     }
 

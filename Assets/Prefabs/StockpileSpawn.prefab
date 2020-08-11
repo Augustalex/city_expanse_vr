@@ -25,9 +25,9 @@ GameObject:
   - component: {fileID: 6377690525832584305}
   - component: {fileID: 5087854980000907238}
   - component: {fileID: 1316940166206059821}
-  - component: {fileID: 7871031989627144284}
+  - component: {fileID: 7707782702386346284}
   m_Layer: 0
-  m_Name: WoodcutterSpawn
+  m_Name: StockpileSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   block: {fileID: 0}
---- !u!114 &7871031989627144284
+--- !u!114 &7707782702386346284
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -183,12 +183,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2723339866174918418}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6694900ea6bb3a2438ab5629e6ef8885, type: 3}
+  m_Script: {fileID: 11500000, guid: d02402291510fc2409ce77adacabaf3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  woodcutterTemplates:
-  - {fileID: 3317631866390460118, guid: 383b273c95605b44d8a73720436ef327, type: 3}
-  cuttingDownTree: {fileID: 8300000, guid: b531a472b3789e24d9b0b704330336c5, type: 3}
 --- !u!65 &4151253390124884886
 BoxCollider:
   m_ObjectHideFlags: 0

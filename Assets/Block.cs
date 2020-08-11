@@ -93,6 +93,23 @@ public class Block : MonoBehaviour
         return _gridPosition;
     }
 
+    public void CreateAndOccupy(GameObject template)
+    {
+        var occupant = Instantiate(template, null, true);
+        occupant.transform.position = Vector3.zero;
+        
+        _occupiedBy = occupant;
+        
+        var blockRelative = occupant.GetComponent<BlockRelative>();
+        if (blockRelative)
+        {
+            blockRelative.block = this;
+        }
+
+        var animationHeight = .4f;
+        occupant.transform.position = transform.position + Vector3.up * (.05f + animationHeight);
+    }
+    
     public void Occupy(GameObject occupant)
     {
         _occupiedBy = occupant;
