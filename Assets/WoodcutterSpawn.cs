@@ -55,7 +55,7 @@ public class WoodcutterSpawn : MonoBehaviour
                 yield return new WaitForSeconds(1.5f);
                 if (nearbyTreeOrNull != null)
                 {
-                    nearbyTreeOrNull.DestroyOccupant();
+                    nearbyTreeOrNull.GetOccupantGreens().Cut();
 
                     _cityWoodcutters.StoreWood();
                 }

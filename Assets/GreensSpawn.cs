@@ -8,8 +8,6 @@ public class GreensSpawn : MonoBehaviour
     public GameObject seedTemplate;
     
     private bool _grown;
-    private Vector3 _originalScale;
-    private Vector3 _originalPosition;
     private GameObject _greens;
     private GameObject _seed;
 
@@ -29,22 +27,10 @@ public class GreensSpawn : MonoBehaviour
         _seed = seed;
     }
 
-    private void Start()
-    {
-        _originalScale = transform.localScale;
-        _originalPosition = transform.position;
-        
-        transform.localScale = _originalScale * .5f;
-        transform.position = _originalPosition;
-    }
-
     public void Grow()
     {
         if (_grown) return;
-        
         _grown = true;
-        transform.localScale = _originalScale;
-        transform.position = _originalPosition;
         
         _greens.SetActive(true);
         _seed.SetActive(false);
@@ -53,5 +39,13 @@ public class GreensSpawn : MonoBehaviour
     public bool IsGrown()
     {
         return _grown;
+    }
+
+    public void Cut()
+    {
+        _grown = false;
+        
+        _greens.SetActive(false);
+        _seed.SetActive(true);
     }
 }
