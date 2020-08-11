@@ -70,6 +70,8 @@ MonoBehaviour:
   - {fileID: 3317631866390460118, guid: 2831bbc739cad60448cadf1e397c80fe, type: 3}
   - {fileID: 3317631866390460118, guid: 20114c6faa4433b4f9d3a9eb000aa49c, type: 3}
   - {fileID: 3317631866390460118, guid: dcca8a2e8fd3b294d946277f1acdf8e8, type: 3}
+  seedTemplate: {fileID: 6300724198548447755, guid: 8e8e37fbb211de24d8702cec62b899cb,
+    type: 3}
 --- !u!114 &-8536964791283319856
 MonoBehaviour:
   m_ObjectHideFlags: 0

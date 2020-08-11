@@ -251,11 +251,11 @@ public class WorldPlane : MonoBehaviour
                 if (block.OccupiedByHouse() && block.GetOccupantHouse().IsBig()) return -10;
                 if (block.OccupiedByHouse() && block.GetOccupantHouse()) return -1;
 
-                if (block.OccupiedByGreens() && block.GetGridPosition().y > 10) return 20;
-                if (block.OccupiedByGreens() && block.GetGridPosition().y > 4) return 10;
-                if (block.OccupiedByGreens() && block.GetGridPosition().y > 2) return 6;
-                if (block.OccupiedByGreens() && block.GetGridPosition().y > 0) return 4;
-                if (block.OccupiedByGreens()) return 2;
+                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() && block.GetGridPosition().y > 10) return 20;
+                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() && block.GetGridPosition().y > 4) return 10;
+                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() && block.GetGridPosition().y > 2) return 6;
+                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() && block.GetGridPosition().y > 0) return 4;
+                if (block.OccupiedByGreens() &&  block.GetOccupantGreens().IsGrown()) return 2;
 
                 if (block.IsGrass() && block.GetGridPosition().y > 10) return 4;
                 if (block.IsGrass() && block.GetGridPosition().y > 4) return 2;
@@ -265,7 +265,6 @@ public class WorldPlane : MonoBehaviour
                 if (block.IsWater() && block.GetGridPosition().y > 10) return 4;
                 if (block.IsWater() && block.GetGridPosition().y > 4) return 4;
                 if (block.IsWater() && block.GetGridPosition().y > 2) return 2;
-                if (block.IsWater()) return 1;
 
                 if (block.IsSand()) return -1;
 

@@ -1,17 +1,17 @@
-﻿using System;
-using UnityEditor.Experimental.GraphView;
-using UnityEngine;
+﻿using UnityEngine;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(BlockRelative))]
 public class GreensSpawn : MonoBehaviour
 {
     public GameObject[] greensTemplates;
+    public GameObject seedTemplate;
+    
     private bool _grown;
     private Vector3 _originalScale;
     private Vector3 _originalPosition;
     private GameObject _greens;
-    private GameObject _greensSmall;
+    private GameObject _seed;
 
     void Awake()
     {
@@ -23,12 +23,10 @@ public class GreensSpawn : MonoBehaviour
         greens.transform.Rotate(rotation);
         greens.SetActive(false);
         _greens = greens;
-        
-        var greensSmall = Instantiate(greensTemplate);
-        greensSmall.transform.SetParent(transform, false);
-        greensSmall.transform.Rotate(rotation);
-        greensSmall.transform.localScale *= 1f;
-        _greensSmall = greensSmall;
+
+        var seed = Instantiate(seedTemplate);
+        seed.transform.SetParent(transform, false);
+        _seed = seed;
     }
 
     private void Start()
@@ -49,7 +47,7 @@ public class GreensSpawn : MonoBehaviour
         transform.position = _originalPosition;
         
         _greens.SetActive(true);
-        _greensSmall.SetActive(false);
+        _seed.SetActive(false);
     }
 
     public bool IsGrown()
