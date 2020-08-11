@@ -4326,6 +4326,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grassBlockTemplate: {fileID: 612181966713644638, guid: ae0f003ac96b3884c89d3b3c3916cd65,
     type: 3}
+--- !u!114 &1741071623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741071621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a4f6c2fdd986a543ac984e9fdbb205a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  woodcutterSpawnTemplate: {fileID: 2723339866174918418, guid: f8d36363b8c3e034c84d415fc1fe9f20,
+    type: 3}
 --- !u!1 &1800596255
 GameObject:
   m_ObjectHideFlags: 0

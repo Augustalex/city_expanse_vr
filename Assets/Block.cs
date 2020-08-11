@@ -207,4 +207,9 @@ public class Block : MonoBehaviour
     {
         BeforeDestroy?.Invoke();
     }
+
+    public bool HasOccupant()
+    {
+        return _occupiedBy != null;
+    }
 }

@@ -449,4 +449,18 @@ public class WorldPlane : MonoBehaviour
         return TopLeftPoint.position.x +
                blockTemplate.transform.localScale.x * _currentDimensions.x; //Should it be .y and not .x ...
     }
+
+    public IEnumerable<Block> GetBlocksWithGreens()
+    {
+        return blocksRepository
+            .StreamBlocks()
+            .Where(block => block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown());
+    }
+
+    public IEnumerable<Block> GetBlocksWithWoodcutters()
+    {
+        return blocksRepository
+            .StreamBlocks()
+            .Where(block => block.HasOccupant() && block.GetOccupant().GetComponent<WoodcutterSpawn>());
+    }
 }

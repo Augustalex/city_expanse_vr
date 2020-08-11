@@ -20,7 +20,7 @@ public class FloodingWater : MonoBehaviour
 
     void Update()
     {
-        if (Time.fixedTime - _life < 2) return;
+        if (Time.fixedTime - _life < 1.2f) return;
         if (_block.IsPermaFrozen()) return;
 
         if (_block.IsGroundLevel())

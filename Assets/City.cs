@@ -157,7 +157,7 @@ public class City : MonoBehaviour
                 // var hasLargeEnoughClosePopulation = blocksWithHouse.Count(houseBlock => block.DistanceToOtherBlock(houseBlock) <= 1.5f) >= 3;
                 // if (!hasLargeEnoughClosePopulation) return false;
 
-                var hasEnoughSurroundingNature = _worldPlane.NatureScore(block.GetGridPosition(), 6f) > 35;
+                var hasEnoughSurroundingNature = _worldPlane.NatureScore(block.GetGridPosition(), 8f) > 20;
                 return hasEnoughSurroundingNature;
             })
             .ToList();
