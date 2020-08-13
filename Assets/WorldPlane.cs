@@ -8,7 +8,10 @@ public class WorldPlane : MonoBehaviour
 {
     public BlocksRepository blocksRepository = new BlocksRepository();
     public GameObject blockTemplate;
-    public Transform TopLeftPoint;
+    public GameObject TopLeftPoint;
+    public bool loadExistingWorld;
+
+    private Transform _topLeftPointTransform;
 
     public enum Size
     {
@@ -18,11 +21,41 @@ public class WorldPlane : MonoBehaviour
     }
 
     private Vector2 _currentDimensions;
+    private Vector2 _currentMinBound = new Vector2(0, 0);
     private static WorldPlane _worldPlaneInstance;
 
     private void Awake()
     {
         _worldPlaneInstance = this;
+        _topLeftPointTransform = TopLeftPoint.transform;
+    }
+
+    private void Start()
+    {
+        // NOTE: Not working correctly yet
+        if (loadExistingWorld)
+        {
+            var blocks = new List<Tuple<Block, Vector3>>();
+            foreach (Transform child in _topLeftPointTransform)
+            {
+                var blockObject = child.gameObject;
+                var block = blockObject.GetComponentInChildren<Block>();
+                
+                var blockPosition = ToGridPosition(blockObject.transform.position);
+                
+                blocks.Add(new Tuple<Block, Vector3>(block, blockPosition));
+            }
+            
+            _currentMinBound = new Vector2(
+                blocks.Min(tuple => tuple.Item2.x),
+                blocks.Min(tuple => tuple.Item2.y)
+                );
+            
+            foreach (var (block, position) in blocks)
+            {
+                AddAndPositionBlock(block, position);
+            }
+        }
     }
 
     public static WorldPlane Get()
@@ -42,11 +75,21 @@ public class WorldPlane : MonoBehaviour
                       blockTemplate.transform.localScale.x * .5f;
         var zOffset = blockTemplate.transform.localScale.z * z + blockTemplate.transform.localScale.z * .5f +
                       (middle ? blockTemplate.transform.localScale.z * -.5f : 0);
-        return TopLeftPoint.position + new Vector3(
+        return _topLeftPointTransform.position + new Vector3(
             xOffset,
             position.y * yScale + yScale * .5f,
             zOffset
         );
+    }
+    
+    public Vector3 ToGridPosition(Vector3 position)
+    {
+        var zeroBasedPosition = position - _topLeftPointTransform.position;
+        zeroBasedPosition.x /= blockTemplate.transform.localScale.x;
+        zeroBasedPosition.z /= blockTemplate.transform.localScale.z;
+        zeroBasedPosition.y -= .1f;
+        
+        return new Vector3(Mathf.Round(zeroBasedPosition.x), Mathf.Round(zeroBasedPosition.y), Mathf.Round(zeroBasedPosition.z));
     }
 
     public void RemoveAndDestroyBlock(Block block)
@@ -370,13 +413,13 @@ public class WorldPlane : MonoBehaviour
 
         if (isEven)
         {
-            return row >= 0 && row < _currentDimensions.x
-                            && column >= 0 && column < _currentDimensions.y;
+            return row >= _currentMinBound.x && row < _currentDimensions.x
+                                           && column >= _currentMinBound.y && column < _currentDimensions.y;
         }
         else
         {
-            return row >= 0 && row < _currentDimensions.x
-                            && column >= -1 && column < _currentDimensions.y;
+            return row >= _currentMinBound.x && row < _currentDimensions.x
+                                           && column >= (_currentMinBound.y - 1) && column < _currentDimensions.y;
         }
     }
 
@@ -406,22 +449,22 @@ public class WorldPlane : MonoBehaviour
 
     public float Top()
     {
-        return TopLeftPoint.position.z;
+        return _topLeftPointTransform.position.z;
     }
 
     public float Right()
     {
-        return TopLeftPoint.position.x;
+        return _topLeftPointTransform.position.x;
     }
 
     public float Bottom()
     {
-        return TopLeftPoint.position.z + blockTemplate.transform.localScale.z * _currentDimensions.y;
+        return _topLeftPointTransform.position.z + blockTemplate.transform.localScale.z * _currentDimensions.y;
     }
 
     public float Left()
     {
-        return TopLeftPoint.position.x +
+        return _topLeftPointTransform.position.x +
                blockTemplate.transform.localScale.x * _currentDimensions.x; //Should it be .y and not .x ...
     }
 
