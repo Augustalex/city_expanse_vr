@@ -29,6 +29,16 @@ public class FarmMasterController : MonoBehaviour
         return WorldPlane.Get()
             .blocksRepository
             .StreamBlocks()
-            .Count(block => block != null && (block.GetOccupant()?.GetComponent<FarmSpawn>()?.IsGrown()) == true);
+            .Count(block =>
+            {
+                if (block == null) return false;
+                if (!block.HasOccupant()) return false;
+                
+                var occupant = block.GetOccupant();
+                var farmSpawn = occupant.GetComponent<FarmSpawn>();
+                if (farmSpawn == null) return false;
+
+                return farmSpawn.IsGrown();
+            });
     }
 }

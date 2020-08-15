@@ -232,4 +232,9 @@ public class Block : MonoBehaviour
     {
         return _occupiedBy != null;
     }
+
+    public bool IsOccupable()
+    {
+        return blockType == BlockType.Grass && !HasOccupant();
+    }
 }

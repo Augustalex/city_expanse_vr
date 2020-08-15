@@ -40,17 +40,17 @@ public class WorldPlane : MonoBehaviour
             {
                 var blockObject = child.gameObject;
                 var block = blockObject.GetComponentInChildren<Block>();
-                
+
                 var blockPosition = ToGridPosition(blockObject.transform.position);
-                
+
                 blocks.Add(new Tuple<Block, Vector3>(block, blockPosition));
             }
-            
+
             _currentMinBound = new Vector2(
                 blocks.Min(tuple => tuple.Item2.x),
                 blocks.Min(tuple => tuple.Item2.y)
-                );
-            
+            );
+
             foreach (var (block, position) in blocks)
             {
                 AddAndPositionBlock(block, position);
@@ -81,15 +81,16 @@ public class WorldPlane : MonoBehaviour
             zOffset
         );
     }
-    
+
     public Vector3 ToGridPosition(Vector3 position)
     {
         var zeroBasedPosition = position - _topLeftPointTransform.position;
         zeroBasedPosition.x /= blockTemplate.transform.localScale.x;
         zeroBasedPosition.z /= blockTemplate.transform.localScale.z;
         zeroBasedPosition.y -= .1f;
-        
-        return new Vector3(Mathf.Round(zeroBasedPosition.x), Mathf.Round(zeroBasedPosition.y), Mathf.Round(zeroBasedPosition.z));
+
+        return new Vector3(Mathf.Round(zeroBasedPosition.x), Mathf.Round(zeroBasedPosition.y),
+            Mathf.Round(zeroBasedPosition.z));
     }
 
     public void RemoveAndDestroyBlock(Block block)
@@ -299,11 +300,15 @@ public class WorldPlane : MonoBehaviour
                 if (block.OccupiedByHouse() && block.GetOccupantHouse().IsBig()) return -10;
                 if (block.OccupiedByHouse() && block.GetOccupantHouse()) return -1;
 
-                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() && block.GetGridPosition().y > 10) return 20;
-                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() && block.GetGridPosition().y > 4) return 10;
-                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() && block.GetGridPosition().y > 2) return 6;
-                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() && block.GetGridPosition().y > 0) return 4;
-                if (block.OccupiedByGreens() &&  block.GetOccupantGreens().IsGrown()) return 2;
+                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() &&
+                    block.GetGridPosition().y > 10) return 20;
+                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() &&
+                    block.GetGridPosition().y > 4) return 10;
+                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() &&
+                    block.GetGridPosition().y > 2) return 6;
+                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() &&
+                    block.GetGridPosition().y > 0) return 4;
+                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown()) return 2;
 
                 if (block.IsGrass() && block.GetGridPosition().y > 10) return 4;
                 if (block.IsGrass() && block.GetGridPosition().y > 4) return 2;
@@ -398,7 +403,7 @@ public class WorldPlane : MonoBehaviour
 
                         AddAndPositionBlock(block, blockPosition);
                     }
-                    
+
                     yield return new WaitForEndOfFrame();
                 }
             }
@@ -414,12 +419,12 @@ public class WorldPlane : MonoBehaviour
         if (isEven)
         {
             return row >= _currentMinBound.x && row < _currentDimensions.x
-                                           && column >= _currentMinBound.y && column < _currentDimensions.y;
+                                             && column >= _currentMinBound.y && column < _currentDimensions.y;
         }
         else
         {
             return row >= _currentMinBound.x && row < _currentDimensions.x
-                                           && column >= (_currentMinBound.y - 1) && column < _currentDimensions.y;
+                                             && column >= (_currentMinBound.y - 1) && column < _currentDimensions.y;
         }
     }
 
@@ -485,5 +490,30 @@ public class WorldPlane : MonoBehaviour
     public IEnumerable<Block> GetBlocksWithOccupants()
     {
         return blocksRepository.StreamBlocks().Where(block => block.HasOccupant());
+    }
+
+    public IEnumerable<Block> GetBlocksWithDocks()
+    {
+        return blocksRepository
+            .StreamBlocks()
+            .Where(block => block.HasOccupant() && block.GetOccupant().GetComponent<DocksSpawn>());
+    }
+
+    public Block.BlockType GetMajorityBlockTypeWithinRange(Vector3 gridPosition, float range)
+    {
+        return GetNearbyBlocksWithinRange(gridPosition, range)
+            .GroupBy(block => block.blockType)
+            .OrderByDescending(group => group.Count())
+            .First()
+            .Key;
+    }
+
+    public bool NoNearby(Vector3 gridPosition, float radius, Func<Block, bool> filter)
+    {
+        var hasAnyNearby = GetNearbyBlocksWithinRange(gridPosition, radius)
+            .Where(filter)
+            .Any();
+
+        return !hasAnyNearby;
     }
 }

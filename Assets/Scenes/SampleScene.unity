@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -4338,11 +4338,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a4f6c2fdd986a543ac984e9fdbb205a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  woodcutterSpawnTemplate: {fileID: 2723339866174918418, guid: f8d36363b8c3e034c84d415fc1fe9f20,
+  woodcutterSpawnTemplate: {fileID: 2723339866174918418, guid: c174551347353184189a94e73f000340,
     type: 3}
   stockpileTemplate: {fileID: 1174822549388143024, guid: af3b9389ff92abd4590206eb01980a52,
     type: 3}
   woodTemplate: {fileID: 1174822549388143024, guid: 5c6ae97c39a476d4e877d5dde6126cb5,
+    type: 3}
+--- !u!114 &1741071624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741071621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: facbea871b7132349ac8f378703ddc72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dockSpawnTemplate: {fileID: 2723339866174918418, guid: f8d36363b8c3e034c84d415fc1fe9f20,
     type: 3}
 --- !u!1 &1800596255
 GameObject:
