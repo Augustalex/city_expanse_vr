@@ -7,9 +7,11 @@ using Random = UnityEngine.Random;
 public class CityDocks : MonoBehaviour
 {
     public GameObject dockSpawnTemplate;
-
+    public GameObject boatTemplate;
+    
     private WorldPlane _worldPlane;
-
+    private int _boatCount;
+    
     void Start()
     {
         _worldPlane = WorldPlane.Get();
@@ -27,6 +29,24 @@ public class CityDocks : MonoBehaviour
             var docks = _worldPlane.GetBlocksWithDocks().Count();
             if (docks > 0)
             {
+                if (Random.value < .01f)
+                {
+                    if (_boatCount < 1)
+                    {
+                        var waterBlock = _worldPlane.GetWaterBlocks()
+                            .Where(block => block.IsGroundLevel())
+                            .OrderBy(_ => Random.value)
+                            .First();
+                        
+                        var boat = Instantiate(boatTemplate);
+                        var boatPosition = _worldPlane.ToRealCoordinates(waterBlock.GetGridPosition());
+                        boatPosition.y = 1.164f;
+                        boat.transform.position = boatPosition;
+
+                        _boatCount += 1;
+                    }
+                }
+                
                 var docksToHouseRatio = (float) Mathf.Max(docks, 1) / (float) houseCount;
                 if (docksToHouseRatio > .05f) return;
             }

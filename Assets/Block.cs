@@ -23,8 +23,6 @@ public class Block : MonoBehaviour
 
     public event Action BeforeDestroy;
 
-    public Vector3 MyGridPosition;
-
     public void DestroySelf()
     {
         OnBeforeDestroy();
@@ -87,7 +85,6 @@ public class Block : MonoBehaviour
 
     public void SetGridPosition(Vector3 blockPosition)
     {
-        MyGridPosition = blockPosition;
         _gridPosition = blockPosition;
     }
 

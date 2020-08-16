@@ -4358,6 +4358,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dockSpawnTemplate: {fileID: 2723339866174918418, guid: f8d36363b8c3e034c84d415fc1fe9f20,
     type: 3}
+  boatTemplate: {fileID: 6217205354835650092, guid: 4f20cb4b5754d32428dfbd30ee2a24e3,
+    type: 3}
 --- !u!1 &1800596255
 GameObject:
   m_ObjectHideFlags: 0
