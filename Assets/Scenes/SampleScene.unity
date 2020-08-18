@@ -881,6 +881,7 @@ GameObject:
   - component: {fileID: 492383680}
   - component: {fileID: 492383681}
   - component: {fileID: 492383682}
+  - component: {fileID: 492383683}
   m_Layer: 0
   m_Name: CloudHolder
   m_TagString: Untagged
@@ -932,6 +933,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69f3920b7c815bd408a977716a600fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &492383683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 492383679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df0c45acf25a80d4f9fdc9214dd9817d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalMaterial: {fileID: 2100000, guid: c69cfacd6cc8b3e4bbac9a2d034cbe59, type: 2}
+  stormMaterial: {fileID: 2100000, guid: 2fe9f51544c2dbb4e876e063ac37ec4f, type: 2}
 --- !u!1 &521409208
 GameObject:
   m_ObjectHideFlags: 0
@@ -1386,8 +1401,6 @@ MonoBehaviour:
   blockGeneralInteractionSound: {fileID: 8300000, guid: 9f4262535a6d8934b8fb690cbeba25f1,
     type: 3}
   volumeOverride: 0
-  waterBlockTemplate: {fileID: 612181966713644638, guid: ad50e16266866cb4f828d1b10d314e79,
-    type: 3}
 --- !u!114 &546754294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3313,6 +3326,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dropletTemplate: {fileID: 2045958293698355852, guid: f0d74c6fd6c30f846b2a78249ef52502,
     type: 3}
+  stormTemplate: {fileID: 2045958293698355852, guid: ab7281a5147acd6419427d7018fb8000,
+    type: 3}
 --- !u!4 &1503203066 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4766092344323370, guid: e201a24a09e942042b93390d0444d728,
@@ -4359,6 +4374,20 @@ MonoBehaviour:
   dockSpawnTemplate: {fileID: 2723339866174918418, guid: f8d36363b8c3e034c84d415fc1fe9f20,
     type: 3}
   boatTemplate: {fileID: 6217205354835650092, guid: 4f20cb4b5754d32428dfbd30ee2a24e3,
+    type: 3}
+--- !u!114 &1741071625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741071621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa62dd0aa20442c8acaae9f17777ae2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterBlockTemplate: {fileID: 1341636617038954440, guid: 51197bda1147db94e809a7f1464269f0,
     type: 3}
 --- !u!1 &1800596255
 GameObject:
