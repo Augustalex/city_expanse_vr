@@ -11,7 +11,8 @@ public class CityDocks : MonoBehaviour
     
     private WorldPlane _worldPlane;
     private int _boatCount;
-    
+    private const int BoatCost = 4;
+
     void Start()
     {
         _worldPlane = WorldPlane.Get();
@@ -19,7 +20,7 @@ public class CityDocks : MonoBehaviour
 
     void Update()
     {
-        if (Random.value < .1f)
+        if (Random.value < .01f)
         {
             var houseCount = _worldPlane
                 .GetBlocksWithHouses()
@@ -31,20 +32,7 @@ public class CityDocks : MonoBehaviour
             {
                 if (Random.value < .01f)
                 {
-                    if (_boatCount < 1)
-                    {
-                        var waterBlock = _worldPlane.GetWaterBlocks()
-                            .Where(block => block.IsGroundLevel())
-                            .OrderBy(_ => Random.value)
-                            .First();
-                        
-                        var boat = Instantiate(boatTemplate);
-                        var boatPosition = _worldPlane.ToRealCoordinates(waterBlock.GetGridPosition());
-                        boatPosition.y = 1.164f;
-                        boat.transform.position = boatPosition;
-
-                        _boatCount += 1;
-                    }
+                    TrySpawnBoat();
                 }
                 
                 var docksToHouseRatio = (float) Mathf.Max(docks, 1) / (float) houseCount;
@@ -79,6 +67,43 @@ public class CityDocks : MonoBehaviour
                 dockSpawn.transform.LookAt(target);
             }
         }
+    }
+
+    private void TrySpawnBoat()
+    {
+        if (_boatCount == 1 && Random.value > .1f) return;
+        if (_boatCount == 2 && Random.value > .05f) return;
+        if (_boatCount == 3 && Random.value > .01f) return;
+        if (_boatCount == 4 && Random.value > .001f) return;
+        if (_boatCount == 5 && Random.value > .0001f) return;
+        if (_boatCount == 6 && Random.value > .00001f) return;
+        if (_boatCount == 7 && Random.value > .000001f) return;
+        if (_boatCount == 8 && Random.value > .0000001f) return;
+        if (_boatCount == 9 && Random.value > .00000001f) return;
+        
+        var cityWood = CityWoodcutters.Get();
+        if (!cityWood.RequireWood(BoatCost)) return;
+        cityWood.ConsumeWood(BoatCost);
+
+        var waterBlock = _worldPlane.GetWaterBlocks()
+            .Where(block =>
+            {
+                var blockPosition = block.GetGridPosition();
+                
+                return block.IsGroundLevel()
+                       && _worldPlane.GetBlocksWithDocks()
+                           .Any(dock => Vector3.Distance(dock.GetGridPosition(), blockPosition) < 3f);
+
+            })
+            .OrderBy(_ => Random.value)
+            .First();
+                        
+        var boat = Instantiate(boatTemplate);
+        var boatPosition = _worldPlane.ToRealCoordinates(waterBlock.GetGridPosition());
+        boatPosition.y = 1.164f;
+        boat.transform.position = boatPosition;
+
+        _boatCount += 1;
     }
 
     private static bool BlockHasDocksSpawn(Block block)

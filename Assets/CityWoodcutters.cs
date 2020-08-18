@@ -82,11 +82,42 @@ public class CityWoodcutters : MonoBehaviour
         if (stockpile != null) stockpile.Store(woodTemplate);
     }
 
+    public bool RequireWood(int amount)
+    {
+        return GetWood() >= amount;
+    }
+
+    public void ConsumeWood(int amount)
+    {
+        var stockpilesWithWood = _worldPlane.GetBlocksWithOccupants()
+            .Select(block => block.GetOccupant().GetComponent<StockpileSpawn>())
+            .Where(component => component != null && component.HasWood());
+
+        int remainingAmount = amount;
+        foreach (var stockpile in stockpilesWithWood)
+        {
+            var toConsume = Mathf.Min(remainingAmount, stockpile.StoredCount());
+            remainingAmount -= toConsume;
+            
+            stockpile.Consume(toConsume);
+
+            if (remainingAmount == 0) return;
+        }
+    }
+    
     public IEnumerable<StockpileSpawn> GetStockpilesWithStorageAvailable()
     {
         return _worldPlane.GetBlocksWithOccupants()
             .Select(block => block.GetOccupant().GetComponent<StockpileSpawn>())
             .Where(component => component != null && component.CanStoreMore());
+    }
+
+    public int GetWood()
+    {
+        return _worldPlane.GetBlocksWithOccupants()
+            .Select(block => block.GetOccupant().GetComponent<StockpileSpawn>())
+            .Where(component => component != null && component.HasWood())
+            .Sum(component => component.StoredCount());
     }
 
     private void SpawnStockpile()

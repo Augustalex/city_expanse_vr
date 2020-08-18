@@ -25,4 +25,19 @@ public class StockpileSpawn : MonoBehaviour
     {
         return _stored <= MaxStorage;
     }
+
+    public bool HasWood()
+    {
+        return _stored > 0;
+    }
+
+    public int StoredCount()
+    {
+        return _stored;
+    }
+
+    public void Consume(int amount)
+    {
+        _stored -= amount;
+    }
 }
