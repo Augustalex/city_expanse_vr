@@ -123,6 +123,17 @@ public class Block : MonoBehaviour
         var animationHeight = .4f;
         occupant.transform.position = transform.position + Vector3.up * (.05f + animationHeight);
     }
+    
+    public void SetOccupantThatIsTailFromOtherBase(GameObject occupant)
+    {
+        _occupiedBy = occupant;
+        
+        var blockRelative = occupant.GetComponent<BlockRelative>();
+        if (blockRelative)
+        {
+            blockRelative.block = this;
+        }
+    }
 
     public void PlaceOnTopOfSelf(Block otherBlock, GameObject occupantRoot)
     {

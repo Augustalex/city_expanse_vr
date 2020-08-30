@@ -22,14 +22,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2723339866174918417}
-  - component: {fileID: 3313396182424439710}
   - component: {fileID: 6377690525832584305}
   - component: {fileID: 5087854980000907238}
   - component: {fileID: 1316940166206059821}
-  - component: {fileID: 8821811286696954319}
+  - component: {fileID: 6768664565060321316}
   m_Layer: 0
-  m_Name: HouseSpawn
-  m_TagString: HouseSpawn
+  m_Name: FortSpawn
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50,25 +49,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3313396182424439710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2723339866174918418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd1a87a5a5f46e344b11812658340657, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tinyHouseTemplates:
-  - {fileID: 3317631866390460118, guid: 808ec8de85f4ba049974ff92e979b6d0, type: 3}
-  largeHouseTemplates:
-  - {fileID: 3317631866390460118, guid: a5025b9ee25372e4380edb915eba7d20, type: 3}
-  megaHouseTemplates:
-  - {fileID: 3317631866390460118, guid: 0ffe72b70d5b4ba4fbe50bdab750eebe, type: 3}
-  upgradeSound: {fileID: 8300000, guid: a4d74c00076ddb7489d91b7c3f279e7c, type: 3}
 --- !u!54 &6377690525832584305
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -194,7 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   block: {fileID: 0}
---- !u!114 &8821811286696954319
+--- !u!114 &6768664565060321316
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -203,11 +183,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2723339866174918418}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67c684bcc2e64285b5730d797646fe63, type: 3}
+  m_Script: {fileID: 11500000, guid: 462d04352292348449f47deb7d8184c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  personTemplate: {fileID: 1890044539529353544, guid: 023cb22fa6c4617468021737bcca4532,
-    type: 3}
+  tinyHouseTemplates:
+  - {fileID: 3317631866390460118, guid: 5d205f85e1a5b424283d20528815eed9, type: 3}
+  upgradeSound: {fileID: 8300000, guid: a4d74c00076ddb7489d91b7c3f279e7c, type: 3}
 --- !u!65 &4151253390124884886
 BoxCollider:
   m_ObjectHideFlags: 0

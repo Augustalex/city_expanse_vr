@@ -6,6 +6,7 @@ public class FeatureToggles : MonoBehaviour
   public bool predators;
   public bool persons;
   public bool farmsGrowAtRandom;
+  public bool biomes;
 
   private static FeatureToggles _featureToggles;
 

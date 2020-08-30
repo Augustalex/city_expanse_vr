@@ -20,11 +20,32 @@ public class StormDroplet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (Random.value < .001f)
+        var farmSpawn = other.GetComponent<FarmSpawn>();
+        if (farmSpawn && !farmSpawn.IsGrown())
         {
-            var block = other.GetComponent<Block>();
-            RaiseWater.Get().Use(block);
+            farmSpawn.Grow();
             Destroy(gameObject);
+        }
+        else
+        {
+            var greenSpawn = other.GetComponent<GreensSpawn>();
+            if (greenSpawn && !greenSpawn.IsGrown())
+            {
+                greenSpawn.Grow();
+                Destroy(gameObject);
+            }
+            else
+            {
+                var block = other.GetComponent<Block>();
+                if (block && block.IsSand())
+                {
+                    var grassBlockRoot = BlockFactory.Get().GrassBlock();
+                    var grassBlock = grassBlockRoot.GetComponentInChildren<Block>();
+                    WorldPlane.Get().ReplaceBlock(block, grassBlock);
+    
+                    Destroy(gameObject);
+                }
+            }
         }
     }
 }

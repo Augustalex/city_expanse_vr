@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -4026,34 +4026,6 @@ MonoBehaviour:
   _headPoseRelativeOffsetRotation: {x: 0, y: 0, z: 0}
   _headPoseRelativeOffsetTranslation: {x: 0, y: 0, z: 0}
   profilerTcpPort: 32419
-  expandMixedRealityCapturePropertySheet: 0
-  enableMixedReality: 0
-  compositionMethod: 0
-  extraHiddenLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  externalCompositionBackdropColorRift: {r: 0, g: 1, b: 0, a: 1}
-  externalCompositionBackdropColorQuest: {r: 0, g: 0, b: 0, a: 0}
-  capturingCameraDevice: 0
-  flipCameraFrameHorizontally: 0
-  flipCameraFrameVertically: 0
-  handPoseStateLatency: 0
-  sandwichCompositionRenderLatency: 0
-  sandwichCompositionBufferedFrames: 8
-  chromaKeyColor: {r: 0, g: 1, b: 0, a: 1}
-  chromaKeySimilarity: 0.6
-  chromaKeySmoothRange: 0.03
-  chromaKeySpillRange: 0.06
-  useDynamicLighting: 0
-  depthQuality: 1
-  dynamicLightingSmoothFactor: 8
-  dynamicLightingDepthVariationClampingValue: 0.001
-  virtualGreenScreenType: 0
-  virtualGreenScreenTopY: 10
-  virtualGreenScreenBottomY: -10
-  virtualGreenScreenApplyDepthCulling: 0
-  virtualGreenScreenDepthTolerance: 0.2
-  mrcActivationMode: 0
   _trackingOriginType: 1
   usePositionTracking: 1
   useRotationTracking: 1
@@ -4388,6 +4360,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waterBlockTemplate: {fileID: 1341636617038954440, guid: 51197bda1147db94e809a7f1464269f0,
+    type: 3}
+--- !u!114 &1741071626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741071621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2a478722525435da0ebca57597eb20b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fortSpawnTemplate: {fileID: 2723339866174918418, guid: e0a1944f789d54b3ab2e5831bd6522b8,
     type: 3}
 --- !u!1 &1800596255
 GameObject:
@@ -5424,6 +5410,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1741071623, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
       propertyPath: farmsGrowAtRandom
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1741071623, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
+      propertyPath: biomes
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3645905919876899980, guid: 63f229cc46e53ef47a8bc7f7667512ce,
