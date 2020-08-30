@@ -16,6 +16,8 @@ public class BiomeObjectives : MonoBehaviour
 
     private void Update()
     {
+        if (!FeatureToggles.Get().biomes) return;
+        
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             BlockHighlighter.Highlight(_biomes[0].GetBlocks());
@@ -38,6 +40,7 @@ public class BiomeObjectives : MonoBehaviour
             EstablishBiomePerk();
         }
         return;
+        
         if (_delta > 2 * 60)
         {
             EstablishBiomePerk();
