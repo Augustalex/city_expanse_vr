@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,7 +8,10 @@ public class WorldPlane : MonoBehaviour
 {
     public BlocksRepository blocksRepository = new BlocksRepository();
     public GameObject blockTemplate;
-    public Transform TopLeftPoint;
+    public GameObject TopLeftPoint;
+    public bool loadExistingWorld;
+
+    private Transform _topLeftPointTransform;
 
     public enum Size
     {
@@ -17,12 +21,48 @@ public class WorldPlane : MonoBehaviour
     }
 
     private Vector2 _currentDimensions;
+    private Vector2 _currentMinBound = new Vector2(0, 0);
+    private static WorldPlane _worldPlaneInstance;
+
+    private void Awake()
+    {
+        _worldPlaneInstance = this;
+        _topLeftPointTransform = TopLeftPoint.transform;
+    }
+
+    private void Start()
+    {
+        // NOTE: Not working correctly yet
+        if (loadExistingWorld)
+        {
+            var blocks = new List<Tuple<Block, Vector3>>();
+            foreach (Transform child in _topLeftPointTransform)
+            {
+                var blockObject = child.gameObject;
+                var block = blockObject.GetComponentInChildren<Block>();
+
+                var blockPosition = ToGridPosition(blockObject.transform.position);
+
+                blocks.Add(new Tuple<Block, Vector3>(block, blockPosition));
+            }
+
+            _currentMinBound = new Vector2(
+                blocks.Min(tuple => tuple.Item2.x),
+                blocks.Min(tuple => tuple.Item2.y)
+            );
+
+            foreach (var (block, position) in blocks)
+            {
+                AddAndPositionBlock(block, position);
+            }
+        }
+    }
 
     public static WorldPlane Get()
     {
-        return FindObjectOfType<WorldPlane>();
+        return _worldPlaneInstance;
     }
-    
+
     public Vector3 ToRealCoordinates(Vector3 position)
     {
         var placementScale = blockTemplate.GetComponent<PlacementScale>();
@@ -35,11 +75,22 @@ public class WorldPlane : MonoBehaviour
                       blockTemplate.transform.localScale.x * .5f;
         var zOffset = blockTemplate.transform.localScale.z * z + blockTemplate.transform.localScale.z * .5f +
                       (middle ? blockTemplate.transform.localScale.z * -.5f : 0);
-        return TopLeftPoint.position + new Vector3(
+        return _topLeftPointTransform.position + new Vector3(
             xOffset,
             position.y * yScale + yScale * .5f,
             zOffset
         );
+    }
+
+    public Vector3 ToGridPosition(Vector3 position)
+    {
+        var zeroBasedPosition = position - _topLeftPointTransform.position;
+        zeroBasedPosition.x /= blockTemplate.transform.localScale.x;
+        zeroBasedPosition.z /= blockTemplate.transform.localScale.z;
+        zeroBasedPosition.y -= .1f;
+
+        return new Vector3(Mathf.Round(zeroBasedPosition.x), Mathf.Round(zeroBasedPosition.y),
+            Mathf.Round(zeroBasedPosition.z));
     }
 
     public void RemoveAndDestroyBlock(Block block)
@@ -172,9 +223,14 @@ public class WorldPlane : MonoBehaviour
 
     public IEnumerable<Block> GetNearbyBlocksWithinRange(Vector3 position, float radius)
     {
-        return blocksRepository.StreamPairs()
-            .Where(pair => Vector3.Distance(position, pair.Key) < radius)
-            .Select(pair => pair.Value);
+        var realCenterPosition = ToRealCoordinates(position);
+        var sizeOfBlock = blockTemplate.transform.localScale.x;
+
+        var hits = Physics.OverlapSphere(realCenterPosition, sizeOfBlock * radius * .75f);
+
+        return hits
+            .Select(hit => hit.gameObject.GetComponent<Block>())
+            .Where(block => block != null);
     }
 
     public IEnumerable<Block> GetNearbyBlocks(Vector3 position)
@@ -230,31 +286,39 @@ public class WorldPlane : MonoBehaviour
 
     public float NatureScore(Vector3 originPosition, float radius)
     {
-        return blocksRepository.StreamPairs()
-            .Where(pair => Vector3.Distance(originPosition, pair.Key) < radius)
-            .Select(pair => pair.Value)
+        var realCenterPosition = ToRealCoordinates(originPosition);
+        var sizeOfBlock = blockTemplate.transform.localScale.x;
+
+        var hits = Physics.OverlapSphere(realCenterPosition, sizeOfBlock * radius * .75f);
+
+        return hits
+            .Select(hit => hit.gameObject.GetComponent<Block>())
+            .Where(block => block != null)
             .Sum(block =>
             {
                 if (block.OccupiedByHouse() && block.GetOccupantHouse().IsMegaBig()) return -20;
                 if (block.OccupiedByHouse() && block.GetOccupantHouse().IsBig()) return -10;
                 if (block.OccupiedByHouse() && block.GetOccupantHouse()) return -1;
-                
-                if (block.OccupiedByGreens() && block.GetGridPosition().y > 10) return 20;
-                if (block.OccupiedByGreens() && block.GetGridPosition().y > 4) return 10;
-                if (block.OccupiedByGreens() && block.GetGridPosition().y > 2) return 6;
-                if (block.OccupiedByGreens() && block.GetGridPosition().y > 0) return 4;
-                if (block.OccupiedByGreens()) return 2;
-                
+
+                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() &&
+                    block.GetGridPosition().y > 10) return 20;
+                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() &&
+                    block.GetGridPosition().y > 4) return 10;
+                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() &&
+                    block.GetGridPosition().y > 2) return 6;
+                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() &&
+                    block.GetGridPosition().y > 0) return 4;
+                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown()) return 2;
+
                 if (block.IsGrass() && block.GetGridPosition().y > 10) return 4;
                 if (block.IsGrass() && block.GetGridPosition().y > 4) return 2;
                 if (block.IsGrass() && block.GetGridPosition().y > 2) return 1;
                 if (block.IsGrass() && block.GetGridPosition().y > 0) return .5f;
-                
+
                 if (block.IsWater() && block.GetGridPosition().y > 10) return 4;
                 if (block.IsWater() && block.GetGridPosition().y > 4) return 4;
                 if (block.IsWater() && block.GetGridPosition().y > 2) return 2;
-                if (block.IsWater()) return 1;
-                
+
                 if (block.IsSand()) return -1;
 
                 return 0;
@@ -277,8 +341,21 @@ public class WorldPlane : MonoBehaviour
         }
 
         blocksRepository.RemoveAll();
+        blocksRepository = new BlocksRepository();
 
-        CreateWorld(SizeToDimensions(size));
+        // TODO Fix issue where houses won't spawn when got farms and when has Destroyed world with meteor at least once
+        // TODO Make it possible to spawn multiple big houses again
+        // TODO Make big houses have a LARGE negative impact on Nature score
+        // TODO Make world a lot bigger -> Make more clouds? Create clouds from soaking up water?
+        // TODO Navigation using hand controls.. how?
+        // TODO Debug performance issues -> Try replacing houses with low poly meshes! Try run some profiler? Maybe some cached matrix of all blocks and all it's different lookup variants?
+
+        StartCoroutine(CreateWorldAsync());
+
+        IEnumerator CreateWorldAsync()
+        {
+            yield return CreateWorld(SizeToDimensions(size));
+        }
     }
 
 
@@ -291,28 +368,44 @@ public class WorldPlane : MonoBehaviour
             case Size.Medium:
                 return new Vector2(9, 9);
             case Size.Large:
-                return new Vector2(17, 17);
+                return new Vector2(24, 24);
             default:
                 throw new Exception("There is no dimensions specified for size: " + size);
         }
     }
 
-    private void CreateWorld(Vector2 dimensions)
+    private IEnumerator CreateWorld(Vector2 dimensions)
     {
         _currentDimensions = dimensions;
 
-        for (var row = 0; row < dimensions.y; row++)
+        var yChunks = 8;
+        for (var yChunk = 1; yChunk <= yChunks; yChunk++)
         {
-            for (var column = -1; column < dimensions.x; column++)
+            var xChunks = 8;
+            for (var xChunk = 1; xChunk <= xChunks; xChunk++)
             {
-                var isMiddle = Math.Abs(row % 2) < .5f;
-                if (isMiddle && column == -1) continue;
+                var rowHeight = Mathf.Ceil(dimensions.y / yChunks);
+                var yStart = rowHeight * (yChunk - 1);
+                var yMax = rowHeight * yChunk;
+                for (var row = yStart; row < yMax; row++)
+                {
+                    var columnHeight = Mathf.Ceil(dimensions.x / xChunks);
+                    var xStart = columnHeight * (xChunk - 1);
+                    var xMax = columnHeight * xChunk;
+                    for (var column = Math.Abs(xStart) < .5f ? -1 : xStart; column < xMax; column++)
+                    {
+                        var isMiddle = Math.Abs(row % 2) < .5f;
+                        if (isMiddle && Math.Abs(column - (-1)) < .5f) continue;
 
-                var blockPosition = new Vector3(row, 0, column);
-                var blockObject = Instantiate(blockTemplate);
-                var block = blockObject.GetComponentInChildren<Block>();
+                        var blockPosition = new Vector3(row, 0, column);
+                        var blockObject = Instantiate(blockTemplate);
+                        var block = blockObject.GetComponentInChildren<Block>();
 
-                AddAndPositionBlock(block, blockPosition);
+                        AddAndPositionBlock(block, blockPosition);
+                    }
+
+                    yield return new WaitForEndOfFrame();
+                }
             }
         }
     }
@@ -325,13 +418,13 @@ public class WorldPlane : MonoBehaviour
 
         if (isEven)
         {
-            return row >= 0 && row < _currentDimensions.x
-                            && column >= 0 && column < _currentDimensions.y;
+            return row >= _currentMinBound.x && row < _currentDimensions.x
+                                             && column >= _currentMinBound.y && column < _currentDimensions.y;
         }
         else
         {
-            return row >= 0 && row < _currentDimensions.x
-                            && column >= -1 && column < _currentDimensions.y;
+            return row >= _currentMinBound.x && row < _currentDimensions.x
+                                             && column >= (_currentMinBound.y - 1) && column < _currentDimensions.y;
         }
     }
 
@@ -350,5 +443,77 @@ public class WorldPlane : MonoBehaviour
 
                 return amountOfNeighbouringWaterBlocks == 0;
             });
+    }
+
+    public Vector3 GetRealCenterPoint()
+    {
+        var centerGridPosition = new Vector3(Mathf.Round(_currentDimensions.x * .5f), 0,
+            Mathf.Round(_currentDimensions.y * .5f));
+        return ToRealCoordinates(centerGridPosition);
+    }
+
+    public float Top()
+    {
+        return _topLeftPointTransform.position.z;
+    }
+
+    public float Right()
+    {
+        return _topLeftPointTransform.position.x;
+    }
+
+    public float Bottom()
+    {
+        return _topLeftPointTransform.position.z + blockTemplate.transform.localScale.z * _currentDimensions.y;
+    }
+
+    public float Left()
+    {
+        return _topLeftPointTransform.position.x +
+               blockTemplate.transform.localScale.x * _currentDimensions.x; //Should it be .y and not .x ...
+    }
+
+    public IEnumerable<Block> GetBlocksWithGreens()
+    {
+        return blocksRepository
+            .StreamBlocks()
+            .Where(block => block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown());
+    }
+
+    public IEnumerable<Block> GetBlocksWithWoodcutters()
+    {
+        return blocksRepository
+            .StreamBlocks()
+            .Where(block => block.HasOccupant() && block.GetOccupant().GetComponent<WoodcutterSpawn>());
+    }
+
+    public IEnumerable<Block> GetBlocksWithOccupants()
+    {
+        return blocksRepository.StreamBlocks().Where(block => block.HasOccupant());
+    }
+
+    public IEnumerable<Block> GetBlocksWithDocks()
+    {
+        return blocksRepository
+            .StreamBlocks()
+            .Where(block => block.HasOccupant() && block.GetOccupant().GetComponent<DocksSpawn>());
+    }
+
+    public Block.BlockType GetMajorityBlockTypeWithinRange(Vector3 gridPosition, float range)
+    {
+        return GetNearbyBlocksWithinRange(gridPosition, range)
+            .GroupBy(block => block.blockType)
+            .OrderByDescending(group => group.Count())
+            .First()
+            .Key;
+    }
+
+    public bool NoNearby(Vector3 gridPosition, float radius, Func<Block, bool> filter)
+    {
+        var hasAnyNearby = GetNearbyBlocksWithinRange(gridPosition, radius)
+            .Where(filter)
+            .Any();
+
+        return !hasAnyNearby;
     }
 }

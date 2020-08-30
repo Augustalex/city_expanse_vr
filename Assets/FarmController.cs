@@ -18,7 +18,7 @@ public class FarmController : MonoBehaviour
 
     private void Awake()
     {
-        _worldPlane = FindObjectOfType<WorldPlane>();
+        _worldPlane = WorldPlane.Get();
     }
 
     public Block MakeToSoilWithFarm(Block block)
@@ -58,7 +58,10 @@ public class FarmController : MonoBehaviour
                 var farmSpawn = soil.GetOccupant().GetComponent<FarmSpawn>();
                 if (farmSpawn)
                 {
-                    farmSpawn.Grow();
+                    if (FeatureToggles.Get().farmsGrowAtRandom)
+                    {
+                        farmSpawn.Grow();
+                    }
                 }
             }
         }

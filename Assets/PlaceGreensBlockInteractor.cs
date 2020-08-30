@@ -5,12 +5,13 @@ using UnityEngine;
 public class PlaceGreensBlockInteractor : BlockInteractor
 {
     public GameObject greensBlockTemplate;
+    private bool _hasPlacedSomeGreens;
 
     private void OnTriggerEnter(Collider other)
     {
         Interact(other.gameObject);
     }
-    
+
     public void StopRigidbodySoon(GameObject greens)
     {
         StartCoroutine(DoSoon());
@@ -28,7 +29,8 @@ public class PlaceGreensBlockInteractor : BlockInteractor
         if (!IsActivated()) return;
 
         var blockComponent = other.gameObject.GetComponent<Block>();
-        if (blockComponent && blockComponent.IsInteractable() && blockComponent.blockType == Block.BlockType.Grass && blockComponent.IsVacant())
+        if (blockComponent && blockComponent.IsInteractable() && blockComponent.blockType == Block.BlockType.Grass &&
+            blockComponent.IsVacant())
         {
             var greens = Instantiate(greensBlockTemplate);
             blockComponent.Occupy(greens);

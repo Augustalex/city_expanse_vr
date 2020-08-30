@@ -9,15 +9,18 @@ public class FloodingWater : MonoBehaviour
     public GameObject groundWaterBlockTemplate;
     private Block _block;
     private WorldPlane _worldPlane;
+    private float _life;
 
     void Start()
     {
+        _life = Time.fixedTime;
         _block = GetComponentInChildren<Block>();
         _worldPlane = GameObject.FindWithTag("WorldPlane").GetComponent<WorldPlane>();
     }
 
     void Update()
     {
+        if (Time.fixedTime - _life < 1.2f) return;
         if (_block.IsPermaFrozen()) return;
 
         if (_block.IsGroundLevel())

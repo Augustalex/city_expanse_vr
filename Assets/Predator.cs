@@ -22,7 +22,7 @@ public class Predator : MonoBehaviour
 
     void Start()
     {
-        _worldPlane = FindObjectOfType<WorldPlane>();
+        _worldPlane = WorldPlane.Get();
     }
 
     void Update()

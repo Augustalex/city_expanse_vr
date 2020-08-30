@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using Random = UnityEngine.Random;
 
 public class Block : MonoBehaviour
@@ -19,6 +20,7 @@ public class Block : MonoBehaviour
     private Vector3 _gridPosition;
     private GameObject _occupiedBy;
     private bool _permaFrozen;
+
     public event Action BeforeDestroy;
 
     public void DestroySelf()
@@ -91,6 +93,23 @@ public class Block : MonoBehaviour
         return _gridPosition;
     }
 
+    public void CreateAndOccupy(GameObject template)
+    {
+        var occupant = Instantiate(template, null, true);
+        occupant.transform.position = Vector3.zero;
+        
+        _occupiedBy = occupant;
+        
+        var blockRelative = occupant.GetComponent<BlockRelative>();
+        if (blockRelative)
+        {
+            blockRelative.block = this;
+        }
+
+        var animationHeight = .4f;
+        occupant.transform.position = transform.position + Vector3.up * (.05f + animationHeight);
+    }
+    
     public void Occupy(GameObject occupant)
     {
         _occupiedBy = occupant;
@@ -204,5 +223,15 @@ public class Block : MonoBehaviour
     private void OnBeforeDestroy()
     {
         BeforeDestroy?.Invoke();
+    }
+
+    public bool HasOccupant()
+    {
+        return _occupiedBy != null;
+    }
+
+    public bool IsOccupable()
+    {
+        return blockType == BlockType.Grass && !HasOccupant();
     }
 }

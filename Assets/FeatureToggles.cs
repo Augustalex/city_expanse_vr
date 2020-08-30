@@ -1,12 +1,21 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class FeatureToggles : MonoBehaviour
 {
   public bool predators;
   public bool persons;
+  public bool farmsGrowAtRandom;
+
+  private static FeatureToggles _featureToggles;
+
+  private void Awake()
+  {
+    _featureToggles = this;
+  }
 
   public static FeatureToggles Get()
   {
-    return FindObjectOfType<FeatureToggles>();
+    return _featureToggles;
   }
 }

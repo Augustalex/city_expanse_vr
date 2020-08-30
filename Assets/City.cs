@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,26 +9,25 @@ public class City : MonoBehaviour
     public GameObject tinyHouseTemplate;
     public GameObject sandBlockTemplate;
 
-    public int selfSustainedHouses = 1;
-
+    private const int SelfSustainedHouses = 3;
+    
     private WorldPlane _worldPlane;
     private double _lastPlacedHouse;
-    private double _lastUpgradedBigHouse;
     private bool _sandSpawned;
     private SandSpreadController _sandSpreadController;
+    private float _lastPlacedInnerCityHouse;
 
     void Start()
     {
         _worldPlane = GetComponent<WorldPlane>();
         _lastPlacedHouse = Time.fixedTime - 10;
-        _lastUpgradedBigHouse = Time.fixedTime;
-        _sandSpreadController = FindObjectOfType<SandSpreadController>();
+        _sandSpreadController = SandSpreadController.Get();
     }
 
     void Update()
     {
         var delta = Time.fixedTime - _lastPlacedHouse;
-        if (delta > 10f && Random.value < .1)
+        if (delta > 10f && Random.value < .1f)
         {
             if (CanSpawnAnotherHouse())
             {
@@ -37,13 +35,16 @@ public class City : MonoBehaviour
             }
         }
 
-        if (Random.value < .001f)
+        var innerCityDelta = Time.fixedTime - _lastPlacedInnerCityHouse;
+        if (innerCityDelta > 10f && Random.value < .2f)
         {
-            SpawnInnerCityHouse();
+            if (Random.value < .1f)
+            {
+                SpawnInnerCityHouse();
+            }
         }
-
-        var upgradeDelta = Time.fixedTime - _lastUpgradedBigHouse;
-        if (upgradeDelta > 1.5f)
+        
+        if (Random.value < .01f && HasNoOtherBigHouses())
         {
             SpawnBigHouse();
         }
@@ -64,18 +65,32 @@ public class City : MonoBehaviour
         }
     }
 
+    private bool HasNoOtherBigHouses()
+    {
+        var amountOfBigHouses = _worldPlane.GetBlocksWithHouses()
+            .Count(block => block.GetOccupantHouse().IsBig());
+        
+        return amountOfBigHouses < 2;
+    }
+
     private bool CanSpawnAnotherHouse()
     {
-        var houses = _worldPlane.GetBlocksWithHouses();
-        var bigHouses = _worldPlane.GetBlocksWithHouses().Where(houseBlock => houseBlock.GetOccupantHouse().IsBig());
+        var bigHouses = _worldPlane.GetBlocksWithHouses().Where(houseBlock => houseBlock.GetOccupantHouse().IsBig()).ToList();
         var farms = FarmMasterController.Get().CountFarms();
-        return houses.Count < selfSustainedHouses + (bigHouses.Count() * 2) + (farms * 2);
+        
+        var houses = _worldPlane.GetBlocksWithHouses();
+        return houses.Count < (SelfSustainedHouses + (bigHouses.Count * 2) + (farms * 2));
     }
 
     private void SpawnSandBlock()
     {
         var sandBlockRoot = Instantiate(sandBlockTemplate);
         var block = _worldPlane.GetVacantBlocks()
+            .Where(vacantBlock =>
+            {
+                var waterBlocks = _worldPlane.GetWaterBlocks();
+                return waterBlocks.Count(waterBlock => vacantBlock.DistanceToOtherBlock(waterBlock) < 1) == 0;
+            })
             .OrderBy(_ => Random.value)
             .First();
         var sandBlock = sandBlockRoot.GetComponentInChildren<Block>();
@@ -117,13 +132,14 @@ public class City : MonoBehaviour
         {
             var (bigHouse, vacantLot) = bigHouseCandidates[Random.Range(0, candidatesCount)];
             var house = Instantiate(tinyHouseTemplate);
+            house.GetComponent<HouseSpawn>().SetIsInnerCity();
             vacantLot.Occupy(house);
             
             var target = bigHouse.transform.position;
             target.y = house.transform.position.y;
             house.transform.LookAt(target);
-
-            _lastPlacedHouse = Time.fixedTime;
+            
+            _lastPlacedInnerCityHouse = Time.fixedTime;
         }
     }
 
@@ -141,7 +157,7 @@ public class City : MonoBehaviour
                 // var hasLargeEnoughClosePopulation = blocksWithHouse.Count(houseBlock => block.DistanceToOtherBlock(houseBlock) <= 1.5f) >= 3;
                 // if (!hasLargeEnoughClosePopulation) return false;
 
-                var hasEnoughSurroundingNature = _worldPlane.NatureScore(block.GetGridPosition(), 5f) > 50;
+                var hasEnoughSurroundingNature = _worldPlane.NatureScore(block.GetGridPosition(), 8f) > 20;
                 return hasEnoughSurroundingNature;
             })
             .ToList();
@@ -151,8 +167,7 @@ public class City : MonoBehaviour
         {
             var houseToUpgrade = candidates[Random.Range(0, candidatesCount)];
             houseToUpgrade.GetOccupantHouse().Upgrade();
-
-            _lastUpgradedBigHouse = Time.fixedTime;
+            _lastPlacedHouse = Time.fixedTime;
         }
     }
 

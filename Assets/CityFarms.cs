@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(City))]
@@ -9,7 +10,7 @@ public class CityFarms : MonoBehaviour
 
     void Start()
     {
-        _worldPlane = FindObjectOfType<WorldPlane>();
+        _worldPlane = WorldPlane.Get();
     }
 
     void Update()
@@ -20,18 +21,34 @@ public class CityFarms : MonoBehaviour
 
             if (houses.Count > 0)
             {
-                var houseBlock = houses.OrderBy(_ => Random.value).First();
-                var vacantLots = _worldPlane.GetNearbyVacantLots(houseBlock.GetGridPosition())
-                    .OrderBy(_ => Random.value)
+                SpawnMasterFarm(houses);
+            }
+            else
+            {
+                var bigHouses = _worldPlane.GetBlocksWithHouses()
+                    .Where(block => block.GetOccupantHouse().IsInnerCityHouse())
                     .ToList();
-                if (vacantLots.Count > 0)
+                if (bigHouses.Count > 0)
                 {
-                    var lotToReplace = vacantLots.First();
-                    FarmMasterController.Get().SetupFarmControllerForBlock(lotToReplace);
-                    
-                    _placedFirstFarm = true;
+                    SpawnMasterFarm(bigHouses);
                 }
             }
+        }
+    }
+
+    private void SpawnMasterFarm(List<Block> houses)
+    {
+        var houseBlock = houses.OrderBy(_ => Random.value).First();
+        var vacantLots = _worldPlane.GetNearbyVacantLots(houseBlock.GetGridPosition())
+            .OrderBy(_ => Random.value)
+            .ToList();
+        
+        if (vacantLots.Count > 0)
+        {
+            var lotToReplace = vacantLots.First();
+            FarmMasterController.Get().SetupFarmControllerForBlock(lotToReplace);
+
+            _placedFirstFarm = true;
         }
     }
 }
