@@ -9,21 +9,26 @@ public class CityForts : MonoBehaviour
     public GameObject fortSpawnTemplate;
 
     private WorldPlane _worldPlane;
+    private FeatureToggles _featureToggles;
 
     void Start()
     {
         _worldPlane = WorldPlane.Get();
+        _featureToggles = FeatureToggles.Get();
     }
 
     void Update()
     {
+        if (!_featureToggles.fort) return;
+
         if (Random.value < .01f)
         {
             var candidates = _worldPlane.GetVacantBlocks()
                 .Where(vacantBlock => Math.Abs(vacantBlock.GetGridPosition().y) < .5f &&
-                                     _worldPlane.GetMajorityBlockTypeWithinRange(vacantBlock.GetGridPosition(), 1f)
-                                     == Block.BlockType.Grass
-                                     && _worldPlane.NoNearby(vacantBlock.GetGridPosition(), 2f, block => block.blockType == Block.BlockType.Water)
+                                      _worldPlane.GetMajorityBlockTypeWithinRange(vacantBlock.GetGridPosition(), 1f)
+                                      == Block.BlockType.Grass
+                                      && _worldPlane.NoNearby(vacantBlock.GetGridPosition(), 2f,
+                                          block => block.blockType == Block.BlockType.Water)
                 )
                 .SelectMany(fortBase =>
                 {
@@ -31,9 +36,9 @@ public class CityForts : MonoBehaviour
                         .Where(block =>
                             Math.Abs(block.GetGridPosition().y - (fortBase.GetGridPosition().y + 1f)) < .5f)
                         .ToList();
-                    
+
                     if (!nearbyHighlands.Any()) return new List<Tuple<Block, Block>>();
-                    
+
                     return nearbyHighlands
                         .Where(block => block.IsOccupable())
                         .Select(block => new Tuple<Block, Block>(fortBase, block));
