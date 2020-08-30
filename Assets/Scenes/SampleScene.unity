@@ -568,7 +568,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &234377180
 Transform:
   m_ObjectHideFlags: 0
@@ -2378,7 +2378,7 @@ PrefabInstance:
     - target: {fileID: 8097704663750696973, guid: cd916c0e7f8e1244f9451eea1fbd44ca,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8097704663750697009, guid: cd916c0e7f8e1244f9451eea1fbd44ca,
         type: 3}
@@ -3861,7 +3861,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1529638746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4123,6 +4123,34 @@ MonoBehaviour:
   _headPoseRelativeOffsetRotation: {x: 0, y: 0, z: 0}
   _headPoseRelativeOffsetTranslation: {x: 0, y: 0, z: 0}
   profilerTcpPort: 32419
+  expandMixedRealityCapturePropertySheet: 0
+  enableMixedReality: 0
+  compositionMethod: 0
+  extraHiddenLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  externalCompositionBackdropColorRift: {r: 0, g: 1, b: 0, a: 1}
+  externalCompositionBackdropColorQuest: {r: 0, g: 0, b: 0, a: 0}
+  capturingCameraDevice: 0
+  flipCameraFrameHorizontally: 0
+  flipCameraFrameVertically: 0
+  handPoseStateLatency: 0
+  sandwichCompositionRenderLatency: 0
+  sandwichCompositionBufferedFrames: 8
+  chromaKeyColor: {r: 0, g: 1, b: 0, a: 1}
+  chromaKeySimilarity: 0.6
+  chromaKeySmoothRange: 0.03
+  chromaKeySpillRange: 0.06
+  useDynamicLighting: 0
+  depthQuality: 1
+  dynamicLightingSmoothFactor: 8
+  dynamicLightingDepthVariationClampingValue: 0.001
+  virtualGreenScreenType: 0
+  virtualGreenScreenTopY: 10
+  virtualGreenScreenBottomY: -10
+  virtualGreenScreenApplyDepthCulling: 0
+  virtualGreenScreenDepthTolerance: 0.2
+  mrcActivationMode: 0
   _trackingOriginType: 1
   usePositionTracking: 1
   useRotationTracking: 1
@@ -5512,6 +5540,10 @@ PrefabInstance:
     - target: {fileID: 1741071623, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
       propertyPath: biomes
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1741071623, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
+      propertyPath: fort
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3645905919876899980, guid: 63f229cc46e53ef47a8bc7f7667512ce,
         type: 3}
