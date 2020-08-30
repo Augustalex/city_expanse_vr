@@ -516,4 +516,27 @@ public class WorldPlane : MonoBehaviour
 
         return !hasAnyNearby;
     }
+
+    public List<Biome> GetBiomes()
+    {
+        var biomeBuilders = new List<Biome.BiomeType>()
+            {
+                Biome.BiomeType.Forrest,
+                Biome.BiomeType.Mountain,
+                Biome.BiomeType.Plains,
+                Biome.BiomeType.Shoreline
+            }
+            .Select(type => new BiomeBuilder(type))
+            .ToList();
+
+        foreach (var block in blocksRepository.StreamBlocks())
+        {
+            foreach (var biomeBuilder in biomeBuilders)
+            {
+                if (biomeBuilder.AnalyzeBlock(block)) break;
+            }
+        }
+
+        return biomeBuilders.Select(builder => builder.Build()).ToList();
+    }
 }
