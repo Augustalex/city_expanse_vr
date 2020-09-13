@@ -9,7 +9,6 @@ public class Cloud : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -32,7 +31,8 @@ public class Cloud : MonoBehaviour
         if (_followPoint == referenceFollowPoint)
         {
             _followPoint = null;
-            GetComponentInParent<Rigidbody>().AddForce(transform.gameObject.GetComponent<Rigidbody>().velocity, ForceMode.VelocityChange);
+            var direction = Camera.main.transform.forward.normalized;
+            GetComponent<Rigidbody>().AddForce(direction * 1f, ForceMode.Impulse);
         }
     }
 }

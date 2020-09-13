@@ -7,12 +7,36 @@ using UnityEngine;
 public class PrimaryGrabber : MonoBehaviour
 {
     private Cloud _nearbyCloud;
+    private float _enteredSecondaryGrabberLast = 0;
+    private bool _touchingSecondaryGrabber;
+    private bool _grabbedCloud;
+    private Rigidbody _rigidbody;
+    private double _latestMagnitude;
+    private double _latestSampleTime;
+
+    private const float GrabberMinThreshold = .2f;
+
+    void Start()
+    {
+        _rigidbody = GetComponent<Rigidbody>();
+    }
+    
+    void Update()
+    {
+        if (_grabbedCloud && !_touchingSecondaryGrabber && Time.fixedTime - _enteredSecondaryGrabberLast > GrabberMinThreshold)
+        {
+            ReleaseCloud();
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         var isSecondaryGrabber = other.gameObject.GetComponent<SecondaryGrabber>();
         if (isSecondaryGrabber)
         {
+            _enteredSecondaryGrabberLast = Time.fixedTime;
+            _touchingSecondaryGrabber = true;
+
             var cloud = GetNearbyCloudHook();
             if (cloud != null)
             {
@@ -24,15 +48,19 @@ public class PrimaryGrabber : MonoBehaviour
 
     private void GrabCloud()
     {
-        _nearbyCloud.Hook(transform);
+        if (_nearbyCloud != null)
+        {
+            _grabbedCloud = true;
+            _nearbyCloud.Hook(transform);
+        }
     }
 
     private Cloud GetNearbyCloudHook()
     {
-        var hits = Physics.OverlapSphere(transform.position,  .2f);
+        var hits = Physics.OverlapSphere(transform.position, .2f);
         return hits
-            .FirstOrDefault(hit => hit.gameObject.GetComponent<Cloud>() != null)
-            ?.gameObject .GetComponent<Cloud>();
+            .FirstOrDefault(hit => hit.gameObject.GetComponentInParent<Cloud>() != null)
+            ?.gameObject.GetComponentInParent<Cloud>();
     }
 
     private void OnTriggerExit(Collider other)
@@ -40,12 +68,22 @@ public class PrimaryGrabber : MonoBehaviour
         var isSecondaryGrabber = other.gameObject.GetComponent<SecondaryGrabber>();
         if (isSecondaryGrabber)
         {
-            ReleaseCloud();
+            _touchingSecondaryGrabber = false;
+
+            var timeSinceEntered = Time.fixedTime - _enteredSecondaryGrabberLast;
+            if (timeSinceEntered > GrabberMinThreshold)
+            {
+                ReleaseCloud();
+            }
         }
     }
 
     private void ReleaseCloud()
     {
-        _nearbyCloud.UnHook(transform);
+        if (_nearbyCloud != null)
+        {
+            _grabbedCloud = false;
+            _nearbyCloud.UnHook(transform);
+        }
     }
 }
