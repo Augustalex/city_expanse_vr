@@ -10,6 +10,7 @@ public class CityForts : MonoBehaviour
 
     private WorldPlane _worldPlane;
     private FeatureToggles _featureToggles;
+    private int _fortCount;
 
     void Start()
     {
@@ -20,9 +21,11 @@ public class CityForts : MonoBehaviour
     void Update()
     {
         if (!_featureToggles.fort) return;
+        if (_fortCount > 2) return;
 
-        if (Random.value < .01f)
+        if (Random.value < .001f)
         {
+            if (_worldPlane.blocksRepository.StreamBlocks().Count(block => block.GetGridPosition().y > 1f) < 10) return;
             var candidates = _worldPlane.GetVacantBlocks()
                 .Where(vacantBlock => Math.Abs(vacantBlock.GetGridPosition().y) < .5f &&
                                       _worldPlane.GetMajorityBlockTypeWithinRange(vacantBlock.GetGridPosition(), 1f)
@@ -55,6 +58,8 @@ public class CityForts : MonoBehaviour
                 var target = highlands.transform.position;
                 target.y = fortSpawn.transform.position.y;
                 fortSpawn.transform.LookAt(target);
+
+                _fortCount += 1;
             }
         }
     }
