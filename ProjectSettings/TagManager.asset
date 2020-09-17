@@ -8,6 +8,8 @@ TagManager:
   - HouseSpawn
   - SpawnSmoke
   - HousePivot
+  - PaletteTriggerZone
+  - ItemContainer
   layers:
   - Default
   - TransparentFX

@@ -24,7 +24,10 @@ public abstract class BlockInteractor : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _followObject = GetComponent<FollowObject>();
         _originalLocalPosition = transform.localPosition;
-        _originalScale = transform.localScale;
+        
+        _originalScale = transform.localScale * 1.5f;
+        transform.localScale = _originalScale;
+        
         _worldPlane = GameObject.FindWithTag("WorldPlane").GetComponent<WorldPlane>();
 
         if (isStartingInteractor)
@@ -40,7 +43,7 @@ public abstract class BlockInteractor : MonoBehaviour
     {
         _followObject.enabled = true;
         _frozen = false;
-        transform.localScale = _originalScale * 2f;
+        transform.localScale = _originalScale * 1.5f;
     }
 
     public void Deactivate()
@@ -53,7 +56,7 @@ public abstract class BlockInteractor : MonoBehaviour
 
         IEnumerator UnfreezeSoon()
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(.5f);
             _frozen = false;
         }
     }

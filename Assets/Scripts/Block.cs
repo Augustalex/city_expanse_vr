@@ -68,7 +68,7 @@ public class Block : MonoBehaviour
 
         IEnumerator UnfreezeSoon()
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(.5f);
             _frozen = false;
         }
     }

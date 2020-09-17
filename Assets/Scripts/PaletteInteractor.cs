@@ -14,8 +14,14 @@ public class PaletteInteractor : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!_blockInteractor.IsActivated()) return;
+
         
         var interactorComponent = other.gameObject.GetComponent<BlockInteractor>();
+        
+        // if (interactorComponent.GetType() == typeof(DigBlockInteractor))
+        // {
+        //     Debug.Log("DIG!");
+        // }
         if (interactorComponent && !interactorComponent.IsActivated() && interactorComponent.IsInteractable())
         {
             var palette = GetComponentInParent<BlockInteractionPalette>();
