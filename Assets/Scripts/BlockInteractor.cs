@@ -15,7 +15,7 @@ public abstract class BlockInteractor : MonoBehaviour
     private AudioSource _audioSource;
     private FollowObject _followObject;
     private bool _frozen = false;
-    private Vector3 _originalPosition;
+    private Vector3 _originalLocalPosition;
     private Vector3 _originalScale;
     private WorldPlane _worldPlane;
 
@@ -23,7 +23,7 @@ public abstract class BlockInteractor : MonoBehaviour
     {
         _audioSource = GetComponent<AudioSource>();
         _followObject = GetComponent<FollowObject>();
-        _originalPosition = transform.position;
+        _originalLocalPosition = transform.localPosition;
         _originalScale = transform.localScale;
         _worldPlane = GameObject.FindWithTag("WorldPlane").GetComponent<WorldPlane>();
 
@@ -40,7 +40,7 @@ public abstract class BlockInteractor : MonoBehaviour
     {
         _followObject.enabled = true;
         _frozen = false;
-        transform.localScale = _originalScale * .6f;
+        transform.localScale = _originalScale * 2f;
     }
 
     public void Deactivate()
@@ -96,7 +96,7 @@ public abstract class BlockInteractor : MonoBehaviour
 
     public void ResetPosition()
     {
-        transform.position = _originalPosition;
+        transform.localPosition = _originalLocalPosition;
     }
 
     protected WorldPlane GetWorldPlane()
