@@ -20,6 +20,8 @@ public class Block : MonoBehaviour
     private Vector3 _gridPosition;
     private GameObject _occupiedBy;
     private bool _permaFrozen;
+    
+    private const int CloudLevel = 4;
 
     public event Action BeforeDestroy;
 
@@ -244,5 +246,15 @@ public class Block : MonoBehaviour
     public bool IsOccupable()
     {
         return blockType == BlockType.Grass && !HasOccupant();
+    }
+
+    public bool AboveCloudLevel()
+    {
+        return GetGridPosition().y > CloudLevel;
+    }
+    
+    public bool BelowCloudLevel()
+    {
+        return GetGridPosition().y <= CloudLevel;
     }
 }
