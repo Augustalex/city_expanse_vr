@@ -11,6 +11,7 @@ TagManager:
   - PaletteTriggerZone
   - ItemContainer
   - MiddleFingerTracker
+  - DesertHouse
   layers:
   - Default
   - TransparentFX

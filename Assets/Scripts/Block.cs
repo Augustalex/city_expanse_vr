@@ -257,4 +257,14 @@ public class Block : MonoBehaviour
     {
         return GetGridPosition().y <= CloudLevel;
     }
+
+    public bool OccupiedByDesertHouse()
+    {
+        return !IsVacant() && _occupiedBy.CompareTag("DesertHouse");
+    }
+
+    public bool CanBeReplacedByVacantSandBlock()
+    {
+        return !OccupiedByDesertHouse();
+    }
 }

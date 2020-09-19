@@ -267,6 +267,11 @@ public class WorldPlane : MonoBehaviour
         return blocksRepository.StreamBlocks().Where(block => block.OccupiedByHouse()).ToList();
     }
 
+    public IEnumerable<Block> GetBlocksWithDesertHouses()
+    {
+        return blocksRepository.StreamBlocks().Where(block => block.OccupiedByDesertHouse());
+    }
+
     public int GetStackHeight(Vector3 position)
     {
         var stack = blocksRepository.StreamPairs().Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
@@ -538,5 +543,10 @@ public class WorldPlane : MonoBehaviour
         }
 
         return biomeBuilders.Select(builder => builder.Build()).ToList();
+    }
+
+    public IEnumerable<Block> GetSandBlocks()
+    {
+        return blocksRepository.StreamBlocks().Where(b => b.blockType == Block.BlockType.Sand);
     }
 }
