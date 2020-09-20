@@ -6,10 +6,18 @@ public class GreensSpawn : MonoBehaviour
 {
     public GameObject[] greensTemplates;
     public GameObject seedTemplate;
-    
+
+    public enum TreeSize
+    {
+        Small,
+        Big,
+        Huge
+    }
+
     private bool _grown;
     private GameObject _greens;
     private GameObject _seed;
+    private Vector3 _originalScale;
 
     void Awake()
     {
@@ -25,6 +33,8 @@ public class GreensSpawn : MonoBehaviour
         var seed = Instantiate(seedTemplate);
         seed.transform.SetParent(transform, false);
         _seed = seed;
+
+        _originalScale = transform.localScale;
     }
 
     public void Grow()
@@ -47,5 +57,21 @@ public class GreensSpawn : MonoBehaviour
         
         _greens.SetActive(false);
         _seed.SetActive(true);
+    }
+
+    public void SetSize(TreeSize size)
+    {
+        if (size == TreeSize.Big)
+        {
+            transform.localScale = _originalScale * 1.25f;
+        }
+        else if (size == TreeSize.Huge)
+        {
+            transform.localScale = _originalScale * 1.8f;
+        }
+        else
+        {
+            transform.localScale = _originalScale;
+        }
     }
 }
