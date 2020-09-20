@@ -9,7 +9,6 @@ public abstract class BlockInteractor : MonoBehaviour
 {
     public bool isStartingInteractor = false;
 
-    public AudioClip blockGeneralInteractionSound;
     public float volumeOverride = 0;
 
     private AudioSource _audioSource;
@@ -24,7 +23,7 @@ public abstract class BlockInteractor : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _followObject = GetComponent<FollowObject>();
         _originalLocalPosition = transform.localPosition;
-        
+
         _originalScale = transform.localScale * 1.5f;
         transform.localScale = _originalScale;
         
@@ -73,15 +72,21 @@ public abstract class BlockInteractor : MonoBehaviour
 
     public void PlayGeneralSound()
     {
+        PlaySound(BlockSoundLibrary.BlockSound.Basic);
+    }
+
+    public void PlaySound(BlockSoundLibrary.BlockSound blockSound)
+    {
         _audioSource.Stop();
         
+        var sound = BlockSoundLibrary.Get().GetSound(blockSound);
         if (volumeOverride > 0)
         {
-            _audioSource.PlayOneShot(blockGeneralInteractionSound, volumeOverride);
+            _audioSource.PlayOneShot(sound, volumeOverride);
         }
         else
         {
-            _audioSource.PlayOneShot(blockGeneralInteractionSound);
+            _audioSource.PlayOneShot(sound);
         }
     }
 

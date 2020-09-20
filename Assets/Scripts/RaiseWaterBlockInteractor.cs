@@ -16,7 +16,7 @@ public class RaiseWaterBlockInteractor : BlockInteractor
         if (blockComponent && blockComponent.IsInteractable() && blockComponent.IsVacant())
         {
             RaiseWater.Get().Use(blockComponent);
-            PlayGeneralSound();
+            PlaySound(BlockSoundLibrary.BlockSound.PlaceItem);
         }
     }
 }

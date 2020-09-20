@@ -23,7 +23,7 @@ public class FillWaterBlockInteractor : BlockInteractor
             var waterBlock = water.GetComponentInChildren<Block>();
             GetWorldPlane().ReplaceBlock(blockComponent, waterBlock);
             waterBlock.ShortFreeze();
-            PlayGeneralSound();
+            PlaySound(BlockSoundLibrary.BlockSound.Water);
         }   
     }
 }

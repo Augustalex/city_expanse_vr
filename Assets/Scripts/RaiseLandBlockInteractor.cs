@@ -26,7 +26,7 @@ public class RaiseLandBlockInteractor : BlockInteractor
             var grass = Instantiate(grassBlockTemplate);
             var grassBlock = grass.GetComponentInChildren<Block>();
             GetWorldPlane().AddBlockOnTopOf(grassBlock, grass, blockComponent);
-            PlayGeneralSound();
+            PlaySound(BlockSoundLibrary.BlockSound.RaiseLand);
         }
     }
 }

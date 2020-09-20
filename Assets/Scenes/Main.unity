@@ -847,8 +847,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
-  blockGeneralInteractionSound: {fileID: 8300000, guid: baf4bce8ba882bc47a6069a0b0ef846d,
-    type: 3}
   volumeOverride: 0.5
   mainCamera: {fileID: 546754283}
   meteorTemplate: {fileID: 6276573657937102653, guid: 66105d64d7bffcb4daa596f586f4131b,
@@ -867,8 +865,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
-  blockGeneralInteractionSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d,
-    type: 3}
   volumeOverride: 0.5
 --- !u!114 &546754289
 MonoBehaviour:
@@ -883,8 +879,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
-  blockGeneralInteractionSound: {fileID: 8300000, guid: 9f4262535a6d8934b8fb690cbeba25f1,
-    type: 3}
   volumeOverride: 0
   waterBlockTemplate: {fileID: 612181966713644638, guid: ad50e16266866cb4f828d1b10d314e79,
     type: 3}
@@ -1010,8 +1004,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
-  blockGeneralInteractionSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d,
-    type: 3}
   volumeOverride: 0.5
   greensBlockTemplate: {fileID: 2723339866174918418, guid: b9c955f3a6da1db4a8a201fdf8265787,
     type: 3}
@@ -1030,8 +1022,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
-  blockGeneralInteractionSound: {fileID: 8300000, guid: 9f4262535a6d8934b8fb690cbeba25f1,
-    type: 3}
   volumeOverride: 0
 --- !u!114 &546754294
 MonoBehaviour:
@@ -1046,8 +1036,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
-  blockGeneralInteractionSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d,
-    type: 3}
   volumeOverride: 0.5
   grassBlockTemplate: {fileID: 612181966713644638, guid: ae0f003ac96b3884c89d3b3c3916cd65,
     type: 3}
@@ -1092,8 +1080,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
-  blockGeneralInteractionSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d,
-    type: 3}
   volumeOverride: 0
   sandBlockTemplate: {fileID: 612181966713644638, guid: 90738e66673ec454b92002eb0d8e2672,
     type: 3}
@@ -3513,6 +3499,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tinyHouseTemplate: {fileID: 2723339866174918418, guid: 014d5d550bd2ff04f8b0dc6971769286,
     type: 3}
+--- !u!114 &1741071628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741071621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b473cf99474bdeb0c6957ed4396547, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basicSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d, type: 3}
+  meteorSound: {fileID: 8300000, guid: baf4bce8ba882bc47a6069a0b0ef846d, type: 3}
+  waterSound: {fileID: 8300000, guid: 9f4262535a6d8934b8fb690cbeba25f1, type: 3}
+  placeItemSound: {fileID: 8300000, guid: b9df5e87f638b2b408947a0d6db7b1cf, type: 3}
 --- !u!114 &1741071636
 MonoBehaviour:
   m_ObjectHideFlags: 0

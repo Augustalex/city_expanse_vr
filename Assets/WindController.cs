@@ -13,7 +13,7 @@ public class WindController : MonoBehaviour
     void Awake()
     {
         _windDirection = Quaternion.Euler(0, Random.value, 0);
-        _instance = FindObjectOfType<WindController>();
+        _instance = this;
     }
 
     void Update()

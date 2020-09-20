@@ -27,7 +27,7 @@ public class SendMeteorBlockInteractor : BlockInteractor
             meteor.SetTarget(other.gameObject.transform.position);
             meteor.Shoot(mainCamera.transform.position);
 
-            PlayGeneralSound();
+            PlaySound(BlockSoundLibrary.BlockSound.Meteor);
             meteor.BeforeDestroy += () => { };
             meteor.Hit += PlayKaboom;
 

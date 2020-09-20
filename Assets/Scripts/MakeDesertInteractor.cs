@@ -22,7 +22,7 @@ public class MakeDesertInteractor : BlockInteractor
             var sandBlock = sand.GetComponentInChildren<Block>();
             GetWorldPlane().ReplaceBlock(blockComponent, sandBlock);
             sandBlock.ShortFreeze();
-            PlayGeneralSound();
+            PlaySound(BlockSoundLibrary.BlockSound.Basic);
         }   
     }
 }
