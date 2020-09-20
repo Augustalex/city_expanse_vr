@@ -14,7 +14,10 @@ public class FillWaterBlockInteractor : BlockInteractor
         if (!IsActivated()) return;
 
         var blockComponent = other.gameObject.GetComponent<Block>();
-        if (blockComponent && blockComponent.IsInteractable() && blockComponent.IsVacant() && blockComponent.IsGroundLevel())
+        if (blockComponent 
+            && blockComponent.IsInteractable()
+            && blockComponent.IsVacant() 
+            && blockComponent.IsGroundLevel())
         {
             var water = Instantiate(waterBlockTemplate);
             var waterBlock = water.GetComponentInChildren<Block>();

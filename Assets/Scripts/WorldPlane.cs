@@ -560,6 +560,10 @@ public class WorldPlane : MonoBehaviour
                 return HasNearbyGreens(block.GetGridPosition());
             }
         }
+        else if (block.IsWater())
+        {
+            return HasNearbyWater(block.GetGridPosition());
+        }
 
         return true;
     }
@@ -568,5 +572,11 @@ public class WorldPlane : MonoBehaviour
     {
         return GetNearbyBlocks(gridPosition)
             .Any(otherBlock => otherBlock.OccupiedByGreens());
+    }
+    
+    private bool HasNearbyWater(Vector3 gridPosition)
+    {
+        return GetNearbyBlocks(gridPosition)
+            .Any(otherBlock => otherBlock.IsWater());
     }
 }
