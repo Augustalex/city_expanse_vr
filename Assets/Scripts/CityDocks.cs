@@ -80,10 +80,13 @@ public class CityDocks : MonoBehaviour
         if (_boatCount == 7 && Random.value > .000001f) return;
         if (_boatCount == 8 && Random.value > .0000001f) return;
         if (_boatCount == 9 && Random.value > .00000001f) return;
-        
-        var cityWood = CityWoodcutters.Get();
-        if (!cityWood.RequireWood(BoatCost)) return;
-        cityWood.ConsumeWood(BoatCost);
+
+        if (FeatureToggles.Get().woodcutters)
+        {
+            var cityWood = CityWoodcutters.Get();
+            if (!cityWood.RequireWood(BoatCost)) return;
+            cityWood.ConsumeWood(BoatCost);
+        }
 
         var waterBlock = _worldPlane.GetWaterBlocks()
             .Where(block =>

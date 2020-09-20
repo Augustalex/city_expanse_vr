@@ -217,6 +217,16 @@ public class Block : MonoBehaviour
     {
         return _occupiedBy != null && _occupiedBy.GetComponent<GreensSpawn>() != null;
     }
+    
+    public bool OccupiedByGrownGreens()
+    {
+        if (_occupiedBy == null) return false;
+
+        var greens = _occupiedBy.GetComponent<GreensSpawn>();
+        if (!greens) return false;
+
+        return greens.IsGrown();
+    }
 
     public GreensSpawn GetOccupantGreens()
     {
@@ -256,5 +266,10 @@ public class Block : MonoBehaviour
     public bool OccupiedByDesertHouse()
     {
         return !IsVacant() && _occupiedBy.CompareTag("DesertHouse");
+    }
+
+    public bool OccupiedByShrine()
+    {
+        return !IsVacant() && _occupiedBy.GetComponent<ShrineSpawn>() != null;
     }
 }

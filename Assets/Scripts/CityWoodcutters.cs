@@ -33,6 +33,8 @@ public class CityWoodcutters : MonoBehaviour
 
     void Update()
     {
+        if (!FeatureToggles.Get().woodcutters) return;
+        
         if (Random.value < .01f)
         {
             var houseCount = _worldPlane.GetBlocksWithHouses().Count;

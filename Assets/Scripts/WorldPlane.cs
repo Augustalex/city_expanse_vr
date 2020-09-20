@@ -581,4 +581,9 @@ public class WorldPlane : MonoBehaviour
             .Count(block => block.IsWater());
         return nearbyWaterBlocks > waterLimit;
     }
+
+    public IEnumerable<Block> GetBlocksWithShrines()
+    {
+        return blocksRepository.StreamBlocks().Where(block => block.OccupiedByShrine());
+    }
 }

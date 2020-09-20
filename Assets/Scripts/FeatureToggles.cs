@@ -8,6 +8,7 @@ public class FeatureToggles : MonoBehaviour
   public bool farmsGrowAtRandom;
   public bool biomes;
   public bool fort;
+  public bool woodcutters;
 
   private static FeatureToggles _featureToggles;
 

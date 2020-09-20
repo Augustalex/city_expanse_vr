@@ -282,7 +282,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &234377180
 Transform:
   m_ObjectHideFlags: 0
@@ -3515,6 +3515,20 @@ MonoBehaviour:
   meteorSound: {fileID: 8300000, guid: baf4bce8ba882bc47a6069a0b0ef846d, type: 3}
   waterSound: {fileID: 8300000, guid: 9f4262535a6d8934b8fb690cbeba25f1, type: 3}
   placeItemSound: {fileID: 8300000, guid: b9df5e87f638b2b408947a0d6db7b1cf, type: 3}
+--- !u!114 &1741071629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741071621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 963718dd3356d354084c4a1f87b645ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shrineTemplate: {fileID: 2723339866174918418, guid: 0a0b77f8ce37f0f409d1fc1994ab685a,
+    type: 3}
 --- !u!114 &1741071636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3604,7 +3618,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1815282479
 Transform:
   m_ObjectHideFlags: 0
