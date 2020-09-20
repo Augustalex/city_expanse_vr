@@ -43,7 +43,7 @@ public class CityForts : MonoBehaviour
                     if (!nearbyHighlands.Any()) return new List<Tuple<Block, Block>>();
 
                     return nearbyHighlands
-                        .Where(block => block.IsOccupable())
+                        .Where(block => block.IsGrass() && block.IsVacant())
                         .Select(block => new Tuple<Block, Block>(fortBase, block));
                 })
                 .ToList();

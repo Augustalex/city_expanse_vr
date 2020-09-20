@@ -51,7 +51,7 @@ public class CityDocks : MonoBehaviour
                     if (!nearbyBlocks.Any(otherBlock => otherBlock.IsWater())) return new List<Tuple<Block, Block>>();
 
                     return nearbyBlocks
-                        .Where(block => block.IsOccupable())
+                        .Where(block => block.IsGrass() && block.IsVacant())
                         .Select(block => new Tuple<Block, Block>(waterBlock, block));
                 })
                 .ToList();

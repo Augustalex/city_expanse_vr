@@ -51,7 +51,7 @@ public class DesertCity : MonoBehaviour
             .OrderBy(_ => Random.value)
             .SelectMany(sandBlock =>
                 _worldPlane.GetNearbyBlocks(sandBlock.GetGridPosition())
-                    .Where(block => block.blockType == Block.BlockType.Sand)
+                    .Where(block => block.IsWater())
                     .Select(block => new Tuple<Block, Block>(sandBlock, block))
             )
             .ToList();
@@ -59,10 +59,11 @@ public class DesertCity : MonoBehaviour
         var candidatesCount = candidates.Count;
         if (candidatesCount > 0)
         {
-            var (sandBlock, vacantLot) = candidates[Random.Range(0, candidatesCount)];
+            var (sandBlock, lookAtTarget) = candidates[Random.Range(0, candidatesCount)];
             var house = Instantiate(tinyHouseTemplate);
-            vacantLot.Occupy(house);
-            var target = sandBlock.transform.position;
+            sandBlock.Occupy(house);
+            
+            var target = lookAtTarget.transform.position;
             target.y = house.transform.position.y;
             house.transform.LookAt(target);
 
