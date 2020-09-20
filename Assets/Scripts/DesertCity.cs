@@ -48,6 +48,7 @@ public class DesertCity : MonoBehaviour
     private void SpawnOneHouse()
     {
         var candidates = _worldPlane.GetSandBlocks()
+            .Where(block => block.IsVacant())
             .OrderBy(_ => Random.value)
             .SelectMany(sandBlock =>
                 _worldPlane.GetNearbyBlocks(sandBlock.GetGridPosition())
