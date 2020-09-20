@@ -21,7 +21,7 @@ public class CityForts : MonoBehaviour
     void Update()
     {
         if (!_featureToggles.fort) return;
-        if (_fortCount > 2) return;
+        if (_fortCount > 1) return;
 
         if (Random.value < .001f)
         {
