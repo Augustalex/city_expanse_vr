@@ -25,7 +25,7 @@ public class Spreading : MonoBehaviour
         if (Random.value < sandSpreadController.chance)
         {
             var block = _worldPlane.GetNearbyBlocks(_block.GetGridPosition())
-                .Where(b => b.CanBeReplacedByVacantSandBlock())
+                .Where(b => _worldPlane.BlockCanBeReplacedBySandBlock(b))
                 .ToList()
                 .OrderBy(_ => Random.value)
                 .First();

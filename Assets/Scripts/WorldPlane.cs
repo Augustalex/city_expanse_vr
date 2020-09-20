@@ -549,4 +549,24 @@ public class WorldPlane : MonoBehaviour
     {
         return blocksRepository.StreamBlocks().Where(b => b.blockType == Block.BlockType.Sand);
     }
+
+    public bool BlockCanBeReplacedBySandBlock(Block block)
+    {
+        if (block.IsSand())
+        {
+            if (block.OccupiedByDesertHouse()) return false;
+            if (block.OccupiedByGreens())
+            {
+                return HasNearbyGreens(block.GetGridPosition());
+            }
+        }
+
+        return true;
+    }
+
+    private bool HasNearbyGreens(Vector3 gridPosition)
+    {
+        return GetNearbyBlocks(gridPosition)
+            .Any(otherBlock => otherBlock.OccupiedByGreens());
+    }
 }

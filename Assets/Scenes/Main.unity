@@ -1087,6 +1087,8 @@ MonoBehaviour:
   volumeOverride: 0.5
   greensBlockTemplate: {fileID: 2723339866174918418, guid: b9c955f3a6da1db4a8a201fdf8265787,
     type: 3}
+  desertGreensTemplate: {fileID: 2723339866174918418, guid: ec3b0326e4260014999adacf043b13c1,
+    type: 3}
 --- !u!114 &546754293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3934,6 +3936,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tinyHouseTemplate: {fileID: 2723339866174918418, guid: 014d5d550bd2ff04f8b0dc6971769286,
     type: 3}
+--- !u!114 &1741071636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741071621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e27763add682e464a8f5feb9bb610fda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1746575819
 GameObject:
   m_ObjectHideFlags: 0

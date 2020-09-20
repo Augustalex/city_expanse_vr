@@ -20,7 +20,7 @@ public class Block : MonoBehaviour
     private Vector3 _gridPosition;
     private GameObject _occupiedBy;
     private bool _permaFrozen;
-    
+
     private const int CloudLevel = 4;
 
     public event Action BeforeDestroy;
@@ -28,7 +28,7 @@ public class Block : MonoBehaviour
     public void DestroySelf()
     {
         OnBeforeDestroy();
-        
+
         if (_occupiedBy != null)
         {
             DestroyOccupant();
@@ -99,9 +99,9 @@ public class Block : MonoBehaviour
     {
         var occupant = Instantiate(template, null, true);
         occupant.transform.position = Vector3.zero;
-        
+
         _occupiedBy = occupant;
-        
+
         var blockRelative = occupant.GetComponent<BlockRelative>();
         if (blockRelative)
         {
@@ -111,11 +111,11 @@ public class Block : MonoBehaviour
         var animationHeight = .4f;
         occupant.transform.position = transform.position + Vector3.up * (.05f + animationHeight);
     }
-    
+
     public void Occupy(GameObject occupant)
     {
         _occupiedBy = occupant;
-        
+
         var blockRelative = occupant.GetComponent<BlockRelative>();
         if (blockRelative)
         {
@@ -125,11 +125,11 @@ public class Block : MonoBehaviour
         var animationHeight = .4f;
         occupant.transform.position = transform.position + Vector3.up * (.05f + animationHeight);
     }
-    
+
     public void SetOccupantThatIsTailFromOtherBase(GameObject occupant)
     {
         _occupiedBy = occupant;
-        
+
         var blockRelative = occupant.GetComponent<BlockRelative>();
         if (blockRelative)
         {
@@ -252,7 +252,7 @@ public class Block : MonoBehaviour
     {
         return GetGridPosition().y > CloudLevel;
     }
-    
+
     public bool BelowCloudLevel()
     {
         return GetGridPosition().y <= CloudLevel;
@@ -261,10 +261,5 @@ public class Block : MonoBehaviour
     public bool OccupiedByDesertHouse()
     {
         return !IsVacant() && _occupiedBy.CompareTag("DesertHouse");
-    }
-
-    public bool CanBeReplacedByVacantSandBlock()
-    {
-        return !OccupiedByDesertHouse();
     }
 }

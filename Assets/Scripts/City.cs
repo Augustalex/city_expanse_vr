@@ -89,7 +89,7 @@ public class City : MonoBehaviour
             .Where(vacantBlock =>
             {
                 var waterBlocks = _worldPlane.GetWaterBlocks();
-                return vacantBlock.CanBeReplacedByVacantSandBlock()
+                return _worldPlane.BlockCanBeReplacedBySandBlock(vacantBlock)
                     && waterBlocks.Count(waterBlock => vacantBlock.DistanceToOtherBlock(waterBlock) < 1) == 0;
             })
             .OrderBy(_ => Random.value)

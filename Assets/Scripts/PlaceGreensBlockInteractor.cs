@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlaceGreensBlockInteractor : BlockInteractor
 {
     public GameObject greensBlockTemplate;
+    public GameObject desertGreensTemplate;
     private bool _hasPlacedSomeGreens;
 
     private void OnTriggerEnter(Collider other)
@@ -30,18 +31,30 @@ public class PlaceGreensBlockInteractor : BlockInteractor
 
         var blockComponent = other.gameObject.GetComponent<Block>();
         if (blockComponent
-            && blockComponent.IsInteractable() 
-            && blockComponent.blockType == Block.BlockType.Grass 
+            
+            && blockComponent.IsInteractable()
             && blockComponent.IsVacant()
             && blockComponent.BelowCloudLevel()
             )
         {
-            var greens = Instantiate(greensBlockTemplate);
-            blockComponent.Occupy(greens);
-            blockComponent.ShortFreeze();
-            PlayGeneralSound();
-
-            StopRigidbodySoon(greens);
+            if (blockComponent.IsSand())
+            {
+                InhabitBlock(blockComponent, desertGreensTemplate);
+            }
+            else if (blockComponent.IsGrass())
+            {
+                InhabitBlock(blockComponent, greensBlockTemplate);
+            }
         }
+    }
+
+    private void InhabitBlock(Block blockComponent, GameObject greensTemplate)
+    {
+        var greens = Instantiate(greensTemplate);
+        blockComponent.Occupy(greens);
+        blockComponent.ShortFreeze();
+        PlayGeneralSound();
+
+        StopRigidbodySoon(greens);
     }
 }

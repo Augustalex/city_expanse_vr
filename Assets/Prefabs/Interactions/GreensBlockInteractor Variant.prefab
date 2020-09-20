@@ -250,5 +250,8 @@ MonoBehaviour:
   isStartingInteractor: 0
   blockGeneralInteractionSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d,
     type: 3}
+  volumeOverride: 0
   greensBlockTemplate: {fileID: 2723339866174918418, guid: b9c955f3a6da1db4a8a201fdf8265787,
+    type: 3}
+  desertGreensTemplate: {fileID: 2723339866174918418, guid: ec3b0326e4260014999adacf043b13c1,
     type: 3}
