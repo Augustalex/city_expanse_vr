@@ -6,6 +6,9 @@ using Random = UnityEngine.Random;
 
 public class Block : MonoBehaviour
 {
+    public static float LowestLevel = -3.0f;
+    public static float GroundLevel = 0f;
+    
     public enum BlockType
     {
         Grass,
@@ -163,9 +166,14 @@ public class Block : MonoBehaviour
         _permaFrozen = true;
     }
 
-    public bool IsGroundLevel()
+    public bool IsGroundLevel() // TODO Rename to SeaLevel
     {
-        return Math.Abs(_gridPosition.y) < .5f;
+        return Math.Abs(_gridPosition.y) <= (GroundLevel + .5f);
+    }
+    
+    public bool IsLowestLevel()
+    {
+        return Math.Abs(_gridPosition.y) <= (LowestLevel + .5f);
     }
 
     public void RandomRotateAlongY()
@@ -273,7 +281,7 @@ public class Block : MonoBehaviour
         return !IsVacant() && _occupiedBy.GetComponent<ShrineSpawn>() != null;
     }
 
-    public bool IsTopLevel()
+    public bool IsTopBlockInStack()
     {
         return IsVacant();
     }

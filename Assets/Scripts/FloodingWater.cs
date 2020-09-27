@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class FloodingWater : MonoBehaviour
 {
+    public bool floodAll = true;
+
     public GameObject fullHeightWaterBlockTemplate;
     public GameObject groundWaterBlockTemplate;
     private Block _block;
@@ -23,26 +26,34 @@ public class FloodingWater : MonoBehaviour
         if (Time.fixedTime - _life < 1.2f) return;
         if (_block.IsPermaFrozen()) return;
 
-        if (_block.IsGroundLevel())
+        if (floodAll)
         {
-            FloodGroundLevel();
+            FloodAll();
         }
-        else if (_worldPlane.IsBlockLowestWater(_block))
+        else
         {
-            FloodDown();
+            if (_block.IsGroundLevel())
+            {
+                FloodGroundLevel();
+            }
+            else if (_worldPlane.IsBlockLowestWater(_block))
+            {
+                FloodAll();
+            }
         }
 
         _block.PermanentFreeze();
     }
 
-    private void FloodDown()
+    private void FloodAll()
     {
         var blockHeight = _block.GetGridPosition().y;
         var nearbyBlocks = _worldPlane
             .GetNearbyLots(_block.GetGridPosition())
             .Where(otherBlock => otherBlock.GetGridPosition().y < blockHeight);
-
-        foreach (var nearbyBlock in nearbyBlocks)
+        var nearbyEmptyBlocks = CreateWaterForNearbyEmptyPositions();
+        var allNearbyBlocks = nearbyBlocks.Concat(nearbyEmptyBlocks);
+        foreach (var nearbyBlock in allNearbyBlocks)
         {
             if (nearbyBlock.OccupiedByHouse())
             {
@@ -53,17 +64,18 @@ public class FloodingWater : MonoBehaviour
             {
                 Block lowestBlock = nearbyBlock;
 
-                if (!nearbyBlock.IsGroundLevel())
+                if (!nearbyBlock.IsWater())
                 {
                     var waterBlockBelow = NewFullHeightWaterBlock().GetComponentInChildren<Block>();
                     _worldPlane.ReplaceBlock(nearbyBlock, waterBlockBelow);
-
+                
                     lowestBlock = waterBlockBelow;
                 }
 
                 for (var y = lowestBlock.GetGridPosition().y + 1; y <= blockHeight; y++)
                 {
-                    var useFullHeightWater = y != blockHeight;
+                    var notYetHitTop = Math.Abs(y - blockHeight) > .5f;
+                    var useFullHeightWater = notYetHitTop;
                     var water = useFullHeightWater ? NewFullHeightWaterBlock() : NewShallowWater();
                     var waterBlock = water.GetComponentInChildren<Block>();
                     _worldPlane.AddBlockOnTopOf(waterBlock, water, lowestBlock);
@@ -72,23 +84,25 @@ public class FloodingWater : MonoBehaviour
                 }
             }
         }
-
-        FloodGroundLevel();
     }
 
     private GameObject NewFullHeightWaterBlock()
     {
-        return Instantiate(fullHeightWaterBlockTemplate);
+        var waterObject = Instantiate(fullHeightWaterBlockTemplate);
+        waterObject.GetComponent<FloodingWater>().floodAll = true;
+        return waterObject;
     }
 
     private GameObject NewShallowWater()
     {
-        return Instantiate(groundWaterBlockTemplate);
+        var waterObject = Instantiate(groundWaterBlockTemplate);
+        waterObject.GetComponent<FloodingWater>().floodAll = true;
+        return waterObject;
     }
 
     private void FloodGroundLevel()
     {
-        var gridPosition = GroundedGridPosition();
+        var gridPosition = LowestGridPosition();
 
         var nearbyEmptyPositions = _worldPlane.GetNearbyEmptyPositions(gridPosition);
         foreach (var position in nearbyEmptyPositions)
@@ -99,10 +113,24 @@ public class FloodingWater : MonoBehaviour
         }
     }
 
-    private Vector3 GroundedGridPosition()
+    private IEnumerable<Block> CreateWaterForNearbyEmptyPositions()
+    {
+        var gridPosition = LowestGridPosition();
+
+        return _worldPlane.GetNearbyEmptyPositions(gridPosition)
+            .Select(position =>
+            {
+                var waterBlock = NewFullHeightWaterBlock().GetComponentInChildren<Block>();
+                _worldPlane.AddAndPositionBlock(waterBlock, position);
+                waterBlock.ShortFreeze();
+                return waterBlock;
+            });
+    }
+
+    private Vector3 LowestGridPosition()
     {
         var gridPosition = _block.GetGridPosition();
-        gridPosition.y = 0;
+        gridPosition.y = Block.LowestLevel;
 
         return gridPosition;
     }

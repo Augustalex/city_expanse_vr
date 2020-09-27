@@ -27,33 +27,36 @@ public class CityForts : MonoBehaviour
         {
             if (_worldPlane.blocksRepository.StreamBlocks().Count(block => block.GetGridPosition().y > 1f) < 10) return;
             var candidates = _worldPlane.GetVacantBlocks()
-                .Where(vacantBlock => Math.Abs(vacantBlock.GetGridPosition().y) < .5f &&
+                .Where(vacantBlock => vacantBlock.IsGroundLevel() &&
                                       _worldPlane.GetMajorityBlockTypeWithinRange(vacantBlock.GetGridPosition(), 1f)
                                       == Block.BlockType.Grass
                                       && _worldPlane.NoNearby(vacantBlock.GetGridPosition(), 2f,
                                           block => block.blockType == Block.BlockType.Water)
                 )
-                .SelectMany(fortBase =>
+                .SelectMany(fortBottom =>
                 {
-                    var nearbyHighlands = _worldPlane.GetNearbyVacantLots(fortBase.GetGridPosition())
+                    var nearbyHighlands = _worldPlane.GetNearbyVacantLots(fortBottom.GetGridPosition())
                         .Where(block =>
-                            Math.Abs(block.GetGridPosition().y - (fortBase.GetGridPosition().y + 1f)) < .5f)
+                        {
+                            var highlandIsOneBlockAboveFortBottomLevel = Math.Abs(block.GetGridPosition().y - (fortBottom.GetGridPosition().y + 1f)) < .5f;
+                            return highlandIsOneBlockAboveFortBottomLevel;
+                        })
                         .ToList();
 
                     if (!nearbyHighlands.Any()) return new List<Tuple<Block, Block>>();
 
                     return nearbyHighlands
                         .Where(block => block.IsGrass() && block.IsVacant())
-                        .Select(block => new Tuple<Block, Block>(fortBase, block));
+                        .Select(block => new Tuple<Block, Block>(fortBottom, block));
                 })
                 .ToList();
 
             var candidatesCount = candidates.Count;
             if (candidatesCount > 0)
             {
-                var (fortBase, highlands) = candidates[Random.Range(0, candidatesCount)];
+                var (fortBottom, highlands) = candidates[Random.Range(0, candidatesCount)];
                 var fortSpawn = Instantiate(fortSpawnTemplate);
-                fortBase.Occupy(fortSpawn);
+                fortBottom.Occupy(fortSpawn);
                 highlands.SetOccupantThatIsTailFromOtherBase(fortSpawn);
                 var target = highlands.transform.position;
                 target.y = fortSpawn.transform.position.y;
