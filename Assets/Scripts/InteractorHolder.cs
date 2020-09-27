@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(FillWaterBlockInteractor))]
 [RequireComponent(typeof(DigBlockInteractor))]
 [RequireComponent(typeof(RaiseLandBlockInteractor))]
 [RequireComponent(typeof(RaiseWaterBlockInteractor))]
@@ -10,9 +9,6 @@ using UnityEngine;
 public class InteractorHolder : MonoBehaviour
 {
     private DigBlockInteractor _digInteractor;
-    private FillWaterBlockInteractor _waterInteractor;
-    private FloodingWater _floodingWater;
-
     private List<BlockInteractor> _interactorComponents = new List<BlockInteractor>();
     private RaiseLandBlockInteractor _raiseLandInteractor;
     private RaiseWaterBlockInteractor _raiseWaterInteractor;
@@ -23,7 +19,6 @@ public class InteractorHolder : MonoBehaviour
     public enum BlockInteractors
     {
         Dig,
-        FillWater,
         RaiseLand,
         RaiseWater,
         PlaceGreens,
@@ -35,9 +30,6 @@ public class InteractorHolder : MonoBehaviour
     {
         _digInteractor = GetComponent<DigBlockInteractor>();
         
-        _waterInteractor = GetComponent<FillWaterBlockInteractor>();
-        _waterInteractor.enabled = false;
-
         _raiseLandInteractor = GetComponent<RaiseLandBlockInteractor>();
         _raiseLandInteractor.enabled = false;
 
@@ -56,7 +48,6 @@ public class InteractorHolder : MonoBehaviour
         _interactorComponents.AddRange(new List<BlockInteractor>
             {
                 _digInteractor,
-                _waterInteractor,
                 _raiseLandInteractor,
                 _raiseWaterInteractor,
                 _placeGreensInteractor,
@@ -77,11 +68,6 @@ public class InteractorHolder : MonoBehaviour
         {
             _interactorComponents.ForEach(i => i.enabled = false);
             _digInteractor.enabled = true;
-        }
-        else if (blockInteractor == BlockInteractors.FillWater)
-        {
-            _interactorComponents.ForEach(i => i.enabled = false);
-            _waterInteractor.enabled = true;
         }
         else if (blockInteractor == BlockInteractors.RaiseWater)
         {
