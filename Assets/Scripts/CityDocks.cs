@@ -40,7 +40,7 @@ public class CityDocks : MonoBehaviour
             }
 
             var candidates = _worldPlane.GetWaterBlocks()
-                .Where(waterBlock => Math.Abs(waterBlock.GetGridPosition().y) < .5f &&
+                .Where(waterBlock => waterBlock.IsGroundLevel() &&
                                      _worldPlane.GetMajorityBlockTypeWithinRange(waterBlock.GetGridPosition(), 1f)
                                      == Block.BlockType.Water
                                      && _worldPlane.NoNearby(waterBlock.GetGridPosition(), 2f, BlockHasDocksSpawn)

@@ -100,7 +100,7 @@ public class WorldPlane : MonoBehaviour
 
         block.DestroySelf();
         RemoveBlockAt(block.GetGridPosition());
-        
+
         MakeSureTopGrassBlocksHaveCorrectTexture(position);
     }
 
@@ -151,7 +151,8 @@ public class WorldPlane : MonoBehaviour
         var position = block.GetGridPosition();
 
         var lowestWater = GetStack(position).First(otherBlock => otherBlock.IsWater());
-        return Math.Abs(lowestWater.GetGridPosition().y - position.y) < .5f;
+        var blockHasSameLevelAsLowestWater = Math.Abs(lowestWater.GetGridPosition().y - position.y) < .5f;
+        return blockHasSameLevelAsLowestWater;
     }
 
     public void AddBlockOnTopOf(Block blockToAdd, GameObject blockToAddRoot, Block blockAtBottom)
@@ -282,7 +283,7 @@ public class WorldPlane : MonoBehaviour
         var stack = blocksRepository.StreamPairs().Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
 
         var list = stack.ToList();
-        if (list.Count == 0) return 0;
+        if (list.Count == 0) return (int) Block.LowestLevel;
 
         return Convert.ToInt32(list.Max(pair => pair.Key.y));
     }
@@ -404,14 +405,29 @@ public class WorldPlane : MonoBehaviour
                     var xMax = columnHeight * xChunk;
                     for (var column = Math.Abs(xStart) < .5f ? -1 : xStart; column < xMax; column++)
                     {
-                        var isMiddle = Math.Abs(row % 2) < .5f;
-                        if (isMiddle && Math.Abs(column - (-1)) < .5f) continue;
+                        Block previousBlock = null;
 
-                        var blockPosition = new Vector3(row, 0, column);
-                        var blockObject = Instantiate(blockTemplate);
-                        var block = blockObject.GetComponentInChildren<Block>();
+                        const int lowestLevel = -3;
+                        for (var level = lowestLevel; level <= 0; level++)
+                        {
+                            var isMiddle = Math.Abs(row % 2) < .5f;
+                            if (isMiddle && Math.Abs(column - (-1)) < .5f) continue;
 
-                        AddAndPositionBlock(block, blockPosition);
+                            var blockPosition = new Vector3(row, level, column);
+                            var blockObject = Instantiate(blockTemplate);
+                            var block = blockObject.GetComponentInChildren<Block>();
+
+                            if (level == lowestLevel)
+                            {
+                                AddAndPositionBlock(block, blockPosition);
+                                previousBlock = block;
+                            }
+                            else
+                            {
+                                AddBlockOnTopOf(block, blockObject, previousBlock);
+                                previousBlock = block;
+                            }
+                        }
                     }
 
                     yield return new WaitForEndOfFrame();
