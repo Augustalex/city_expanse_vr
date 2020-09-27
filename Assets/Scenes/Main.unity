@@ -4443,6 +4443,10 @@ PrefabInstance:
       propertyPath: fort
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1741071623, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
+      propertyPath: digAnywhere
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3645905919876899980, guid: 63f229cc46e53ef47a8bc7f7667512ce,
         type: 3}
       propertyPath: m_LocalPosition.x

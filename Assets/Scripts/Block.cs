@@ -272,4 +272,9 @@ public class Block : MonoBehaviour
     {
         return !IsVacant() && _occupiedBy.GetComponent<ShrineSpawn>() != null;
     }
+
+    public bool IsTopLevel()
+    {
+        return IsVacant();
+    }
 }
