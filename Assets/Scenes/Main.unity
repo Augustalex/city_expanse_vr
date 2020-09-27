@@ -282,7 +282,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &234377180
 Transform:
   m_ObjectHideFlags: 0
@@ -1153,7 +1153,7 @@ Transform:
   m_GameObject: {fileID: 572570856}
   m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 0.3, y: 0.6, z: 0.3}
   m_Children: []
   m_Father: {fileID: 881489208}
   m_RootOrder: 0
@@ -3305,6 +3305,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1217176570}
     m_Modifications:
+    - target: {fileID: 124098120812308573, guid: cda6565790437374ea3e5ceae5b0d498,
+        type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 1530079725}
     - target: {fileID: 1978629951889767773, guid: cda6565790437374ea3e5ceae5b0d498,
         type: 3}
       propertyPath: target
@@ -3618,7 +3623,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1815282479
 Transform:
   m_ObjectHideFlags: 0
