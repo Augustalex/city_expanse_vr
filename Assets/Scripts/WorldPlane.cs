@@ -11,7 +11,7 @@ public class WorldPlane : MonoBehaviour
     public GameObject TopLeftPoint;
     public bool loadExistingWorld;
     public int waterLimit = 12; // NOTE: Change this to experiment how much sand takes over water in the desert
-    
+
     private Transform _topLeftPointTransform;
 
     public enum Size
@@ -96,8 +96,12 @@ public class WorldPlane : MonoBehaviour
 
     public void RemoveAndDestroyBlock(Block block)
     {
+        var position = block.GetGridPosition();
+
         block.DestroySelf();
         RemoveBlockAt(block.GetGridPosition());
+        
+        MakeSureTopGrassBlocksHaveCorrectTexture(position);
     }
 
     public void RemoveBlockAt(Vector3 position)
@@ -574,7 +578,7 @@ public class WorldPlane : MonoBehaviour
         return GetNearbyBlocks(gridPosition)
             .Any(otherBlock => otherBlock.OccupiedByGreens());
     }
-    
+
     private bool HasNearbyWater(Vector3 gridPosition)
     {
         var nearbyWaterBlocks = GetNearbyBlocksWithinRange(gridPosition, 2)

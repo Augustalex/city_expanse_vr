@@ -9,6 +9,7 @@ public class FeatureToggles : MonoBehaviour
   public bool biomes;
   public bool fort;
   public bool woodcutters;
+  public bool digAnywhere;
 
   private static FeatureToggles _featureToggles;
 
