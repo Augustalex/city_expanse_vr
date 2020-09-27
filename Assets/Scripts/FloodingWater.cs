@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class FloodingWater : MonoBehaviour
 {
-    public bool floodAll = true;
-
     public GameObject fullHeightWaterBlockTemplate;
     public GameObject groundWaterBlockTemplate;
     private Block _block;
@@ -26,21 +24,11 @@ public class FloodingWater : MonoBehaviour
         if (Time.fixedTime - _life < 1.2f) return;
         if (_block.IsPermaFrozen()) return;
 
-        if (floodAll)
-        {
-            FloodAll();
-        }
-        else
-        {
-            if (_block.IsGroundLevel())
-            {
-                FloodGroundLevel();
-            }
-            else if (_worldPlane.IsBlockLowestWater(_block))
-            {
-                FloodAll();
-            }
-        }
+        FloodAll();
+        // else if (_worldPlane.IsBlockLowestWater(_block))
+        // {
+        // FloodAll();
+        // }
 
         _block.PermanentFreeze();
     }
@@ -68,7 +56,7 @@ public class FloodingWater : MonoBehaviour
                 {
                     var waterBlockBelow = NewFullHeightWaterBlock().GetComponentInChildren<Block>();
                     _worldPlane.ReplaceBlock(nearbyBlock, waterBlockBelow);
-                
+
                     lowestBlock = waterBlockBelow;
                 }
 
@@ -88,16 +76,12 @@ public class FloodingWater : MonoBehaviour
 
     private GameObject NewFullHeightWaterBlock()
     {
-        var waterObject = Instantiate(fullHeightWaterBlockTemplate);
-        waterObject.GetComponent<FloodingWater>().floodAll = true;
-        return waterObject;
+        return Instantiate(fullHeightWaterBlockTemplate);
     }
 
     private GameObject NewShallowWater()
     {
-        var waterObject = Instantiate(groundWaterBlockTemplate);
-        waterObject.GetComponent<FloodingWater>().floodAll = true;
-        return waterObject;
+        return Instantiate(groundWaterBlockTemplate);
     }
 
     private void FloodGroundLevel()
