@@ -282,7 +282,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &234377180
 Transform:
   m_ObjectHideFlags: 0
@@ -1448,7 +1448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactorHolder: {fileID: 546754286}
-  interactorType: 2
+  interactorType: 1
 --- !u!114 &702909619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1593,7 +1593,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactorHolder: {fileID: 546754286}
-  interactorType: 5
+  interactorType: 4
 --- !u!114 &840757612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1801,7 +1801,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactorHolder: {fileID: 546754286}
-  interactorType: 6
+  interactorType: 5
 --- !u!114 &943208667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2262,6 +2262,7 @@ Transform:
   m_LocalPosition: {x: -1.1616377, y: -1.1917593, z: 0.6702257}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1873905562}
   - {fileID: 1739300429}
   m_Father: {fileID: 1815282479}
   m_RootOrder: 1
@@ -3102,6 +3103,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: 3rd BlockInteractorPalette
       objectReference: {fileID: 0}
+    - target: {fileID: 8097704663750696973, guid: cda6565790437374ea3e5ceae5b0d498,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8097704663750697009, guid: cda6565790437374ea3e5ceae5b0d498,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3140,7 +3146,7 @@ PrefabInstance:
     - target: {fileID: 8097704663750697009, guid: cda6565790437374ea3e5ceae5b0d498,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8097704663750697009, guid: cda6565790437374ea3e5ceae5b0d498,
         type: 3}
@@ -3374,6 +3380,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1815282479}
+  - component: {fileID: 1815282480}
   m_Layer: 0
   m_Name: VR
   m_TagString: Untagged
@@ -3397,11 +3404,99 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1815282480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1815282478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33fd4e3684d12fb4c8779e12dae318fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FollowPoint: {fileID: 0}
 --- !u!4 &1829762758 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4258682669044212, guid: c6a74181d4000004887343fb87b3c53a,
     type: 3}
   m_PrefabInstance: {fileID: 592212085}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1873905561
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1217176570}
+    m_Modifications:
+    - target: {fileID: 8097704663750696973, guid: 92041914f2655f44b98621aae4357243,
+        type: 3}
+      propertyPath: m_Name
+      value: 4th BlockInteractorPalette
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097704663750697009, guid: 92041914f2655f44b98621aae4357243,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.1150974
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097704663750697009, guid: 92041914f2655f44b98621aae4357243,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.050240397
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097704663750697009, guid: 92041914f2655f44b98621aae4357243,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.11921173
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097704663750697009, guid: 92041914f2655f44b98621aae4357243,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.738705
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097704663750697009, guid: 92041914f2655f44b98621aae4357243,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.16366184
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097704663750697009, guid: 92041914f2655f44b98621aae4357243,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.29039222
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097704663750697009, guid: 92041914f2655f44b98621aae4357243,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.58583456
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097704663750697009, guid: 92041914f2655f44b98621aae4357243,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097704663750697009, guid: 92041914f2655f44b98621aae4357243,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -106.143
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097704663750697009, guid: 92041914f2655f44b98621aae4357243,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 58.580994
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097704663750697009, guid: 92041914f2655f44b98621aae4357243,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -20.737
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 92041914f2655f44b98621aae4357243, type: 3}
+--- !u!4 &1873905562 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8097704663750697009, guid: 92041914f2655f44b98621aae4357243,
+    type: 3}
+  m_PrefabInstance: {fileID: 1873905561}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1960781967
 GameObject:
@@ -3456,7 +3551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactorHolder: {fileID: 546754286}
-  interactorType: 3
+  interactorType: 2
 --- !u!114 &1960781970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3758,7 +3853,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactorHolder: {fileID: 546754286}
-  interactorType: 4
+  interactorType: 3
 --- !u!114 &2117931857
 MonoBehaviour:
   m_ObjectHideFlags: 0
