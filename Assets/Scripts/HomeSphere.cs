@@ -19,8 +19,8 @@ public class HomeSphere : MonoBehaviour
         var delta = Time.fixedTime - _enterTime;
         if (delta > 1)
         {
-            var followObjectComponent = other.GetComponent<FollowObject>();
-            var isSomeInteractionObject = followObjectComponent != null && followObjectComponent.enabled;
+            var blockInteractor = other.GetComponent<BlockInteractor>();
+            var isSomeInteractionObject = blockInteractor != null && blockInteractor.IsActivated();
             if (isSomeInteractionObject)
             {
                 camera.transform.position = new Vector3(0, camera.transform.position.y, 0);

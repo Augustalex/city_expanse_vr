@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(FollowObject))]
+[RequireComponent(typeof(FollowMainHandInteractor))]
 [RequireComponent(typeof(AudioSource))]
 public abstract class BlockInteractor : MonoBehaviour
 {
@@ -12,7 +12,7 @@ public abstract class BlockInteractor : MonoBehaviour
     public float volumeOverride = 0;
 
     private AudioSource _audioSource;
-    private FollowObject _followObject;
+    private FollowMainHandInteractor _followObject;
     private bool _frozen = false;
     private Vector3 _originalLocalPosition;
     private Vector3 _originalScale;
@@ -21,7 +21,7 @@ public abstract class BlockInteractor : MonoBehaviour
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
-        _followObject = GetComponent<FollowObject>();
+        _followObject = GetComponent<FollowMainHandInteractor>();
         _originalLocalPosition = transform.localPosition;
 
         _originalScale = transform.localScale * 1.5f;

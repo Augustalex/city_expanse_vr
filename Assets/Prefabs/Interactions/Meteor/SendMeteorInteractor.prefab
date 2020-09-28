@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 8545832429227343723}
   - component: {fileID: 8545832429227343722}
   - component: {fileID: 8545832429227343721}
-  - component: {fileID: 8545832429227343720}
   - component: {fileID: 8545832429227343702}
   - component: {fileID: 8545832429227343703}
   - component: {fileID: 7425732948802347510}
   - component: {fileID: 7806293624253196904}
+  - component: {fileID: 1583667821048436876}
   m_Layer: 0
   m_Name: SendMeteorInteractor
   m_TagString: Untagged
@@ -98,19 +98,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8545832429227343720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8545832429227343727}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddf9dc71ed6973b4e8565b87b2abc10b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!54 &8545832429227343702
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -248,9 +235,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
-  blockGeneralInteractionSound: {fileID: 8300000, guid: baf4bce8ba882bc47a6069a0b0ef846d,
-    type: 3}
   volumeOverride: 0
+  mainCamera: {fileID: 0}
   meteorTemplate: {fileID: 6276573657937102653, guid: 66105d64d7bffcb4daa596f586f4131b,
     type: 3}
   kaboomSound: {fileID: 8300000, guid: 51d537794fa1b94449d59d725181cd82, type: 3}
+--- !u!114 &1583667821048436876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8545832429227343727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 129c18a635ce273418c37c6087b034c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
