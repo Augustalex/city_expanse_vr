@@ -14,11 +14,12 @@ public class Block : MonoBehaviour
         Grass,
         Water,
         Sand,
-        Soil
+        Soil,
+        OutsideWater
     }
 
     public BlockType blockType = BlockType.Grass;
-
+    
     private bool _frozen;
     private Vector3 _gridPosition;
     private GameObject _occupiedBy;
@@ -284,5 +285,10 @@ public class Block : MonoBehaviour
     public bool IsTopBlockInStack()
     {
         return IsVacant();
+    }
+
+    public bool IsOutsideWater()
+    {
+        return blockType == BlockType.OutsideWater;
     }
 }

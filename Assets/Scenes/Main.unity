@@ -3196,7 +3196,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grassBlockTemplate: {fileID: 612181966713644638, guid: ae0f003ac96b3884c89d3b3c3916cd65,
     type: 3}
-  topWaterBlockTemplate: {fileID: 0}
+  topWaterBlockTemplate: {fileID: 612181966713644638, guid: 93e1621042f7a6642852b4811decd2c9,
+    type: 3}
 --- !u!114 &1741071623
 MonoBehaviour:
   m_ObjectHideFlags: 0

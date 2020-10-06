@@ -400,7 +400,10 @@ public class WorldPlane : MonoBehaviour
                 var yMax = rowHeight * yChunk;
                 for (var row = yStart; row < yMax; row++)
                 {
+                    var isMiddle = Math.Abs(row % 2) < .5f;
+                    
                     var columnHeight = Mathf.Ceil(dimensions.x / xChunks);
+                    
                     var xStart = columnHeight * (xChunk - 1);
                     var xMax = columnHeight * xChunk;
                     for (var column = Math.Abs(xStart) < .5f ? -1 : xStart; column < xMax; column++)
@@ -410,11 +413,21 @@ public class WorldPlane : MonoBehaviour
                         const int lowestLevel = -3;
                         for (var level = lowestLevel; level <= 0; level++)
                         {
-                            var isMiddle = Math.Abs(row % 2) < .5f;
                             if (isMiddle && Math.Abs(column - (-1)) < .5f) continue;
 
+                            var blockToUse = BlockFactory.Get().grassBlockTemplate;
+                            if (level == 0)
+                            {
+                                var neededLeftColumn = isMiddle ? 0 : -1;
+                                var neededRightColumn = dimensions.x - 1;
+                                if (column == neededLeftColumn || column == neededRightColumn || row == 0 || row == dimensions.y - 1)
+                                {
+                                    blockToUse = BlockFactory.Get().topWaterBlockTemplate;
+                                }
+                            }
+
                             var blockPosition = new Vector3(row, level, column);
-                            var blockObject = Instantiate(BlockFactory.Get().grassBlockTemplate);
+                            var blockObject = Instantiate(blockToUse);
                             var block = blockObject.GetComponentInChildren<Block>();
 
                             if (level == lowestLevel)
