@@ -692,7 +692,6 @@ GameObject:
   - component: {fileID: 546754283}
   - component: {fileID: 546754282}
   - component: {fileID: 546754281}
-  - component: {fileID: 546754291}
   - component: {fileID: 546754290}
   - component: {fileID: 546754288}
   - component: {fileID: 546754286}
@@ -704,6 +703,7 @@ GameObject:
   - component: {fileID: 546754295}
   - component: {fileID: 546754296}
   - component: {fileID: 546754297}
+  - component: {fileID: 546754289}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -864,6 +864,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
   volumeOverride: 0.5
+--- !u!114 &546754289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546754280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 129c18a635ce273418c37c6087b034c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!82 &546754290
 AudioSource:
   m_ObjectHideFlags: 0
@@ -960,19 +972,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &546754291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 546754280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddf9dc71ed6973b4e8565b87b2abc10b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!114 &546754292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3197,6 +3196,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grassBlockTemplate: {fileID: 612181966713644638, guid: ae0f003ac96b3884c89d3b3c3916cd65,
     type: 3}
+  topWaterBlockTemplate: {fileID: 0}
 --- !u!114 &1741071623
 MonoBehaviour:
   m_ObjectHideFlags: 0

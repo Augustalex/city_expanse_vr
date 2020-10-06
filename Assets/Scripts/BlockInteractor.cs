@@ -26,7 +26,7 @@ public abstract class BlockInteractor : MonoBehaviour
 
         _originalScale = transform.localScale * 1.5f;
         transform.localScale = _originalScale;
-        
+
         _worldPlane = GameObject.FindWithTag("WorldPlane").GetComponent<WorldPlane>();
 
         if (isStartingInteractor)
@@ -36,7 +36,19 @@ public abstract class BlockInteractor : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (Interactable(other.gameObject))
+        {
+            Interact(other.gameObject);
+        }
+    }
+
+    public abstract bool LockOnLayer();
+
     public abstract void Interact(GameObject other);
+
+    public abstract bool Interactable(GameObject other);
 
     public void Activate()
     {
@@ -78,7 +90,7 @@ public abstract class BlockInteractor : MonoBehaviour
     public void PlaySound(BlockSoundLibrary.BlockSound blockSound)
     {
         _audioSource.Stop();
-        
+
         var sound = BlockSoundLibrary.Get().GetSound(blockSound);
         if (volumeOverride > 0)
         {

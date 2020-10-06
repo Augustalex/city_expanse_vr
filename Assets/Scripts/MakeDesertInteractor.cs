@@ -6,23 +6,28 @@ public class MakeDesertInteractor : BlockInteractor
 {
     public GameObject sandBlockTemplate;
 
-    private void OnTriggerEnter(Collider other)
+    public override bool Interactable(GameObject other)
     {
-        Interact(other.gameObject);
+        if (!IsActivated()) return false;
+
+        var blockComponent = other.gameObject.GetComponent<Block>();
+        return blockComponent && blockComponent.IsInteractable() && blockComponent.IsVacant() &&
+               blockComponent.IsGroundLevel();
+    }
+
+    public override bool LockOnLayer()
+    {
+        return true;
     }
 
     public override void Interact(GameObject other)
     {
-        if (!IsActivated()) return;
-
         var blockComponent = other.gameObject.GetComponent<Block>();
-        if (blockComponent && blockComponent.IsInteractable() && blockComponent.IsVacant() && blockComponent.IsGroundLevel())
-        {
-            var sand = Instantiate(sandBlockTemplate);
-            var sandBlock = sand.GetComponentInChildren<Block>();
-            GetWorldPlane().ReplaceBlock(blockComponent, sandBlock);
-            sandBlock.ShortFreeze();
-            PlaySound(BlockSoundLibrary.BlockSound.Basic);
-        }   
+    
+        var sand = Instantiate(sandBlockTemplate);
+        var sandBlock = sand.GetComponentInChildren<Block>();
+        GetWorldPlane().ReplaceBlock(blockComponent, sandBlock);
+        sandBlock.ShortFreeze();
+        PlaySound(BlockSoundLibrary.BlockSound.Basic);
     }
 }

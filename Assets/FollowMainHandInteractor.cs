@@ -6,14 +6,20 @@ using UnityEngine;
 public class FollowMainHandInteractor : MonoBehaviour
 {
     private Transform _followPoint;
+    private bool _doNotFollow;
 
     private void Start()
     {
-        _followPoint = HandInteractorFollowPoint.Get().followPoint;
+        var handInteractorFollowPoint = HandInteractorFollowPoint.Get();
+        if (!handInteractorFollowPoint) _doNotFollow = true;
+        
+        _followPoint = handInteractorFollowPoint.followPoint;
     }
 
     void FixedUpdate()
     {
+        if (_doNotFollow) return;
+        
         transform.position = _followPoint.position;
     }
 }

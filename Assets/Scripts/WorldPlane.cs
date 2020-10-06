@@ -414,7 +414,7 @@ public class WorldPlane : MonoBehaviour
                             if (isMiddle && Math.Abs(column - (-1)) < .5f) continue;
 
                             var blockPosition = new Vector3(row, level, column);
-                            var blockObject = Instantiate(blockTemplate);
+                            var blockObject = Instantiate(BlockFactory.Get().grassBlockTemplate);
                             var block = blockObject.GetComponentInChildren<Block>();
 
                             if (level == lowestLevel)
