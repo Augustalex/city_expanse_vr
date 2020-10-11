@@ -188,7 +188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tinyHouseTemplates:
   - {fileID: 3317631866390460118, guid: 5d205f85e1a5b424283d20528815eed9, type: 3}
-  upgradeSound: {fileID: 8300000, guid: a4d74c00076ddb7489d91b7c3f279e7c, type: 3}
+  upgradeSound: {fileID: 8300000, guid: 3e12a966819d03e4599877e9fc4d2b10, type: 3}
 --- !u!65 &4151253390124884886
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -214,7 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0569b2cf8accb94f96415d870365cee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitGroundSound: {fileID: 8300000, guid: b9df5e87f638b2b408947a0d6db7b1cf, type: 3}
+  hitGroundSound: {fileID: 8300000, guid: 3e12a966819d03e4599877e9fc4d2b10, type: 3}
   activateOnHit: 1
 --- !u!1001 &1187198193203799539
 PrefabInstance:

@@ -5,14 +5,12 @@ using UnityEngine;
 public class FortSpawn : MonoBehaviour
 {
     public GameObject[] tinyHouseTemplates;
-    public AudioClip upgradeSound;
     
     private FireworksEffect _fireworksEffect;
 
     void Awake()
     {
         _fireworksEffect = GetComponentInChildren<FireworksEffect>();
-        _fireworksEffect.ActivatedHit += PlayUpgradeSound;
         
         SetupHouse(tinyHouseTemplates);
         _fireworksEffect.SetHitBoxSize(5);
@@ -31,11 +29,6 @@ public class FortSpawn : MonoBehaviour
     {
         var houseTemplate = templates[Random.Range(0, templates.Length)];
         Instantiate(houseTemplate, transform, false);
-    }
-    
-    private void PlayUpgradeSound()
-    {
-        GetComponent<AudioSource>().PlayOneShot(upgradeSound, .5f);
     }
     
     private void LaunchFromAbove()
