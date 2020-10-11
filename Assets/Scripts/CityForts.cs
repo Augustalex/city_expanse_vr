@@ -22,6 +22,8 @@ public class CityForts : MonoBehaviour
     {
         if (!_featureToggles.fort) return;
         if (_fortCount > 1) return;
+        var houseCount = _worldPlane.GetBlocksWithHouses().Count;
+        if (houseCount < 3) return;
 
         if (Random.value < .001f)
         {
