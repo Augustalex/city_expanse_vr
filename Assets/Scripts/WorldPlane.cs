@@ -401,9 +401,9 @@ public class WorldPlane : MonoBehaviour
                 for (var row = yStart; row < yMax; row++)
                 {
                     var isMiddle = Math.Abs(row % 2) < .5f;
-                    
+
                     var columnHeight = Mathf.Ceil(dimensions.x / xChunks);
-                    
+
                     var xStart = columnHeight * (xChunk - 1);
                     var xMax = columnHeight * xChunk;
                     for (var column = Math.Abs(xStart) < .5f ? -1 : xStart; column < xMax; column++)
@@ -419,7 +419,8 @@ public class WorldPlane : MonoBehaviour
                             {
                                 var neededLeftColumn = isMiddle ? 0 : -1;
                                 var neededRightColumn = dimensions.x - 1;
-                                if (column == neededLeftColumn || column == neededRightColumn || row == 0 || row == dimensions.y - 1)
+                                if (column == neededLeftColumn || column == neededRightColumn || row == 0 ||
+                                    row == dimensions.y - 1)
                                 {
                                     blockToUse = BlockFactory.Get().topWaterBlockTemplate;
                                 }
@@ -596,6 +597,10 @@ public class WorldPlane : MonoBehaviour
         else if (block.IsWater())
         {
             return HasNearbyWater(block.GetGridPosition());
+        }
+        else if (block.IsOutsideWater())
+        {
+            return false;
         }
 
         return true;

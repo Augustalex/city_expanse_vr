@@ -11,8 +11,11 @@ public class MakeDesertInteractor : BlockInteractor
         if (!IsActivated()) return false;
 
         var blockComponent = other.gameObject.GetComponent<Block>();
-        return blockComponent && blockComponent.IsInteractable() && blockComponent.IsVacant() &&
-               blockComponent.IsGroundLevel();
+        return blockComponent
+               && blockComponent.IsInteractable()
+               && blockComponent.IsVacant()
+               && blockComponent.IsGroundLevel()
+               && !blockComponent.IsOutsideWater();
     }
 
     public override bool LockOnLayer()
@@ -23,7 +26,7 @@ public class MakeDesertInteractor : BlockInteractor
     public override void Interact(GameObject other)
     {
         var blockComponent = other.gameObject.GetComponent<Block>();
-    
+
         var sand = Instantiate(sandBlockTemplate);
         var sandBlock = sand.GetComponentInChildren<Block>();
         GetWorldPlane().ReplaceBlock(blockComponent, sandBlock);
