@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
 public class CameraMover : MonoBehaviour
@@ -38,6 +39,7 @@ public class CameraMover : MonoBehaviour
         {
             direction += Vector3.forward;
         }
+
         _camera.transform.position += direction * (bla * Time.deltaTime);
 
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButton(0))
@@ -52,13 +54,14 @@ public class CameraMover : MonoBehaviour
                 var endPosition = Input.mousePosition;
                 var movementDelta = (endPosition - _startLeftMouseButtonMovePosition);
 
-                var progress = movementDelta.magnitude / (_startLeftMouseButtonMovePosition + new Vector3(250, 0, 250) - _startLeftMouseButtonMovePosition).magnitude;
+                var progress = movementDelta.magnitude / (_startLeftMouseButtonMovePosition + new Vector3(250, 0, 250) -
+                                                          _startLeftMouseButtonMovePosition).magnitude;
                 var curvedProgress = progress;
                 var speed = .01f * Mathf.Clamp(curvedProgress, 0, 1);
-                
+
                 _camera.transform.position += new Vector3(movementDelta.y, 0, -movementDelta.x).normalized * -speed;
             }
-            
+
             _leftDown = true;
         }
 
@@ -66,7 +69,7 @@ public class CameraMover : MonoBehaviour
         {
             _leftDown = false;
         }
-        
+
         if (Input.GetMouseButton(1))
         {
             if (!_rightDown)
@@ -77,17 +80,18 @@ public class CameraMover : MonoBehaviour
             }
             else
             {
-                
                 var endPosition = Input.mousePosition;
                 var movementDelta = (endPosition - _startMovePosition);
 
-                var progress = movementDelta.magnitude / (_startMovePosition + new Vector3(250, 0, 250) - _startMovePosition).magnitude;
+                var progress = movementDelta.magnitude /
+                               (_startMovePosition + new Vector3(250, 0, 250) - _startMovePosition).magnitude;
                 var curvedProgress = QuarticEaseIn(progress);
                 var speed = .05f * Mathf.Clamp(curvedProgress, 0, 1);
-                
-                _camera.transform.position = _startCameraPosition + new Vector3(movementDelta.y, 0, -movementDelta.x).normalized * -speed;
+
+                _camera.transform.position = _startCameraPosition +
+                                             new Vector3(movementDelta.y, 0, -movementDelta.x).normalized * -speed;
             }
-            
+
             _rightDown = true;
         }
         else
@@ -97,21 +101,31 @@ public class CameraMover : MonoBehaviour
                 var endPosition = Input.mousePosition;
                 var movementDelta = (endPosition - _startMovePosition);
 
-                var progress = movementDelta.magnitude / (_startMovePosition + new Vector3(250, 0, 250) - _startMovePosition).magnitude;
+                var progress = movementDelta.magnitude /
+                               (_startMovePosition + new Vector3(250, 0, 250) - _startMovePosition).magnitude;
                 var curvedProgress = progress;
                 var speed = .02f * Mathf.Clamp(curvedProgress, 0, 1);
-                
-                _camera.GetComponent<Rigidbody>().AddForce(new Vector3(movementDelta.y, 0, -movementDelta.x) * speed, ForceMode.Impulse);
+
+                _camera.GetComponent<Rigidbody>().AddForce(new Vector3(movementDelta.y, 0, -movementDelta.x) * speed,
+                    ForceMode.Impulse);
             }
+
             _rightDown = false;
         }
+
+        var newPosition = _camera.transform.position;
+        _camera.transform.position = new Vector3(
+            Mathf.Clamp(newPosition.x, -1f, 1.5f),
+            Mathf.Clamp(newPosition.y, 2, 5),
+            Mathf.Clamp(newPosition.z, -2, 2)
+            );
     }
-    
+
     public float QuarticEaseIn(float p)
     {
         return p * p * p * p;
     }
-    
+
     public float QuarticEaseOut(float p)
     {
         float f = (p - 1);
