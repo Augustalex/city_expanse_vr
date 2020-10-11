@@ -186,6 +186,11 @@ PrefabInstance:
       propertyPath: _enablePhysicsCapsules
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 137292928833085638, guid: e201a24a09e942042b93390d0444d728,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ac8e7cbe255b20545ba63b9bb4d15d8d, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e201a24a09e942042b93390d0444d728, type: 3}
 --- !u!1 &97248189
@@ -1212,6 +1217,11 @@ PrefabInstance:
       propertyPath: _enablePhysicsCapsules
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 137338082485951984, guid: c6a74181d4000004887343fb87b3c53a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ac8e7cbe255b20545ba63b9bb4d15d8d, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6a74181d4000004887343fb87b3c53a, type: 3}
 --- !u!1 &626563821
