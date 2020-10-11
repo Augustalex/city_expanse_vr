@@ -10,7 +10,7 @@ public class City : MonoBehaviour
     public GameObject sandBlockTemplate;
 
     private const int SelfSustainedHouses = 3;
-    
+
     private WorldPlane _worldPlane;
     private double _lastPlacedHouse;
     private bool _sandSpawned;
@@ -43,7 +43,7 @@ public class City : MonoBehaviour
                 SpawnInnerCityHouse();
             }
         }
-        
+
         if (Random.value < .01f && HasNoOtherBigHouses())
         {
             SpawnBigHouse();
@@ -69,15 +69,16 @@ public class City : MonoBehaviour
     {
         var amountOfBigHouses = _worldPlane.GetBlocksWithHouses()
             .Count(block => block.GetOccupantHouse().IsBig());
-        
+
         return amountOfBigHouses < 2;
     }
 
     private bool CanSpawnAnotherHouse()
     {
-        var bigHouses = _worldPlane.GetBlocksWithHouses().Where(houseBlock => houseBlock.GetOccupantHouse().IsBig()).ToList();
+        var bigHouses = _worldPlane.GetBlocksWithHouses().Where(houseBlock => houseBlock.GetOccupantHouse().IsBig())
+            .ToList();
         var farms = FarmMasterController.Get().CountFarms();
-        
+
         var houses = _worldPlane.GetBlocksWithHouses();
         return houses.Count < (SelfSustainedHouses + (bigHouses.Count * 2) + (farms * 2));
     }
@@ -85,12 +86,13 @@ public class City : MonoBehaviour
     private void SpawnSandBlock()
     {
         var sandBlockRoot = Instantiate(sandBlockTemplate);
-        var block = _worldPlane.GetVacantBlocks()
+        var block = _worldPlane
+            .GetVacantBlocks()
             .Where(vacantBlock =>
             {
                 var waterBlocks = _worldPlane.GetWaterBlocks();
                 return _worldPlane.BlockCanBeReplacedBySandBlock(vacantBlock)
-                    && waterBlocks.Count(waterBlock => vacantBlock.DistanceToOtherBlock(waterBlock) < 1) == 0;
+                       && waterBlocks.Count(waterBlock => vacantBlock.DistanceToOtherBlock(waterBlock) < 1) == 0;
             })
             .OrderBy(_ => Random.value)
             .First();
@@ -103,6 +105,7 @@ public class City : MonoBehaviour
         var candidates = _worldPlane.GetWaterBlocks()
             .SelectMany(waterBlock =>
                 _worldPlane.GetNearbyVacantLots(waterBlock.GetGridPosition())
+                    .Where(waterBlock.IsLevelWith)
                     .Select(block => new Tuple<Block, Block>(waterBlock, block)))
             .ToList();
 
@@ -135,11 +138,11 @@ public class City : MonoBehaviour
             var house = Instantiate(tinyHouseTemplate);
             house.GetComponent<HouseSpawn>().SetIsInnerCity();
             vacantLot.Occupy(house);
-            
+
             var target = bigHouse.transform.position;
             target.y = house.transform.position.y;
             house.transform.LookAt(target);
-            
+
             _lastPlacedInnerCityHouse = Time.fixedTime;
         }
     }

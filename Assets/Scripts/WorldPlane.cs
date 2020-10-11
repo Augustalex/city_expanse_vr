@@ -249,7 +249,7 @@ public class WorldPlane : MonoBehaviour
     public List<Block> GetNearbyLots(Vector3 position)
     {
         return GetNearbyBlocks(position)
-            .Where(b => b.blockType == Block.BlockType.Grass)
+            .Where(b => b.IsLot())
             .ToList();
     }
 
@@ -257,6 +257,13 @@ public class WorldPlane : MonoBehaviour
     {
         return GetNearbyLots(position)
             .Where(block => block.IsVacant())
+            .ToList();
+    }
+
+    public IEnumerable<Block> GetNearbyLand(Vector3 position)
+    {
+        return GetNearbyBlocks(position)
+            .Where(b => b.IsLand())
             .ToList();
     }
 

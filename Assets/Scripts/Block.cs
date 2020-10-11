@@ -65,6 +65,23 @@ public class Block : MonoBehaviour
         return _occupiedBy == null;
     }
 
+    public bool IsLot()
+    {
+        return blockType == BlockType.Grass;
+    }
+    
+    public bool IsLand()
+    {
+        return blockType == BlockType.Grass
+               || blockType == BlockType.Soil
+               || blockType == BlockType.Sand;
+    }
+
+    public bool IsLevelWith(Block block)
+    {
+        return Math.Abs(block.GetGridPosition().y - _gridPosition.y) < .5f;
+    }
+
     public void ShortFreeze()
     {
         if (_permaFrozen) return;

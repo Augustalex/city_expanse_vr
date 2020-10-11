@@ -36,13 +36,13 @@ public class FloodingWater : MonoBehaviour
     {
         var blockHeight = _block.GetGridPosition().y;
         var nearbyBlocks = _worldPlane
-            .GetNearbyLots(_block.GetGridPosition())
+            .GetNearbyLand(_block.GetGridPosition())
             .Where(otherBlock => otherBlock.GetGridPosition().y < blockHeight);
         var nearbyEmptyBlocks = CreateWaterForNearbyEmptyPositions();
         var allNearbyBlocks = nearbyBlocks.Concat(nearbyEmptyBlocks);
         foreach (var nearbyBlock in allNearbyBlocks)
         {
-            if (!nearbyBlock.OccupiedByAnotherBlock())
+            if (!nearbyBlock.IsVacant() && !nearbyBlock.OccupiedByAnotherBlock())
             {
                 nearbyBlock.DestroyOccupant();
             }
