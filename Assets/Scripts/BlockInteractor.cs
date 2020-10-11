@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(FollowMainHandInteractor))]
@@ -8,8 +9,6 @@ using UnityEngine;
 public abstract class BlockInteractor : MonoBehaviour
 {
     public bool isStartingInteractor = false;
-
-    public float volumeOverride = .1f;
 
     private AudioSource _audioSource;
     private FollowMainHandInteractor _followObject;
@@ -40,7 +39,18 @@ public abstract class BlockInteractor : MonoBehaviour
     {
         if (Interactable(other.gameObject))
         {
+            ResurrectNearbyBlocks(other.GetComponent<Block>().GetGridPosition());
             Interact(other.gameObject);
+        }
+    }
+
+    public void ResurrectNearbyBlocks(Vector3 gridPosition)
+    {
+        var nearbyWaterBlocks = _worldPlane.GetNearbyBlocksWithinRange(gridPosition, 4f)
+            .Where(block => block.IsOutsideWater() || block.IsWater());
+        foreach (var waterBlock in nearbyWaterBlocks)
+        {
+            waterBlock.GetComponent<FloodingWater>().Resurrect();
         }
     }
 
@@ -92,14 +102,14 @@ public abstract class BlockInteractor : MonoBehaviour
         _audioSource.Stop();
 
         var sound = BlockSoundLibrary.Get().GetSound(blockSound);
-        _audioSource.PlayOneShot(sound, .025f);
+        _audioSource.PlayOneShot(sound, .02f * GameManager.MasterVolume);
     }
 
     public void PlayMiscSound(AudioClip clip)
     {
         _audioSource.Stop();
 
-        _audioSource.PlayOneShot(clip);
+        _audioSource.PlayOneShot(clip, .02f * GameManager.MasterVolume);
     }
 
     public void StopGeneralSound()

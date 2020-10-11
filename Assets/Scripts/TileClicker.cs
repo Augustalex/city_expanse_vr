@@ -58,7 +58,10 @@ public class TileClicker : MonoBehaviour
         var sameLayerAsBefore = Math.Abs(_lastLayer - layer) < .5f;
         if (!_interactorHolder.GetInteractor().LockOnLayer() || !_coolingDown || sameLayerAsBefore)
         {
-            _interactorHolder.GetInteractor().Interact(hit.collider.gameObject);
+            var colliderGameObject = hit.collider.gameObject;
+            _interactorHolder.GetInteractor()
+                .ResurrectNearbyBlocks(colliderGameObject.GetComponent<Block>().GetGridPosition());
+            _interactorHolder.GetInteractor().Interact(colliderGameObject);
 
             _lastLayer = layer;
             _coolingDown = true;

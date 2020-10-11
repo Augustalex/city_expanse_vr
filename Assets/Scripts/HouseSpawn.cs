@@ -55,7 +55,7 @@ public class HouseSpawn : MonoBehaviour
 
     private void PlayUpgradeSound()
     {
-        GetComponent<AudioSource>().PlayOneShot(upgradeSound, .5f);
+        GetComponent<AudioSource>().PlayOneShot(upgradeSound, .015f * GameManager.MasterVolume);
     }
 
     private void LaunchFromAbove()

@@ -24,6 +24,7 @@ public class Block : MonoBehaviour
     private Vector3 _gridPosition;
     private GameObject _occupiedBy;
     private bool _permaFrozen;
+    private bool _stable;
 
     private const int CloudLevel = 4;
 
@@ -69,7 +70,7 @@ public class Block : MonoBehaviour
     {
         return blockType == BlockType.Grass;
     }
-    
+
     public bool IsLand()
     {
         return blockType == BlockType.Grass
@@ -79,7 +80,10 @@ public class Block : MonoBehaviour
 
     public bool IsLevelWith(Block block)
     {
-        return Math.Abs(block.GetGridPosition().y - _gridPosition.y) < .5f;
+        var thisLevelHeight = IsWater() ? _gridPosition.y + 1 : _gridPosition.y;
+        var otherLevelHeight = block.IsWater() ? block.GetGridPosition().y + 1 : block.GetGridPosition().y;
+
+        return Math.Abs(otherLevelHeight - thisLevelHeight) < .5f;
     }
 
     public void ShortFreeze()
@@ -182,6 +186,12 @@ public class Block : MonoBehaviour
     {
         _frozen = true;
         _permaFrozen = true;
+    }
+
+    public void UnPermaFreeze()
+    {
+        _frozen = false;
+        _permaFrozen = false;
     }
 
     public bool IsGroundLevel() // TODO Rename to SeaLevel
@@ -312,5 +322,20 @@ public class Block : MonoBehaviour
     public bool IsOutsideWater()
     {
         return blockType == BlockType.OutsideWater;
+    }
+
+    public void SetAsStable()
+    {
+        _stable = true;
+    }
+
+    public void SetAsUnstable()
+    {
+        _stable = false;
+    }
+
+    public bool IsStable()
+    {
+        return _stable;
     }
 }

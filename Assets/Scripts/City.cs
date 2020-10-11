@@ -103,6 +103,7 @@ public class City : MonoBehaviour
     private void SpawnOneHouse()
     {
         var candidates = _worldPlane.GetWaterBlocks()
+            .Where(waterBlock => waterBlock.IsStable())
             .SelectMany(waterBlock =>
                 _worldPlane.GetNearbyVacantLots(waterBlock.GetGridPosition())
                     .Where(waterBlock.IsLevelWith)
