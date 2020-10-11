@@ -6,12 +6,6 @@ public class PlaceGreensBlockInteractor : BlockInteractor
 {
     public GameObject greensBlockTemplate;
     public GameObject desertGreensTemplate;
-    private bool _hasPlacedSomeGreens;
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Interact(other.gameObject);
-    }
 
     public void StopRigidbodySoon(GameObject greens)
     {
@@ -25,26 +19,33 @@ public class PlaceGreensBlockInteractor : BlockInteractor
         }
     }
 
-    public override void Interact(GameObject other)
+    public override bool Interactable(GameObject other)
     {
-        if (!IsActivated()) return;
+        if (!IsActivated()) return false;
 
         var blockComponent = other.gameObject.GetComponent<Block>();
-        if (blockComponent
-            
-            && blockComponent.IsInteractable()
-            && blockComponent.IsVacant()
-            && blockComponent.BelowCloudLevel()
-            )
+        return blockComponent
+               && blockComponent.IsInteractable()
+               && blockComponent.IsVacant()
+               && blockComponent.BelowCloudLevel();
+    }
+
+    public override bool LockOnLayer()
+    {
+        return false;
+    }
+
+    public override void Interact(GameObject other)
+    {
+        var blockComponent = other.gameObject.GetComponent<Block>();
+
+        if (blockComponent.IsSand())
         {
-            if (blockComponent.IsSand())
-            {
-                InhabitBlock(blockComponent, desertGreensTemplate);
-            }
-            else if (blockComponent.IsGrass())
-            {
-                InhabitBlock(blockComponent, greensBlockTemplate);
-            }
+            InhabitBlock(blockComponent, desertGreensTemplate);
+        }
+        else if (blockComponent.IsGrass())
+        {
+            InhabitBlock(blockComponent, greensBlockTemplate);
         }
     }
 

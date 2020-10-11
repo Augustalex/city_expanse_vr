@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 3097370449222097616}
   - component: {fileID: 3097370449222097617}
   - component: {fileID: 3097370449222097618}
-  - component: {fileID: 3097370449222097619}
   - component: {fileID: 3097370449222097645}
   - component: {fileID: 3097370449222097644}
   - component: {fileID: 4281084399672362061}
   - component: {fileID: 7742518813725841606}
+  - component: {fileID: 5022822216905278235}
   m_Layer: 0
   m_Name: GreensBlockInteractor Variant
   m_TagString: Untagged
@@ -98,19 +98,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3097370449222097619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3097370449222097620}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddf9dc71ed6973b4e8565b87b2abc10b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!54 &3097370449222097645
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -248,10 +235,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
-  blockGeneralInteractionSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d,
-    type: 3}
   volumeOverride: 0
   greensBlockTemplate: {fileID: 2723339866174918418, guid: b9c955f3a6da1db4a8a201fdf8265787,
     type: 3}
   desertGreensTemplate: {fileID: 2723339866174918418, guid: ec3b0326e4260014999adacf043b13c1,
     type: 3}
+--- !u!114 &5022822216905278235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3097370449222097620}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 129c18a635ce273418c37c6087b034c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

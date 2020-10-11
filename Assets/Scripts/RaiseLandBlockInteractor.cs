@@ -5,28 +5,31 @@ using Random = UnityEngine.Random;
 public class RaiseLandBlockInteractor : BlockInteractor
 {
     public GameObject grassBlockTemplate;
-    
-    private void OnTriggerEnter(Collider other)
+
+    public override bool Interactable(GameObject other)
     {
-        Interact(other.gameObject);
+        if (!IsActivated()) return false;
+
+        var blockComponent = other.gameObject.GetComponent<Block>();
+
+        return blockComponent &&
+               blockComponent.blockType == Block.BlockType.Grass &&
+               blockComponent.IsVacant() &&
+               blockComponent.IsInteractable();
+    }
+
+    public override bool LockOnLayer()
+    {
+        return true;
     }
 
     public override void Interact(GameObject other)
     {
-        if (!IsActivated()) return;
-
         var blockComponent = other.gameObject.GetComponent<Block>();
-        if (
-            blockComponent &&
-            blockComponent.blockType == Block.BlockType.Grass &&
-            blockComponent.IsVacant() &&
-            blockComponent.IsInteractable()
-        )
-        {
-            var grass = Instantiate(grassBlockTemplate);
-            var grassBlock = grass.GetComponentInChildren<Block>();
-            GetWorldPlane().AddBlockOnTopOf(grassBlock, grass, blockComponent);
-            PlaySound(BlockSoundLibrary.BlockSound.RaiseLand);
-        }
+
+        var grass = Instantiate(grassBlockTemplate);
+        var grassBlock = grass.GetComponentInChildren<Block>();
+        GetWorldPlane().AddBlockOnTopOf(grassBlock, grass, blockComponent);
+        PlaySound(BlockSoundLibrary.BlockSound.RaiseLand);
     }
 }

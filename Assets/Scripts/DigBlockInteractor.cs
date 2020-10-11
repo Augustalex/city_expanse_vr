@@ -2,38 +2,42 @@
 
 public class DigBlockInteractor : BlockInteractor
 {
-    private void OnTriggerEnter(Collider other)
+    public override bool LockOnLayer()
     {
-        Interact(other.gameObject);
+        return true;
     }
 
     public override void Interact(GameObject other)
     {
-        if (!IsActivated()) return;
+        var blockComponent = other.gameObject.GetComponent<Block>();
+        GetWorldPlane().RemoveAndDestroyBlock(blockComponent);
+        PlaySound(BlockSoundLibrary.BlockSound.Dig);
+    }
+
+    public override bool Interactable(GameObject other)
+    {
+        if (!IsActivated()) return false;
 
         var blockComponent = other.gameObject.GetComponent<Block>();
 
-        if (CanDig(blockComponent))
-        {
-            GetWorldPlane().RemoveAndDestroyBlock(blockComponent);
-            PlaySound(BlockSoundLibrary.BlockSound.Dig);
-        }
+        return CanDig(blockComponent);
     }
 
     private bool CanDig(Block blockComponent)
     {
         if (FeatureToggles.Get().digAnywhere)
         {
-            return blockComponent 
+            return blockComponent
                    && blockComponent.blockType == Block.BlockType.Grass
                    && blockComponent.IsTopBlockInStack()
-                   && blockComponent.IsVacant();
+                   && blockComponent.IsVacant()
+                   && !blockComponent.IsLowestLevel();
         }
         else
         {
-            return blockComponent 
+            return blockComponent
                    && blockComponent.blockType == Block.BlockType.Grass
-                   && blockComponent.IsGroundLevel() 
+                   && blockComponent.IsGroundLevel()
                    && blockComponent.IsVacant();
         }
     }

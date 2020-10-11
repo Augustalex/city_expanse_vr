@@ -249,7 +249,7 @@ public class WorldPlane : MonoBehaviour
     public List<Block> GetNearbyLots(Vector3 position)
     {
         return GetNearbyBlocks(position)
-            .Where(b => b.blockType == Block.BlockType.Grass)
+            .Where(b => b.IsLot())
             .ToList();
     }
 
@@ -257,6 +257,13 @@ public class WorldPlane : MonoBehaviour
     {
         return GetNearbyLots(position)
             .Where(block => block.IsVacant())
+            .ToList();
+    }
+
+    public IEnumerable<Block> GetNearbyLand(Vector3 position)
+    {
+        return GetNearbyBlocks(position)
+            .Where(b => b.IsLand())
             .ToList();
     }
 
@@ -400,24 +407,37 @@ public class WorldPlane : MonoBehaviour
                 var yMax = rowHeight * yChunk;
                 for (var row = yStart; row < yMax; row++)
                 {
+                    var isMiddle = Math.Abs(row % 2) < .5f;
+
                     var columnHeight = Mathf.Ceil(dimensions.x / xChunks);
+
                     var xStart = columnHeight * (xChunk - 1);
                     var xMax = columnHeight * xChunk;
                     for (var column = Math.Abs(xStart) < .5f ? -1 : xStart; column < xMax; column++)
                     {
                         Block previousBlock = null;
 
-                        const int lowestLevel = -3;
-                        for (var level = lowestLevel; level <= 0; level++)
+                        for (var level = Block.LowestLevel; level <= 0; level++)
                         {
-                            var isMiddle = Math.Abs(row % 2) < .5f;
                             if (isMiddle && Math.Abs(column - (-1)) < .5f) continue;
 
+                            var blockToUse = BlockFactory.Get().grassBlockTemplate;
+                            if (level == 0)
+                            {
+                                var neededLeftColumn = isMiddle ? 0 : -1;
+                                var neededRightColumn = dimensions.x - 1;
+                                if (column == neededLeftColumn || column == neededRightColumn || row == 0 ||
+                                    row == dimensions.y - 1)
+                                {
+                                    blockToUse = BlockFactory.Get().topWaterBlockTemplate;
+                                }
+                            }
+
                             var blockPosition = new Vector3(row, level, column);
-                            var blockObject = Instantiate(blockTemplate);
+                            var blockObject = Instantiate(blockToUse);
                             var block = blockObject.GetComponentInChildren<Block>();
 
-                            if (level == lowestLevel)
+                            if (level == Block.LowestLevel)
                             {
                                 AddAndPositionBlock(block, blockPosition);
                                 previousBlock = block;
@@ -584,6 +604,10 @@ public class WorldPlane : MonoBehaviour
         else if (block.IsWater())
         {
             return HasNearbyWater(block.GetGridPosition());
+        }
+        else if (block.IsOutsideWater())
+        {
+            return false;
         }
 
         return true;

@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 7158996604602281675}
   - component: {fileID: 7158996604602281674}
   - component: {fileID: 7158996604602281673}
-  - component: {fileID: 7158996604602281672}
   - component: {fileID: 7158996604602281718}
   - component: {fileID: 7158996604602281719}
   - component: {fileID: 8272189940429172822}
   - component: {fileID: 7158996604602281678}
+  - component: {fileID: 3307858495810136657}
   m_Layer: 0
   m_Name: RaiseWaterBlockInteractor
   m_TagString: Untagged
@@ -98,19 +98,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7158996604602281672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7158996604602281679}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddf9dc71ed6973b4e8565b87b2abc10b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!54 &7158996604602281718
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -248,7 +235,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
-  blockGeneralInteractionSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d,
-    type: 3}
-  waterBlockTemplate: {fileID: 612181966713644638, guid: ad50e16266866cb4f828d1b10d314e79,
-    type: 3}
+  volumeOverride: 0
+--- !u!114 &3307858495810136657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7158996604602281679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 129c18a635ce273418c37c6087b034c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

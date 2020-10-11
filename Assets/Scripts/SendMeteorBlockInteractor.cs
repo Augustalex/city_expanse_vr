@@ -5,34 +5,36 @@ public class SendMeteorBlockInteractor : BlockInteractor
     public Camera mainCamera;
     public GameObject meteorTemplate;
     public AudioClip kaboomSound;
-    
+
     private Meteor _meteor;
 
-    private void OnTriggerEnter(Collider other)
+    public override bool Interactable(GameObject other)
     {
-        Interact(other.gameObject);
-    }
-    
-    public override void Interact(GameObject other)
-    {
-        if (!IsActivated()) return;
+        if (!IsActivated()) return false;
 
         var isBlock = other.gameObject.GetComponent<Block>();
-        if (!isBlock) return;
-        
-        if (_meteor == null)
-        {
-            var meteorGameObject = Instantiate(meteorTemplate);
-            var meteor = meteorGameObject.GetComponent<Meteor>();
-            meteor.SetTarget(other.gameObject.transform.position);
-            meteor.Shoot(mainCamera.transform.position);
+        if (!isBlock) return false;
 
-            PlaySound(BlockSoundLibrary.BlockSound.Meteor);
-            meteor.BeforeDestroy += () => { };
-            meteor.Hit += PlayKaboom;
+        return _meteor == null;
+    }
 
-            _meteor = meteor;
-        }
+    public override bool LockOnLayer()
+    {
+        return false;
+    }
+
+    public override void Interact(GameObject other)
+    {
+        var meteorGameObject = Instantiate(meteorTemplate);
+        var meteor = meteorGameObject.GetComponent<Meteor>();
+        meteor.SetTarget(other.gameObject.transform.position);
+        meteor.Shoot(mainCamera.transform.position);
+
+        PlaySound(BlockSoundLibrary.BlockSound.Meteor);
+        meteor.BeforeDestroy += () => { };
+        meteor.Hit += PlayKaboom;
+
+        _meteor = meteor;
     }
 
     public void PlayKaboom()

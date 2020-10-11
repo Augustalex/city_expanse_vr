@@ -8,13 +8,14 @@ public class Block : MonoBehaviour
 {
     public static float LowestLevel = -3.0f;
     public static float GroundLevel = 0f;
-    
+
     public enum BlockType
     {
         Grass,
         Water,
         Sand,
-        Soil
+        Soil,
+        OutsideWater
     }
 
     public BlockType blockType = BlockType.Grass;
@@ -62,6 +63,23 @@ public class Block : MonoBehaviour
     public bool IsVacant()
     {
         return _occupiedBy == null;
+    }
+
+    public bool IsLot()
+    {
+        return blockType == BlockType.Grass;
+    }
+    
+    public bool IsLand()
+    {
+        return blockType == BlockType.Grass
+               || blockType == BlockType.Soil
+               || blockType == BlockType.Sand;
+    }
+
+    public bool IsLevelWith(Block block)
+    {
+        return Math.Abs(block.GetGridPosition().y - _gridPosition.y) < .5f;
     }
 
     public void ShortFreeze()
@@ -170,10 +188,10 @@ public class Block : MonoBehaviour
     {
         return Math.Abs(_gridPosition.y) <= (GroundLevel + .5f);
     }
-    
+
     public bool IsLowestLevel()
     {
-        return Math.Abs(_gridPosition.y) <= (LowestLevel + .5f);
+        return Math.Abs(_gridPosition.y - LowestLevel) < .5f;
     }
 
     public void RandomRotateAlongY()
@@ -187,6 +205,11 @@ public class Block : MonoBehaviour
     public bool OccupiedByHouse()
     {
         return !IsVacant() && _occupiedBy.CompareTag("HouseSpawn");
+    }
+
+    public bool OccupiedByAnotherBlock()
+    {
+        return !IsVacant() && _occupiedBy.GetComponent<Block>() != null;
     }
 
     public HouseSpawn GetOccupantHouse()
@@ -225,7 +248,7 @@ public class Block : MonoBehaviour
     {
         return _occupiedBy != null && _occupiedBy.GetComponent<GreensSpawn>() != null;
     }
-    
+
     public bool OccupiedByGrownGreens()
     {
         if (_occupiedBy == null) return false;
@@ -284,5 +307,10 @@ public class Block : MonoBehaviour
     public bool IsTopBlockInStack()
     {
         return IsVacant();
+    }
+
+    public bool IsOutsideWater()
+    {
+        return blockType == BlockType.OutsideWater;
     }
 }

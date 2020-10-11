@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 8545832429227343723}
   - component: {fileID: 8545832429227343722}
   - component: {fileID: 8545832429227343721}
-  - component: {fileID: 8545832429227343720}
   - component: {fileID: 8545832429227343702}
   - component: {fileID: 8545832429227343703}
   - component: {fileID: 7425732948802347510}
   - component: {fileID: 1637813918}
+  - component: {fileID: 5515458217375999723}
   m_Layer: 0
   m_Name: RaiseLandBlockInteractor
   m_TagString: Untagged
@@ -98,19 +98,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8545832429227343720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8545832429227343727}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddf9dc71ed6973b4e8565b87b2abc10b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!54 &8545832429227343702
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -248,7 +235,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
-  blockGeneralInteractionSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d,
-    type: 3}
+  volumeOverride: 0
   grassBlockTemplate: {fileID: 612181966713644638, guid: ae0f003ac96b3884c89d3b3c3916cd65,
     type: 3}
+--- !u!114 &5515458217375999723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8545832429227343727}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 129c18a635ce273418c37c6087b034c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

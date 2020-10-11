@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class FloodingWater : MonoBehaviour
 {
@@ -21,29 +22,27 @@ public class FloodingWater : MonoBehaviour
 
     void Update()
     {
+        if (Random.value > .05f) return;
+
         if (Time.fixedTime - _life < 1.2f) return;
         if (_block.IsPermaFrozen()) return;
 
         FloodAll();
-        // else if (_worldPlane.IsBlockLowestWater(_block))
-        // {
-        // FloodAll();
-        // }
 
-        _block.PermanentFreeze();
+        // _block.PermanentFreeze();
     }
 
     private void FloodAll()
     {
         var blockHeight = _block.GetGridPosition().y;
         var nearbyBlocks = _worldPlane
-            .GetNearbyLots(_block.GetGridPosition())
+            .GetNearbyLand(_block.GetGridPosition())
             .Where(otherBlock => otherBlock.GetGridPosition().y < blockHeight);
         var nearbyEmptyBlocks = CreateWaterForNearbyEmptyPositions();
         var allNearbyBlocks = nearbyBlocks.Concat(nearbyEmptyBlocks);
         foreach (var nearbyBlock in allNearbyBlocks)
         {
-            if (nearbyBlock.OccupiedByHouse())
+            if (!nearbyBlock.IsVacant() && !nearbyBlock.OccupiedByAnotherBlock())
             {
                 nearbyBlock.DestroyOccupant();
             }
