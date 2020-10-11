@@ -18,18 +18,25 @@ public class FloodingWater : MonoBehaviour
         _life = Time.fixedTime;
         _block = GetComponentInChildren<Block>();
         _worldPlane = GameObject.FindWithTag("WorldPlane").GetComponent<WorldPlane>();
+
+        _block.SetAsUnstable();
     }
 
     void Update()
     {
-        if (Random.value > .05f) return;
-
-        if (Time.fixedTime - _life < 1.2f) return;
         if (_block.IsPermaFrozen()) return;
 
-        FloodAll();
+        if (Time.fixedTime - _life > 1.25f)
+        {
+            FloodAll();
+            SetAsStable();
+        }
+    }
 
-        // _block.PermanentFreeze();
+    private void SetAsStable()
+    {
+        _block.SetAsStable();
+        _block.PermanentFreeze();
     }
 
     private void FloodAll()
@@ -116,5 +123,12 @@ public class FloodingWater : MonoBehaviour
         gridPosition.y = Block.LowestLevel;
 
         return gridPosition;
+    }
+
+    public void Resurrect()
+    {
+        _block.UnPermaFreeze();
+        _block.SetAsUnstable();
+        _life = Time.fixedTime;
     }
 }

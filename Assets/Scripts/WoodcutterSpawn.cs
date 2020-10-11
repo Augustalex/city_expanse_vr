@@ -65,6 +65,6 @@ public class WoodcutterSpawn : MonoBehaviour
 
     private void PlayWoodcutterSound()
     {
-        _audioSource.PlayOneShot(cuttingDownTree);
+        _audioSource.PlayOneShot(cuttingDownTree, .02f * GameManager.MasterVolume);
     }
 }

@@ -48,7 +48,7 @@ public class SmokeEffect : MonoBehaviour
 
     private void PlayHitGroundSound()
     {
-        GetAudioSource().PlayOneShot(hitGroundSound, 1);
+        GetAudioSource().PlayOneShot(hitGroundSound, .02f * GameManager.MasterVolume);
     }
 
     private AudioSource GetAudioSource()

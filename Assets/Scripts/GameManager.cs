@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     private GameObjective _gameObjective;
 
+    public static float MasterVolume = 10f;
+    
     void Start()
     {
         _gameObjective = GetComponent<GameObjective>();
