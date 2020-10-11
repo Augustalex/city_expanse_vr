@@ -190,6 +190,11 @@ public class Block : MonoBehaviour
         return !IsVacant() && _occupiedBy.CompareTag("HouseSpawn");
     }
 
+    public bool OccupiedByAnotherBlock()
+    {
+        return _occupiedBy.GetComponent<Block>() != null;
+    }
+
     public HouseSpawn GetOccupantHouse()
     {
         if (!OccupiedByHouse()) throw new Exception("Trying to get occupant house, but is not occupied by a house!");

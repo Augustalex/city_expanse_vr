@@ -23,7 +23,7 @@ public class FloodingWater : MonoBehaviour
     void Update()
     {
         if (Random.value > .05f) return;
-        
+
         if (Time.fixedTime - _life < 1.2f) return;
         if (_block.IsPermaFrozen()) return;
 
@@ -42,7 +42,7 @@ public class FloodingWater : MonoBehaviour
         var allNearbyBlocks = nearbyBlocks.Concat(nearbyEmptyBlocks);
         foreach (var nearbyBlock in allNearbyBlocks)
         {
-            if (nearbyBlock.OccupiedByHouse())
+            if (!nearbyBlock.OccupiedByAnotherBlock())
             {
                 nearbyBlock.DestroyOccupant();
             }
