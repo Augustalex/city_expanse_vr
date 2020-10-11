@@ -9,7 +9,7 @@ public abstract class BlockInteractor : MonoBehaviour
 {
     public bool isStartingInteractor = false;
 
-    public float volumeOverride = 0;
+    public float volumeOverride = .1f;
 
     private AudioSource _audioSource;
     private FollowMainHandInteractor _followObject;
