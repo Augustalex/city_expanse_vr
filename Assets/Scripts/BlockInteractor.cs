@@ -92,14 +92,7 @@ public abstract class BlockInteractor : MonoBehaviour
         _audioSource.Stop();
 
         var sound = BlockSoundLibrary.Get().GetSound(blockSound);
-        if (volumeOverride > 0)
-        {
-            _audioSource.PlayOneShot(sound, volumeOverride);
-        }
-        else
-        {
-            _audioSource.PlayOneShot(sound);
-        }
+        _audioSource.PlayOneShot(sound, .025f);
     }
 
     public void PlayMiscSound(AudioClip clip)
