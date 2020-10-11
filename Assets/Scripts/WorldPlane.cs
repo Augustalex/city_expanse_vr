@@ -410,8 +410,7 @@ public class WorldPlane : MonoBehaviour
                     {
                         Block previousBlock = null;
 
-                        const int lowestLevel = -3;
-                        for (var level = lowestLevel; level <= 0; level++)
+                        for (var level = Block.LowestLevel; level <= 0; level++)
                         {
                             if (isMiddle && Math.Abs(column - (-1)) < .5f) continue;
 
@@ -430,7 +429,7 @@ public class WorldPlane : MonoBehaviour
                             var blockObject = Instantiate(blockToUse);
                             var block = blockObject.GetComponentInChildren<Block>();
 
-                            if (level == lowestLevel)
+                            if (level == Block.LowestLevel)
                             {
                                 AddAndPositionBlock(block, blockPosition);
                                 previousBlock = block;

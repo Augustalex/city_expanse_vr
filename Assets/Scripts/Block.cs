@@ -8,7 +8,7 @@ public class Block : MonoBehaviour
 {
     public static float LowestLevel = -3.0f;
     public static float GroundLevel = 0f;
-    
+
     public enum BlockType
     {
         Grass,
@@ -19,7 +19,7 @@ public class Block : MonoBehaviour
     }
 
     public BlockType blockType = BlockType.Grass;
-    
+
     private bool _frozen;
     private Vector3 _gridPosition;
     private GameObject _occupiedBy;
@@ -171,10 +171,10 @@ public class Block : MonoBehaviour
     {
         return Math.Abs(_gridPosition.y) <= (GroundLevel + .5f);
     }
-    
+
     public bool IsLowestLevel()
     {
-        return Math.Abs(_gridPosition.y) <= (LowestLevel + .5f);
+        return Math.Abs(_gridPosition.y - LowestLevel) < .5f;
     }
 
     public void RandomRotateAlongY()
@@ -226,7 +226,7 @@ public class Block : MonoBehaviour
     {
         return _occupiedBy != null && _occupiedBy.GetComponent<GreensSpawn>() != null;
     }
-    
+
     public bool OccupiedByGrownGreens()
     {
         if (_occupiedBy == null) return false;

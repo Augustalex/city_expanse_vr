@@ -30,7 +30,8 @@ public class DigBlockInteractor : BlockInteractor
             return blockComponent
                    && blockComponent.blockType == Block.BlockType.Grass
                    && blockComponent.IsTopBlockInStack()
-                   && blockComponent.IsVacant();
+                   && blockComponent.IsVacant()
+                   && !blockComponent.IsLowestLevel();
         }
         else
         {
