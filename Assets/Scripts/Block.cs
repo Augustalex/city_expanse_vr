@@ -192,7 +192,7 @@ public class Block : MonoBehaviour
 
     public bool OccupiedByAnotherBlock()
     {
-        return _occupiedBy.GetComponent<Block>() != null;
+        return !IsVacant() && _occupiedBy.GetComponent<Block>() != null;
     }
 
     public HouseSpawn GetOccupantHouse()

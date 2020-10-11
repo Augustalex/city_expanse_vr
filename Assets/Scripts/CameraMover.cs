@@ -20,6 +20,26 @@ public class CameraMover : MonoBehaviour
         var change = Input.mouseScrollDelta.y;
         _camera.transform.position += new Vector3(0, change * .1f, 0);
 
+        const float bla = .75f;
+        var direction = Vector3.zero;
+        if (Input.GetKey(KeyCode.W))
+        {
+            direction += Vector3.left;
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            direction += Vector3.back;
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            direction += Vector3.right;
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            direction += Vector3.forward;
+        }
+        _camera.transform.position += direction * (bla * Time.deltaTime);
+
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButton(0))
         {
             if (!_leftDown)
