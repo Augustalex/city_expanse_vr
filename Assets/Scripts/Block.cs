@@ -170,7 +170,7 @@ public class Block : MonoBehaviour
         }
 
         _occupiedBy = occupantRoot;
-
+        Debug.Log("Is occupied! " + occupantRoot);
         otherBlock.transform.position = transform.position + new Vector3(0, .1f, 0);
 
         otherBlock.ShortFreeze();
