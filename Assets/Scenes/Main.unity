@@ -287,7 +287,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &234377180
 Transform:
   m_ObjectHideFlags: 0
@@ -3277,7 +3277,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1815282479
 Transform:
   m_ObjectHideFlags: 0
@@ -3319,7 +3319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeeaaecc1f234eb47ac4130d57734663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraRig: {fileID: 1529638745}
+  cameraRig: {fileID: 0}
 --- !u!4 &1829762758 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4258682669044212, guid: c6a74181d4000004887343fb87b3c53a,
@@ -4371,11 +4371,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7368031139739519954, guid: 68937571def759347acd3b801d52fef9,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.02
-      objectReference: {fileID: 0}
     - target: {fileID: 7368031140900135315, guid: 68937571def759347acd3b801d52fef9,
         type: 3}
       propertyPath: m_Name
