@@ -6,13 +6,7 @@ using UnityEngine;
 public class HomeSphere : MonoBehaviour
 {
     public AudioClip recenterSound;
-    private GameObject _camera;
     private float _enterTime;
-
-    private void Awake()
-    {
-        _camera = CameraRigContainer.Get().cameraRig;
-    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -22,19 +16,27 @@ public class HomeSphere : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         var delta = Time.fixedTime - _enterTime;
-        if (delta > .1f)
+        if (delta > .2f)
         {
             var blockInteractor = other.GetComponent<BlockInteractor>();
             var isSomeInteractionObject = blockInteractor != null && blockInteractor.IsActivated();
             if (isSomeInteractionObject)
             {
-                _camera.transform.position = new Vector3(0, _camera.transform.position.y, 0);
-                var diff = Camera.main.transform.position - _camera.transform.position;
+                var realCenterPoint = WorldPlane.Get().GetRealCenterPoint();
+                
+                var parentTransform = Camera.main.gameObject.transform.parent.gameObject.transform;
+                
+                parentTransform.position = new Vector3(
+                    0,
+                    parentTransform.position.y,
+                    0
+                    );
+                var diff = Camera.main.transform.position - realCenterPoint;
                 diff.y = 0;
-                _camera.transform.position -= diff;
+                parentTransform.position -= diff;
 
-                var currentPosition = _camera.transform.position;
-                _camera.transform.position = new Vector3(currentPosition.x, .6f, currentPosition.z);
+                var currentPosition = parentTransform.position;
+                parentTransform.position = new Vector3(currentPosition.x, .4f, currentPosition.z); 
 
                 GetComponent<AudioSource>().PlayOneShot(recenterSound);
             }
