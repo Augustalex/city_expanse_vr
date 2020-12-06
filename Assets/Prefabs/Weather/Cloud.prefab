@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4a6671c421d5682419c230affdbf87c4, type: 2}
+  - {fileID: 2100000, guid: c69cfacd6cc8b3e4bbac9a2d034cbe59, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -311,8 +311,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df0c45acf25a80d4f9fdc9214dd9817d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalMaterial: {fileID: 2100000, guid: 4a6671c421d5682419c230affdbf87c4, type: 2}
-  stormMaterial: {fileID: 2100000, guid: 4a6671c421d5682419c230affdbf87c4, type: 2}
+  normalMaterial: {fileID: 0}
+  stormMaterial: {fileID: 0}
 --- !u!114 &7368031140900135400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -402,6 +402,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 3359713374489704276, guid: cd2dc4762c656e44f850e132289ad420,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3359713374489704276, guid: cd2dc4762c656e44f850e132289ad420,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c69cfacd6cc8b3e4bbac9a2d034cbe59, type: 2}
     - target: {fileID: 7262813640958873798, guid: cd2dc4762c656e44f850e132289ad420,
         type: 3}
       propertyPath: m_Name
