@@ -6,6 +6,23 @@ public class FarmMasterController : MonoBehaviour
     public GameObject farmControllerTemplate;
     private static FarmMasterController _farmMasterControllerInstance;
 
+    private int _farmCount = 0;
+
+    public static void OnResetWorld()
+    {
+        Get().ClearFarmCount();
+    }
+
+    private void ClearFarmCount()
+    {
+        _farmCount = 0;
+    }
+
+    public void IncreaseFarmCount(int count)
+    {
+        _farmCount += count;
+    }
+
     private void Awake()
     {
         _farmMasterControllerInstance = this;
@@ -26,19 +43,6 @@ public class FarmMasterController : MonoBehaviour
 
     public int CountFarms()
     {
-        return WorldPlane.Get()
-            .blocksRepository
-            .StreamBlocks()
-            .Count(block =>
-            {
-                if (block == null) return false;
-                if (!block.HasOccupant()) return false;
-                
-                var occupant = block.GetOccupant();
-                var farmSpawn = occupant.GetComponent<FarmSpawn>();
-                if (farmSpawn == null) return false;
-
-                return farmSpawn.IsGrown();
-            });
+        return _farmCount;
     }
 }

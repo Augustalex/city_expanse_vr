@@ -75,6 +75,7 @@ public class Meteor : MonoBehaviour
     private void ResetWorld()
     {
         _worldPlane.ResetAtSize(WorldPlane.Size.Large);
+        FarmMasterController.OnResetWorld();
         OnBeforeDestroy();
         Destroy(gameObject);
     }

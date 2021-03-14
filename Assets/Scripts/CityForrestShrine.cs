@@ -1,15 +1,17 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class CItyForrestShrine : MonoBehaviour
+public class CityForrestShrine : MonoBehaviour
 {
     public GameObject shrineTemplate;
-    
+
     private WorldPlane _worldPlane;
+    private List<Block> _blocksWithGreens;
 
     private const float ShrineRange = 2;
-    
+
     void Start()
     {
         _worldPlane = WorldPlane.Get();
@@ -17,26 +19,26 @@ public class CItyForrestShrine : MonoBehaviour
 
     void Update()
     {
-        if (Random.value < .1f)
+        if (Random.value < .001f)
         {
             var shrineCount = _worldPlane.GetBlocksWithShrines().Count();
             if (shrineCount > 0) return;
 
-            var suitableLocation = _worldPlane
+            _blocksWithGreens = _worldPlane
                 .GetBlocksWithGreens()
-                .Where(block =>
-                {
-                    var greensNearby = _worldPlane
-                        .GetNearbyBlocksWithinRange(block.GetGridPosition(), 5)
-                        .Count(otherBlock => otherBlock.OccupiedByGrownGreens());
-                    return greensNearby > 60;
-                })
-                .OrderBy(_ => Random.value)
-                .FirstOrDefault();
+                .ToList();
+        }
 
-            if (suitableLocation != null)
+        if (Random.value < .2f)
+        {
+            var block = _blocksWithGreens[Random.Range(0, _blocksWithGreens.Count)];
+
+            var greensNearby = _worldPlane
+                .GetNearbyBlocksWithinRange(block.GetGridPosition(), 5)
+                .Count(otherBlock => otherBlock.OccupiedByGrownGreens());
+            if (greensNearby > 60)
             {
-                SpawnShrine(suitableLocation);
+                SpawnShrine(block);
             }
         }
     }
@@ -46,7 +48,7 @@ public class CItyForrestShrine : MonoBehaviour
         var shrine = Instantiate(shrineTemplate);
         suitableLocation.DestroyOccupant();
         suitableLocation.Occupy(shrine);
-        
+
         UpgradeTrees(suitableLocation.GetGridPosition());
     }
 
@@ -61,7 +63,7 @@ public class CItyForrestShrine : MonoBehaviour
         {
             treeBlock.GetOccupantGreens().SetSize(GreensSpawn.TreeSize.Big);
         }
-        
+
         var hugeTrees = _worldPlane
             .GetNearbyBlocksWithinRange(shrinePosition, 4)
             .Where(block => block.OccupiedByGrownGreens())
@@ -71,7 +73,7 @@ public class CItyForrestShrine : MonoBehaviour
         {
             treeBlock.GetOccupantGreens().SetSize(GreensSpawn.TreeSize.Huge);
         }
-        
+
         var nearTrees = _worldPlane
             .GetNearbyBlocksWithinRange(shrinePosition, 1.5f)
             .Where(block => block.OccupiedByGrownGreens())

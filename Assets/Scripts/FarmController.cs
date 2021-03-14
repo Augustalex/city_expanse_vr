@@ -24,7 +24,11 @@ public class FarmController : MonoBehaviour
     public Block MakeToSoilWithFarm(Block block)
     {
         var farmSpawn = Instantiate(farmSpawnTemplate, null, false);
-        return MakeToSoilWith(block, farmSpawn);
+        var farmBlock = MakeToSoilWith(block, farmSpawn);
+        
+        FarmMasterController.Get().IncreaseFarmCount(1);
+        
+        return farmBlock;
     }
 
     public Block MakeToSoilWith(Block block, GameObject blockToBeOccupant)
@@ -51,14 +55,14 @@ public class FarmController : MonoBehaviour
 
     private void Update()
     {
-        if (Random.value < 0.005f)
+        if (FeatureToggles.Get().farmsGrowAtRandom)
         {
-            foreach (var soil in _soils)
+            if (Random.value < 0.005f)
             {
-                var farmSpawn = soil.GetOccupant().GetComponent<FarmSpawn>();
-                if (farmSpawn)
+                foreach (var soil in _soils)
                 {
-                    if (FeatureToggles.Get().farmsGrowAtRandom)
+                    var farmSpawn = soil.GetOccupant().GetComponent<FarmSpawn>();
+                    if (farmSpawn)
                     {
                         farmSpawn.Grow();
                     }
@@ -97,7 +101,7 @@ public class FarmController : MonoBehaviour
             {
                 var choice = candidates.First();
                 MakeToSoilWithFarm(choice);
-                
+
                 return;
             }
         }
