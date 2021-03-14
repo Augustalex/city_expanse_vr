@@ -173,9 +173,8 @@ public class WorldPlane : MonoBehaviour
 
     public void AddAndPositionBlock(Block block, Vector3 gridPosition)
     {
-        MakeBlockMoreUnique(block, gridPosition);
         blocksRepository.SetAtPosition(block, gridPosition);
-
+        MakeBlockMoreUnique(block, gridPosition);
         PositionBlock(block, gridPosition);
     }
 
@@ -205,24 +204,32 @@ public class WorldPlane : MonoBehaviour
 
     private void MakeSureTopGrassBlocksHaveCorrectTexture(Vector3 position)
     {
-        var stack = blocksRepository.StreamPairs().Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
+        int topBlockLevel = Convert.ToInt32(Block.LowestLevel);
+        Block topGrassBlock = null;
 
-        var list = stack.OrderByDescending(pair => pair.Key.y).ToList();
-        for (var i = 0; i < list.Count; i++)
+        while (true)
         {
-            var element = list[i];
-            var isTopBlock = i == 0;
+            var block = blocksRepository.GetMaybeAtPosition(
+                new Vector3(
+                    position.x,
+                    topBlockLevel,
+                    position.z
+                )
+            );
+            if (block == null) break;
 
-            if (!element.Value.IsGrass()) continue;
+            if (block.IsGrass())
+            {
+                block.GetComponent<GrassBlock>().SetNormalMaterial();
+                topGrassBlock = block;
+            }
 
-            if (isTopBlock)
-            {
-                element.Value.GetComponent<GrassBlock>().SetTopMaterial();
-            }
-            else
-            {
-                element.Value.GetComponent<GrassBlock>().SetNormalMaterial();
-            }
+            topBlockLevel++;
+        }
+
+        if (topGrassBlock.IsGrass()) // We assume that at least one block is actually set, since this function is called with a position to a real block.
+        {
+            topGrassBlock.GetComponent<GrassBlock>().SetTopMaterial();
         }
     }
 
@@ -324,9 +331,10 @@ public class WorldPlane : MonoBehaviour
     public int GetStackHeight(Vector3 position)
     {
         int nextLevelToCheckForHeight = Convert.ToInt32(Block.LowestLevel);
-        while(true)
+        while (true)
         {
-            var block = blocksRepository.GetMaybeAtPosition(new Vector3(position.x, nextLevelToCheckForHeight, position.z));
+            var block = blocksRepository.GetMaybeAtPosition(new Vector3(position.x, nextLevelToCheckForHeight,
+                position.z));
             if (block != null)
             {
                 nextLevelToCheckForHeight++;
@@ -338,8 +346,38 @@ public class WorldPlane : MonoBehaviour
         }
 
         var heightOfHighestBlock = nextLevelToCheckForHeight - 1;
-        
+
         return heightOfHighestBlock;
+    }
+
+    public Block GetBlockAtTopOfStack(Vector3 position)
+    {
+        int topBlockLevel = Convert.ToInt32(Block.LowestLevel);
+        Block topBlock = blocksRepository.GetMaybeAtPosition(
+            new Vector3(
+                position.x,
+                topBlockLevel,
+                position.z
+            )
+        );
+
+        topBlockLevel += 1;
+        while (true)
+        {
+            var block = blocksRepository.GetMaybeAtPosition(
+                new Vector3(
+                    position.x,
+                    topBlockLevel,
+                    position.z
+                )
+            );
+            if (block == null) break;
+
+            topBlock = block;
+            topBlockLevel++;
+        }
+
+        return topBlock;
     }
 
     public List<Block> GetStack(Vector3 position)
