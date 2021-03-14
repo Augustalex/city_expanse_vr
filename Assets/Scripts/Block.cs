@@ -23,8 +23,11 @@ public class Block : MonoBehaviour
     private bool _frozen;
     private Vector3 _gridPosition;
     private GameObject _occupiedBy;
+    private bool _isOccupied;
     private bool _permaFrozen;
     private bool _stable;
+    private Block _blockBeneath;
+    private OccupyingType _occupantType;
 
     private const int CloudLevel = 4;
 
@@ -39,32 +42,52 @@ public class Block : MonoBehaviour
             DestroyOccupant();
         }
 
-        var root = BlockRoot();
-        if (root != null)
+        if (_blockBeneath != null && gameObject.transform.parent != null)
         {
-            Destroy(root);
+            _blockBeneath.RemoveAsOccupant(gameObject.transform.parent.gameObject);
+        }
+
+        DestroyBlockRootOrSelf();
+    }
+
+    public void RemoveAsOccupant(GameObject selfAsProclaimedOccupant)
+    {
+        if (selfAsProclaimedOccupant == _occupiedBy)
+        {
+            _occupiedBy = null;
+            _isOccupied = false;
         }
     }
 
-    public GameObject BlockRoot()
+    public void DestroyBlockRootOrSelf()
     {
         try
         {
-            if (gameObject == null) return null;
-            if (transform.parent == null) return null;
-
-            return transform.parent.gameObject;
+            if (gameObject == null && transform.parent == null)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                Destroy(transform.parent.gameObject);
+            }
         }
         catch
         {
-            return null;
+            // ignored
         }
     }
 
     public bool IsVacant()
     {
-        return _occupiedBy == null;
+        return !_isOccupied;
     }
+
+    public bool OccupiedByBlock()
+    {
+        return _occupantType == OccupyingType.Block;
+    }
+
 
     public bool IsLot()
     {
@@ -125,7 +148,7 @@ public class Block : MonoBehaviour
         var occupant = Instantiate(template, null, true);
         occupant.transform.position = Vector3.zero;
 
-        _occupiedBy = occupant;
+        SetOccupiedBy(occupant);
 
         var blockRelative = occupant.GetComponent<BlockRelative>();
         if (blockRelative)
@@ -137,9 +160,32 @@ public class Block : MonoBehaviour
         occupant.transform.position = transform.position + Vector3.up * (.05f + animationHeight);
     }
 
-    public void Occupy(GameObject occupant)
+    private void SetOccupiedBy(GameObject occupant)
     {
         _occupiedBy = occupant;
+
+        var blockOfOccupant = occupant.GetComponentInChildren<Block>();
+        if (blockOfOccupant != null)
+        {
+            blockOfOccupant.SetBlockBeneath(this);
+            _occupantType = OccupyingType.Block;
+        }
+        else
+        {
+            _occupantType = GetOccupantType(occupant);
+        }
+
+        _isOccupied = true;
+    }
+
+    private void SetBlockBeneath(Block blockBeneath)
+    {
+        _blockBeneath = blockBeneath;
+    }
+
+    public void Occupy(GameObject occupant)
+    {
+        SetOccupiedBy(occupant);
 
         var blockRelative = occupant.GetComponent<BlockRelative>();
         if (blockRelative)
@@ -153,7 +199,7 @@ public class Block : MonoBehaviour
 
     public void SetOccupantThatIsTailFromOtherBase(GameObject occupant)
     {
-        _occupiedBy = occupant;
+        SetOccupiedBy(occupant);
 
         var blockRelative = occupant.GetComponent<BlockRelative>();
         if (blockRelative)
@@ -169,7 +215,7 @@ public class Block : MonoBehaviour
             throw new Exception("Trying to place something on top of occupied block!");
         }
 
-        _occupiedBy = occupantRoot;
+        SetOccupiedBy(occupantRoot);
         otherBlock.transform.position = transform.position + new Vector3(0, .1f, 0);
 
         otherBlock.ShortFreeze();
@@ -177,8 +223,17 @@ public class Block : MonoBehaviour
 
     public void DestroyOccupant()
     {
-        Destroy(_occupiedBy);
+        var occupantBlock = _occupiedBy.GetComponent<Block>();
+        if (occupantBlock != null)
+        {
+            occupantBlock.DestroySelf();
+        }
+
         _occupiedBy = null;
+        _isOccupied = false;
+        _occupantType = OccupyingType.Null;
+
+        Destroy(_occupiedBy);
     }
 
     public void PermanentFreeze()
@@ -209,16 +264,6 @@ public class Block : MonoBehaviour
 
         var transformRotation = blockRoot.rotation;
         blockRoot.rotation = Quaternion.Euler(transformRotation.x, (Random.Range(0, 5) * 60), transformRotation.z);
-    }
-
-    public bool OccupiedByHouse()
-    {
-        return !IsVacant() && _occupiedBy.CompareTag("HouseSpawn");
-    }
-
-    public bool OccupiedByAnotherBlock()
-    {
-        return !IsVacant() && _occupiedBy.GetComponent<Block>() != null;
     }
 
     public HouseSpawn GetOccupantHouse()
@@ -253,19 +298,61 @@ public class Block : MonoBehaviour
         return blockType == BlockType.Water;
     }
 
+    enum OccupyingType
+    {
+        House,
+        Greens,
+        DesertHouse,
+        Shrine,
+        Block,
+        Misc,
+        Null
+    }
+
+    private OccupyingType GetOccupantType(GameObject occupant)
+    {
+        var house = occupant.CompareTag("HouseSpawn");
+        if (house) return OccupyingType.House;
+
+        var greens = occupant.GetComponent<GreensSpawn>();
+        if (greens) return OccupyingType.Greens;
+
+        var desert = occupant.CompareTag("DesertHouse");
+        if (desert) return OccupyingType.DesertHouse;
+
+        var shrine = occupant.GetComponent<ShrineSpawn>();
+        if (shrine) return OccupyingType.Shrine;
+
+        return OccupyingType.Misc;
+    }
+
+    public bool OccupiedByHouse()
+    {
+        return !IsVacant() && _occupantType == OccupyingType.House;
+    }
+
+
     public bool OccupiedByGreens()
     {
-        return _occupiedBy != null && _occupiedBy.GetComponent<GreensSpawn>() != null;
+        return HasOccupant() && _occupantType == OccupyingType.Greens;
     }
 
     public bool OccupiedByGrownGreens()
     {
-        if (_occupiedBy == null) return false;
+        if (IsVacant()) return false;
 
-        var greens = _occupiedBy.GetComponent<GreensSpawn>();
-        if (!greens) return false;
+        return _occupantType == OccupyingType.Greens
+               && _occupiedBy.GetComponent<GreensSpawn>().IsGrown();
+    }
 
-        return greens.IsGrown();
+    public bool OccupiedByDesertHouse()
+    {
+        return !IsVacant() && _occupantType == OccupyingType.DesertHouse;
+    }
+
+    public bool OccupiedByShrine()
+    {
+        return !IsVacant() && _occupantType == OccupyingType.Shrine;
     }
 
     public GreensSpawn GetOccupantGreens()
@@ -290,7 +377,7 @@ public class Block : MonoBehaviour
 
     public bool HasOccupant()
     {
-        return _occupiedBy != null;
+        return !IsVacant();
     }
 
     public bool AboveCloudLevel()
@@ -301,16 +388,6 @@ public class Block : MonoBehaviour
     public bool BelowCloudLevel()
     {
         return GetGridPosition().y <= CloudLevel;
-    }
-
-    public bool OccupiedByDesertHouse()
-    {
-        return !IsVacant() && _occupiedBy.CompareTag("DesertHouse");
-    }
-
-    public bool OccupiedByShrine()
-    {
-        return !IsVacant() && _occupiedBy.GetComponent<ShrineSpawn>() != null;
     }
 
     public bool IsTopBlockInStack()

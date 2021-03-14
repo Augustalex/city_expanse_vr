@@ -98,8 +98,8 @@ public class WorldPlane : MonoBehaviour
     {
         var position = block.GetGridPosition();
 
-        block.DestroySelf();
         RemoveBlockAt(block.GetGridPosition());
+        block.DestroySelf();
 
         MakeSureTopGrassBlocksHaveCorrectTexture(position);
     }

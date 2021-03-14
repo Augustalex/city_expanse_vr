@@ -73,7 +73,7 @@ public class FloodingWater : MonoBehaviour
         var allNearbyBlocks = nearbyBlocks.Concat(nearbyEmptyBlocks);
         foreach (var nearbyBlock in allNearbyBlocks)
         {
-            if (!nearbyBlock.IsVacant() && !nearbyBlock.OccupiedByAnotherBlock())
+            if (!nearbyBlock.IsVacant() && !nearbyBlock.OccupiedByBlock())
             {
                 nearbyBlock.DestroyOccupant();
             }

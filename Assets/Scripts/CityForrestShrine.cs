@@ -50,15 +50,19 @@ public class CityForrestShrine : MonoBehaviour
             .GetBlocksWithGreens()
             .ToList();
 
-        var block = _blocksWithGreens[Random.Range(0, _blocksWithGreens.Count)];
-
-        var greensNearby = _worldPlane
-            .GetNearbyBlocksWithinRange(block.GetGridPosition(), 5)
-            .Count(otherBlock => otherBlock.OccupiedByGrownGreens());
-
-        if (greensNearby > 60)
+        var count = _blocksWithGreens.Count;
+        if (count > 0)
         {
-            SpawnShrine(block);
+            var block = _blocksWithGreens[Random.Range(0, count)];
+
+            var greensNearby = _worldPlane
+                .GetNearbyBlocksWithinRange(block.GetGridPosition(), 5)
+                .Count(otherBlock => otherBlock.OccupiedByGrownGreens());
+
+            if (greensNearby > 60)
+            {
+                SpawnShrine(block);
+            }
         }
     }
 
