@@ -118,7 +118,7 @@ public class FloodingWater : MonoBehaviour
     {
         var gridPosition = LowestGridPosition();
 
-        var nearbyEmptyPositions = _worldPlane.GetNearbyEmptyPositions(gridPosition);
+        var nearbyEmptyPositions = _worldPlane.GetNearbyEmptyPositionsStream(gridPosition);
         foreach (var position in nearbyEmptyPositions)
         {
             var waterBlock = NewShallowWater().GetComponentInChildren<Block>();
@@ -131,7 +131,7 @@ public class FloodingWater : MonoBehaviour
     {
         var gridPosition = LowestGridPosition();
 
-        return _worldPlane.GetNearbyEmptyPositions(gridPosition)
+        return _worldPlane.GetNearbyEmptyPositionsStream(gridPosition)
             .Select(position =>
             {
                 var waterBlock = NewFullHeightWaterBlock().GetComponentInChildren<Block>();

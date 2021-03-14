@@ -144,6 +144,12 @@ public class WorldPlane : MonoBehaviour
             .ToList();
     }
 
+    public IEnumerable<Vector3> GetNearbyEmptyPositionsStream(Vector3 position)
+    {
+        return GetNeighbouringPositions(position)
+            .Where(newPosition => !blocksRepository.HasAtPosition(newPosition));
+    }
+
     public bool IsBlockLowestWater(Block block)
     {
         if (!block.IsWater()) return false;
@@ -226,13 +232,13 @@ public class WorldPlane : MonoBehaviour
             .Where(b => b.blockType == Block.BlockType.Water)
             .ToList();
     }
-    
+
     public IEnumerable<Block> GetStableWaterBlocks()
     {
         return blocksRepository.StreamBlocks()
             .Where(b => b.blockType == Block.BlockType.Water);
     }
-    
+
     public IEnumerable<Block> GetWaterBlocksStream()
     {
         return blocksRepository.StreamBlocks()
@@ -271,7 +277,7 @@ public class WorldPlane : MonoBehaviour
             .Where(block => block.IsVacant())
             .ToList();
     }
-    
+
     public IEnumerable<Block> GetNearbyVacantLotsStream(Vector3 position)
     {
         return GetNearbyLots(position)
@@ -281,8 +287,7 @@ public class WorldPlane : MonoBehaviour
     public IEnumerable<Block> GetNearbyLand(Vector3 position)
     {
         return GetNearbyBlocks(position)
-            .Where(b => b.IsLand())
-            .ToList();
+            .Where(b => b.IsLand());
     }
 
     public List<Block> GetVacantBlocks()
@@ -292,7 +297,7 @@ public class WorldPlane : MonoBehaviour
             .Select(pair => pair.Value)
             .ToList();
     }
-    
+
     public IEnumerable<Block> GetVacantBlocksStream()
     {
         return blocksRepository.StreamPairs()
@@ -305,7 +310,7 @@ public class WorldPlane : MonoBehaviour
     {
         return blocksRepository.StreamBlocks().Where(block => block.OccupiedByHouse()).ToList();
     }
-    
+
     public IEnumerable<Block> GetBlocksWithHousesStream()
     {
         return blocksRepository.StreamBlocks().Where(block => block.OccupiedByHouse());
@@ -318,12 +323,23 @@ public class WorldPlane : MonoBehaviour
 
     public int GetStackHeight(Vector3 position)
     {
-        var stack = blocksRepository.StreamPairs().Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
+        int nextLevelToCheckForHeight = Convert.ToInt32(Block.LowestLevel);
+        while(true)
+        {
+            var block = blocksRepository.GetMaybeAtPosition(new Vector3(position.x, nextLevelToCheckForHeight, position.z));
+            if (block != null)
+            {
+                nextLevelToCheckForHeight++;
+            }
+            else
+            {
+                break;
+            }
+        }
 
-        var list = stack.ToList();
-        if (list.Count == 0) return (int) Block.LowestLevel;
-
-        return Convert.ToInt32(list.Max(pair => pair.Key.y));
+        var heightOfHighestBlock = nextLevelToCheckForHeight - 1;
+        
+        return heightOfHighestBlock;
     }
 
     public List<Block> GetStack(Vector3 position)
