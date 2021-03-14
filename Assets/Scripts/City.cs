@@ -103,21 +103,24 @@ public class City : MonoBehaviour
 
     private void SpawnOneHouse()
     {
-        var candidateCount = 0;
+        var allStableWaterBlocks = _worldPlane
+            .GetStableWaterBlocks();
 
-        var candidates = _worldPlane.GetStableWaterBlocks()
-            .SelectMany(waterBlock =>
-                _worldPlane.GetNearbyVacantLotsStream(waterBlock.GetGridPosition())
-                    .Where(waterBlock.IsLevelWith)
-                    .Select(block =>
-                    {
-                        candidateCount += 1;
-                        return new Tuple<Block, Block>(waterBlock, block);
-                    }));
-
-        if (candidateCount > 0)
+        var candidates = new List<Tuple<Block, Block>>();
+        foreach (var waterBlock in allStableWaterBlocks)
         {
-            var (waterBlock, vacantLot) = candidates.ElementAt(Random.Range(0, candidateCount));
+            var levelVacantLots = _worldPlane.GetNearbyVacantLotsStream(waterBlock.GetGridPosition())
+                .Where(levelVacantLot => waterBlock.IsLevelWith(levelVacantLot));
+
+            foreach (var block in levelVacantLots)
+            {
+                candidates.Add(new Tuple<Block, Block>(waterBlock, block));
+            }
+        }
+
+        if (candidates.Count > 0)
+        {
+            var (waterBlock, vacantLot) = candidates.ElementAt(Random.Range(0, candidates.Count));
             var house = Instantiate(tinyHouseTemplate);
             vacantLot.Occupy(house);
             var target = waterBlock.transform.position;
@@ -130,20 +133,20 @@ public class City : MonoBehaviour
 
     private void SpawnInnerCityHouse()
     {
-        var candidateCount = 0;
-
-        var bigHouseCandidates = _worldPlane.GetBlocksWithHousesStream()
-            .Where(block => block.GetOccupantHouse().IsBig())
-            .SelectMany(bigHouse => _worldPlane.GetNearbyVacantLotsStream(bigHouse.GetGridPosition())
-                .Select(otherBlock =>
-                {
-                    candidateCount += 1;
-                    return new Tuple<Block, Block>(bigHouse, otherBlock);
-                }));
-
-        if (candidateCount > 0)
+        var candidates = new List<Tuple<Block, Block>>();
+        foreach (var bigHouse in _worldPlane .GetBlocksWithHousesStream())
         {
-            var (bigHouse, vacantLot) = bigHouseCandidates.ElementAt(Random.Range(0, candidateCount));
+            if (!bigHouse.GetOccupantHouse().IsBig()) continue;
+            
+            foreach (var nearbyVacantLot in _worldPlane.GetNearbyVacantLotsStream(bigHouse.GetGridPosition()))
+            {
+                candidates.Add(new Tuple<Block, Block>(bigHouse, nearbyVacantLot));
+            }
+        }
+
+        if (candidates.Count > 0)
+        {
+            var (bigHouse, vacantLot) = candidates.ElementAt(Random.Range(0, candidates.Count));
             var house = Instantiate(tinyHouseTemplate);
             house.GetComponent<HouseSpawn>().SetIsInnerCity();
             vacantLot.Occupy(house);

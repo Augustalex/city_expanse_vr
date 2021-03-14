@@ -243,7 +243,7 @@ public class WorldPlane : MonoBehaviour
     public IEnumerable<Block> GetStableWaterBlocks()
     {
         return blocksRepository.StreamBlocks()
-            .Where(b => b.blockType == Block.BlockType.Water);
+            .Where(b => b.blockType == Block.BlockType.Water && b.IsStable());
     }
 
     public IEnumerable<Block> GetWaterBlocksStream()

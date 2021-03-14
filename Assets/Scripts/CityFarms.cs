@@ -38,18 +38,13 @@ public class CityFarms : MonoBehaviour
 
     private void SpawnMasterFarm(List<Block> houses)
     {
-        var thereAreSomeVacantBlock = false;
         var houseBlock = houses.OrderBy(_ => Random.value).First();
-        var vacantLots = _worldPlane.GetNearbyVacantLotsStream(houseBlock.GetGridPosition())
-            .OrderBy(_ =>
-            {
-                thereAreSomeVacantBlock = true;
-                return Random.value;
-            });
+        var lotToReplace = _worldPlane.GetNearbyVacantLotsStream(houseBlock.GetGridPosition())
+            .OrderBy(_ => Random.value)
+            .FirstOrDefault();
 
-        if (thereAreSomeVacantBlock)
+        if (lotToReplace != null)
         {
-            var lotToReplace = vacantLots.First();
             FarmMasterController.Get().SetupFarmControllerForBlock(lotToReplace);
 
             _placedFirstFarm = true;
