@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -102,18 +103,21 @@ public class City : MonoBehaviour
 
     private void SpawnOneHouse()
     {
-        var candidates = _worldPlane.GetWaterBlocks()
-            .Where(waterBlock => waterBlock.IsStable())
-            .SelectMany(waterBlock =>
-                _worldPlane.GetNearbyVacantLots(waterBlock.GetGridPosition())
-                    .Where(waterBlock.IsLevelWith)
-                    .Select(block => new Tuple<Block, Block>(waterBlock, block)))
-            .ToList();
+        var candidateCount = 0;
 
-        var candidatesCount = candidates.Count;
-        if (candidatesCount > 0)
+        var candidates = _worldPlane.GetStableWaterBlocks()
+            .SelectMany(waterBlock =>
+                _worldPlane.GetNearbyVacantLotsStream(waterBlock.GetGridPosition())
+                    .Where(waterBlock.IsLevelWith)
+                    .Select(block =>
+                    {
+                        candidateCount += 1;
+                        return new Tuple<Block, Block>(waterBlock, block);
+                    }));
+
+        if (candidateCount > 0)
         {
-            var (waterBlock, vacantLot) = candidates[Random.Range(0, candidatesCount)];
+            var (waterBlock, vacantLot) = candidates.ElementAt(Random.Range(0, candidateCount));
             var house = Instantiate(tinyHouseTemplate);
             vacantLot.Occupy(house);
             var target = waterBlock.transform.position;
@@ -126,16 +130,20 @@ public class City : MonoBehaviour
 
     private void SpawnInnerCityHouse()
     {
-        var bigHouseCandidates = _worldPlane.GetBlocksWithHouses()
-            .Where(block => block.GetOccupantHouse().IsBig())
-            .SelectMany(bigHouse => _worldPlane.GetNearbyVacantLots(bigHouse.GetGridPosition())
-                .Select(otherBlock => new Tuple<Block, Block>(bigHouse, otherBlock)))
-            .ToList();
+        var candidateCount = 0;
 
-        var candidatesCount = bigHouseCandidates.Count;
-        if (candidatesCount > 0)
+        var bigHouseCandidates = _worldPlane.GetBlocksWithHousesStream()
+            .Where(block => block.GetOccupantHouse().IsBig())
+            .SelectMany(bigHouse => _worldPlane.GetNearbyVacantLotsStream(bigHouse.GetGridPosition())
+                .Select(otherBlock =>
+                {
+                    candidateCount += 1;
+                    return new Tuple<Block, Block>(bigHouse, otherBlock);
+                }));
+
+        if (candidateCount > 0)
         {
-            var (bigHouse, vacantLot) = bigHouseCandidates[Random.Range(0, candidatesCount)];
+            var (bigHouse, vacantLot) = bigHouseCandidates.ElementAt(Random.Range(0, candidateCount));
             var house = Instantiate(tinyHouseTemplate);
             house.GetComponent<HouseSpawn>().SetIsInnerCity();
             vacantLot.Occupy(house);
@@ -150,27 +158,31 @@ public class City : MonoBehaviour
 
     private void SpawnBigHouse()
     {
-        var candidates = _worldPlane.GetBlocksWithHouses()
-            .Where(block =>
-            {
-                var occupantHouse = block.GetOccupantHouse();
-                if (!occupantHouse.IsSmall()) return false;
-                if (!occupantHouse.GoodTimeToUpgrade()) return false;
-                // var blocksWithHouse = _worldPlane
-                // .GetBlocksWithHouses();
+        var candidates = new List<Block>();
 
-                // var hasLargeEnoughClosePopulation = blocksWithHouse.Count(houseBlock => block.DistanceToOtherBlock(houseBlock) <= 1.5f) >= 3;
-                // if (!hasLargeEnoughClosePopulation) return false;
-
-                var hasEnoughSurroundingNature = _worldPlane.NatureScore(block.GetGridPosition(), 8f) > 20;
-                return hasEnoughSurroundingNature;
-            })
-            .ToList();
-
-        var candidatesCount = candidates.Count;
-        if (candidatesCount > 0)
+        foreach (var block in _worldPlane.GetBlocksWithHousesStream())
         {
-            var houseToUpgrade = candidates[Random.Range(0, candidatesCount)];
+            var occupantHouse = block.GetOccupantHouse();
+            if (!occupantHouse.IsSmall()) continue;
+            if (!occupantHouse.GoodTimeToUpgrade()) continue;
+
+            // var blocksWithHouse = _worldPlane
+            // .GetBlocksWithHouses();
+
+            // var hasLargeEnoughClosePopulation = blocksWithHouse.Count(houseBlock => block.DistanceToOtherBlock(houseBlock) <= 1.5f) >= 3;
+            // if (!hasLargeEnoughClosePopulation) return false;
+
+            var hasEnoughSurroundingNature = _worldPlane.NatureScore(block.GetGridPosition(), 8f) > 20;
+
+            if (hasEnoughSurroundingNature)
+            {
+                candidates.Add(block);
+            }
+        }
+
+        if (candidates.Count > 0)
+        {
+            var houseToUpgrade = candidates[Random.Range(0, candidates.Count)];
             houseToUpgrade.GetOccupantHouse().Upgrade();
             _lastPlacedHouse = Time.fixedTime;
         }

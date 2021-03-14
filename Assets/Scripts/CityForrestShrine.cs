@@ -11,36 +11,70 @@ public class CityForrestShrine : MonoBehaviour
     private List<Block> _blocksWithGreens;
 
     private const float ShrineRange = 2;
+    private int _shrineCount = 0;
+    private WorkQueue _workQueue;
+    private int _ticket;
+    private bool _spawnShrine;
 
     void Start()
     {
         _worldPlane = WorldPlane.Get();
+        _workQueue = WorkQueue.Get();
     }
 
     void Update()
     {
         if (Random.value < .001f)
         {
-            var shrineCount = _worldPlane.GetBlocksWithShrines().Count();
-            if (shrineCount > 0) return;
-
-            _blocksWithGreens = _worldPlane
-                .GetBlocksWithGreens()
-                .ToList();
+            UpdateShrineCount();
         }
 
-        if (Random.value < .2f)
+        if (_shrineCount > 0) return;
+
+        if (Random.value < .02f)
         {
-            var block = _blocksWithGreens[Random.Range(0, _blocksWithGreens.Count)];
-
-            var greensNearby = _worldPlane
-                .GetNearbyBlocksWithinRange(block.GetGridPosition(), 5)
-                .Count(otherBlock => otherBlock.OccupiedByGrownGreens());
-            if (greensNearby > 60)
-            {
-                SpawnShrine(block);
-            }
+            _spawnShrine = true;
         }
+
+        if (_spawnShrine && CanSpawnShrineThisFrame())
+        {
+            TrySpawnShrineAtRandomGrassBlock();
+        }
+    }
+
+    private void TrySpawnShrineAtRandomGrassBlock()
+    {
+        _spawnShrine = false;
+        
+        _blocksWithGreens = _worldPlane
+            .GetBlocksWithGreens()
+            .ToList();
+
+        var block = _blocksWithGreens[Random.Range(0, _blocksWithGreens.Count)];
+
+        var greensNearby = _worldPlane
+            .GetNearbyBlocksWithinRange(block.GetGridPosition(), 5)
+            .Count(otherBlock => otherBlock.OccupiedByGrownGreens());
+
+        if (greensNearby > 60)
+        {
+            SpawnShrine(block);
+        }
+    }
+
+    private bool CanSpawnShrineThisFrame()
+    {
+        if (_workQueue.HasExpiredTicket(_ticket))
+        {
+            _ticket = _workQueue.GetTicket();
+        }
+
+        return _workQueue.HasTicketForFrame(_ticket);
+    }
+
+    private void UpdateShrineCount()
+    {
+        _shrineCount = _worldPlane.GetBlocksWithShrines().Count();
     }
 
     private void SpawnShrine(Block suitableLocation)

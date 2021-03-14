@@ -287,7 +287,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &234377180
 Transform:
   m_ObjectHideFlags: 0
@@ -3186,6 +3186,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shrineTemplate: {fileID: 2723339866174918418, guid: 0a0b77f8ce37f0f409d1fc1994ab685a,
     type: 3}
+--- !u!114 &1741071630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741071621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4297104eea394f359ec69dd4025be4b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1741071636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3277,7 +3289,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1815282479
 Transform:
   m_ObjectHideFlags: 0

@@ -22,13 +22,15 @@ public class CityForts : MonoBehaviour
     {
         if (!_featureToggles.fort) return;
         if (_fortCount > 1) return;
-        var houseCount = _worldPlane.GetBlocksWithHouses().Count;
+        var houseCount = _worldPlane.GetBlocksWithHousesStream().Count();
         if (houseCount < 3) return;
 
         if (Random.value < .001f)
         {
             if (_worldPlane.blocksRepository.StreamBlocks().Count(block => block.GetGridPosition().y > 1f) < 10) return;
-            var candidates = _worldPlane.GetVacantBlocks()
+            
+            var candidateCount = 0;
+            var candidates = _worldPlane.GetVacantBlocksStream()
                 .Where(vacantBlock => vacantBlock.IsGroundLevel() &&
                                       _worldPlane.GetMajorityBlockTypeWithinRange(vacantBlock.GetGridPosition(), 1f)
                                       == Block.BlockType.Grass
@@ -37,26 +39,28 @@ public class CityForts : MonoBehaviour
                 )
                 .SelectMany(fortBottom =>
                 {
-                    var nearbyHighlands = _worldPlane.GetNearbyVacantLots(fortBottom.GetGridPosition())
+                    var nearbyHighlands = _worldPlane.GetNearbyVacantLotsStream(fortBottom.GetGridPosition())
                         .Where(block =>
                         {
-                            var highlandIsOneBlockAboveFortBottomLevel = Math.Abs(block.GetGridPosition().y - (fortBottom.GetGridPosition().y + 1f)) < .5f;
+                            var highlandIsOneBlockAboveFortBottomLevel =
+                                Math.Abs(block.GetGridPosition().y - (fortBottom.GetGridPosition().y + 1f)) < .5f;
                             return highlandIsOneBlockAboveFortBottomLevel;
-                        })
-                        .ToList();
+                        });
 
                     if (!nearbyHighlands.Any()) return new List<Tuple<Block, Block>>();
 
                     return nearbyHighlands
                         .Where(block => block.IsGrass() && block.IsVacant())
-                        .Select(block => new Tuple<Block, Block>(fortBottom, block));
-                })
-                .ToList();
-
-            var candidatesCount = candidates.Count;
-            if (candidatesCount > 0)
+                        .Select(block =>
+                        {
+                            candidateCount += 1;
+                            return new Tuple<Block, Block>(fortBottom, block);
+                        });
+                });
+            
+            if (candidateCount > 0)
             {
-                var (fortBottom, highlands) = candidates[Random.Range(0, candidatesCount)];
+                var (fortBottom, highlands) = candidates.ElementAt(Random.Range(0, candidateCount));
                 var fortSpawn = Instantiate(fortSpawnTemplate);
                 fortBottom.Occupy(fortSpawn);
                 highlands.SetOccupantThatIsTailFromOtherBase(fortSpawn);

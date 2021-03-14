@@ -226,6 +226,18 @@ public class WorldPlane : MonoBehaviour
             .Where(b => b.blockType == Block.BlockType.Water)
             .ToList();
     }
+    
+    public IEnumerable<Block> GetStableWaterBlocks()
+    {
+        return blocksRepository.StreamBlocks()
+            .Where(b => b.blockType == Block.BlockType.Water);
+    }
+    
+    public IEnumerable<Block> GetWaterBlocksStream()
+    {
+        return blocksRepository.StreamBlocks()
+            .Where(b => b.blockType == Block.BlockType.Water);
+    }
 
     public IEnumerable<Block> GetNearbyBlocksWithinRange(Vector3 position, float radius)
     {
@@ -259,6 +271,12 @@ public class WorldPlane : MonoBehaviour
             .Where(block => block.IsVacant())
             .ToList();
     }
+    
+    public IEnumerable<Block> GetNearbyVacantLotsStream(Vector3 position)
+    {
+        return GetNearbyLots(position)
+            .Where(block => block.IsVacant());
+    }
 
     public IEnumerable<Block> GetNearbyLand(Vector3 position)
     {
@@ -274,10 +292,23 @@ public class WorldPlane : MonoBehaviour
             .Select(pair => pair.Value)
             .ToList();
     }
+    
+    public IEnumerable<Block> GetVacantBlocksStream()
+    {
+        return blocksRepository.StreamPairs()
+            .Where(pair => pair.Value.IsVacant())
+            .Select(pair => pair.Value)
+            .ToList();
+    }
 
     public List<Block> GetBlocksWithHouses()
     {
         return blocksRepository.StreamBlocks().Where(block => block.OccupiedByHouse()).ToList();
+    }
+    
+    public IEnumerable<Block> GetBlocksWithHousesStream()
+    {
+        return blocksRepository.StreamBlocks().Where(block => block.OccupiedByHouse());
     }
 
     public IEnumerable<Block> GetBlocksWithDesertHouses()

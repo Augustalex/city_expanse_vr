@@ -13,11 +13,16 @@ public class FloodingWater : MonoBehaviour
     private WorldPlane _worldPlane;
     private float _life;
 
+    private int _ticket = -1;
+    private WorkQueue _workQueue;
+    private bool _flood;
+
     void Start()
     {
         _life = Time.fixedTime;
         _block = GetComponentInChildren<Block>();
         _worldPlane = GameObject.FindWithTag("WorldPlane").GetComponent<WorldPlane>();
+        _workQueue = WorkQueue.Get();
 
         _block.SetAsUnstable();
     }
@@ -28,9 +33,27 @@ public class FloodingWater : MonoBehaviour
 
         if (Time.fixedTime - _life > 1.25f)
         {
-            FloodAll();
-            SetAsStable();
+            _flood = true;
         }
+
+        if (_flood)
+        {
+            if (CanFloodThisFrame())
+            {
+                FloodAll();
+                SetAsStable();
+            }
+        }
+    }
+
+    private bool CanFloodThisFrame()
+    {
+        if (_workQueue.HasExpiredTicket(_ticket))
+        {
+            _ticket = _workQueue.GetTicket();
+        }
+
+        return _workQueue.HasTicketForFrame(_ticket);
     }
 
     private void SetAsStable()
@@ -41,6 +64,7 @@ public class FloodingWater : MonoBehaviour
 
     private void FloodAll()
     {
+        _flood = false;
         var blockHeight = _block.GetGridPosition().y;
         var nearbyBlocks = _worldPlane
             .GetNearbyLand(_block.GetGridPosition())
