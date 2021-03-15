@@ -21,13 +21,14 @@ public class Block : MonoBehaviour
     public BlockType blockType = BlockType.Grass;
 
     private bool _frozen;
-    private Vector3 _gridPosition;
+    public Vector3 _gridPosition;
     private GameObject _occupiedBy;
     private bool _isOccupied;
     private bool _permaFrozen;
     private bool _stable;
-    private Block _blockBeneath;
-    private OccupyingType _occupantType;
+    private Block _blockBeneath = null;
+    private OccupyingType _occupantType = OccupyingType.Null;
+    private Block _blockAbove = null;
 
     private const int CloudLevel = 4;
 
@@ -53,9 +54,9 @@ public class Block : MonoBehaviour
     public void RemoveAsOccupant(GameObject selfAsProclaimedOccupant)
     {
         if (selfAsProclaimedOccupant == _occupiedBy)
-        {
-            _occupiedBy = null;
-            _isOccupied = false;
+        {       
+            ResetOccupantInfo();
+            MakeSureTopGrassBlocksHaveCorrectTexture();
         }
     }
 
@@ -85,7 +86,7 @@ public class Block : MonoBehaviour
 
     public bool OccupiedByBlock()
     {
-        return _occupantType == OccupyingType.Block;
+        return GetOccupantType() == OccupyingType.Block;
     }
 
 
@@ -169,6 +170,7 @@ public class Block : MonoBehaviour
         {
             blockOfOccupant.SetBlockBeneath(this);
             _occupantType = OccupyingType.Block;
+            _blockAbove = blockOfOccupant;
         }
         else
         {
@@ -208,7 +210,7 @@ public class Block : MonoBehaviour
         }
     }
 
-    public void PlaceOnTopOfSelf(Block otherBlock, GameObject occupantRoot)
+    public void PlaceOnTop(Block otherBlock, GameObject occupantRoot)
     {
         if (!IsVacant())
         {
@@ -229,11 +231,20 @@ public class Block : MonoBehaviour
             occupantBlock.DestroySelf();
         }
 
+        ResetOccupantInfo();
+    }
+
+    private OccupyingType GetOccupantType()
+    {
+        return _occupantType;
+    }
+
+    private void ResetOccupantInfo()
+    {
         _occupiedBy = null;
         _isOccupied = false;
         _occupantType = OccupyingType.Null;
-
-        Destroy(_occupiedBy);
+        _blockAbove = null;
     }
 
     public void PermanentFreeze()
@@ -360,6 +371,34 @@ public class Block : MonoBehaviour
         return _occupiedBy.GetComponent<GreensSpawn>();
     }
 
+    public Block GetTopBlock()
+    {
+        var current = this;
+        while (current.OccupiedByBlock())
+        {
+            current = current._blockAbove;
+        }
+
+        return current;
+    }
+
+    public void MakeSureTopGrassBlocksHaveCorrectTexture()
+    {
+        var current = this;
+        while (current._blockBeneath != null)
+        {
+            current = current._blockBeneath;
+        }
+
+        while (current._blockAbove)
+        {
+            current.GetComponent<GrassBlock>().SetNormalMaterial();
+            current = current._blockAbove;
+        }
+
+        current.GetComponent<GrassBlock>().SetTopMaterial();
+    }
+    
     public bool IsSand()
     {
         return blockType == BlockType.Sand;

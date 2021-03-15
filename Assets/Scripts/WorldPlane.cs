@@ -116,23 +116,25 @@ public class WorldPlane : MonoBehaviour
         var translations = new List<Vector3>
         {
             new Vector3(-1, positionY, 0),
-            new Vector3(-1, positionY, middle ? -1 : 1),
+            new Vector3(-1, positionY, middle ? 0 : 1),
 
             new Vector3(0, positionY, -1),
             new Vector3(0, positionY, 1),
 
             new Vector3(1, positionY, 0),
-            new Vector3(1, positionY, middle ? -1 : 1),
+            new Vector3(1, positionY, middle ? 0 : 1),
         };
         var nearbyPositions = translations
-            .Select(translation =>
+            .Select(translation => position + translation)
+            .Where(IsWithinBounds)
+            .Select(newPosition =>
             {
-                var translatedPosition = position + translation;
-                translatedPosition.y = GetStackHeight(translatedPosition);
-
-                return translatedPosition;
-            })
-            .Where(IsWithinBounds);
+                return new Vector3(
+                    newPosition.x,
+                    GetStackHeight(newPosition),
+                    newPosition.z
+                );
+            });
 
         return nearbyPositions;
     }
@@ -166,15 +168,26 @@ public class WorldPlane : MonoBehaviour
         var gridPosition = blockAtBottom.GetGridPosition() + Vector3.up;
         blockToAdd.SetGridPosition(gridPosition);
         blocksRepository.SetAtPosition(blockToAdd, gridPosition);
-        MakeBlockMoreUnique(blockToAdd, gridPosition);
+        MakeBlockMoreUnique(blockToAdd);
 
-        blockAtBottom.PlaceOnTopOfSelf(blockToAdd, blockToAddRoot);
+        blockAtBottom.PlaceOnTop(blockToAdd, blockToAddRoot);
+
+        if (blockToAdd.IsGrass())
+        {
+            blockToAdd.MakeSureTopGrassBlocksHaveCorrectTexture();
+        }
     }
 
     public void AddAndPositionBlock(Block block, Vector3 gridPosition)
     {
         blocksRepository.SetAtPosition(block, gridPosition);
-        MakeBlockMoreUnique(block, gridPosition);
+        MakeBlockMoreUnique(block);
+        
+        if (block.IsGrass())
+        {
+            block.MakeSureTopGrassBlocksHaveCorrectTexture();
+        }
+
         PositionBlock(block, gridPosition);
     }
 
@@ -186,10 +199,9 @@ public class WorldPlane : MonoBehaviour
                 gridPosition); // TODO Should fix so that the block.BlockRoot() is the one being moved, but right now there is a weird bug when doing that...
     }
 
-    private void MakeBlockMoreUnique(Block block, Vector3 position)
+    private void MakeBlockMoreUnique(Block block)
     {
         block.RandomRotateAlongY();
-        MakeSureTopGrassBlocksHaveCorrectTexture(position);
     }
 
     public void ReplaceBlock(Block toBeReplaced, Block replacement)
@@ -205,32 +217,14 @@ public class WorldPlane : MonoBehaviour
     private void MakeSureTopGrassBlocksHaveCorrectTexture(Vector3 position)
     {
         int topBlockLevel = Convert.ToInt32(Block.LowestLevel);
-        Block topGrassBlock = null;
-
-        while (true)
-        {
-            var block = blocksRepository.GetMaybeAtPosition(
-                new Vector3(
-                    position.x,
-                    topBlockLevel,
-                    position.z
-                )
-            );
-            if (block == null) break;
-
-            if (block.IsGrass())
-            {
-                block.GetComponent<GrassBlock>().SetNormalMaterial();
-                topGrassBlock = block;
-            }
-
-            topBlockLevel++;
-        }
-
-        if (topGrassBlock.IsGrass()) // We assume that at least one block is actually set, since this function is called with a position to a real block.
-        {
-            topGrassBlock.GetComponent<GrassBlock>().SetTopMaterial();
-        }
+        var block = blocksRepository.GetAtPosition(
+            new Vector3(
+                position.x,
+                topBlockLevel,
+                position.z
+            )
+        );
+        block.MakeSureTopGrassBlocksHaveCorrectTexture();
     }
 
     public List<Block> GetWaterBlocks()
@@ -328,26 +322,18 @@ public class WorldPlane : MonoBehaviour
         return blocksRepository.StreamBlocks().Where(block => block.OccupiedByDesertHouse());
     }
 
-    public int GetStackHeight(Vector3 position)
+    public int
+        GetStackHeight(
+            Vector3 position)
     {
-        int nextLevelToCheckForHeight = Convert.ToInt32(Block.LowestLevel);
-        while (true)
-        {
-            var block = blocksRepository.GetMaybeAtPosition(new Vector3(position.x, nextLevelToCheckForHeight,
-                position.z));
-            if (block != null)
-            {
-                nextLevelToCheckForHeight++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        var heightOfHighestBlock = nextLevelToCheckForHeight - 1;
-
-        return heightOfHighestBlock;
+        var block = blocksRepository.GetAtPosition(
+            new Vector3(
+                position.x,
+                Block.LowestLevel,
+                position.z
+            )
+        );
+        return Convert.ToInt32(block.GetTopBlock().GetGridPosition().y);
     }
 
     public Block GetBlockAtTopOfStack(Vector3 position)
