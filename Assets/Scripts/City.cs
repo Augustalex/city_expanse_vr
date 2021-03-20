@@ -89,14 +89,10 @@ public class City : MonoBehaviour
         var sandBlockRoot = Instantiate(sandBlockTemplate);
         var block = _worldPlane
             .GetVacantBlocksStream()
-            .Where(vacantBlock =>
-            {
-                var waterBlocks = _worldPlane.GetWaterBlocks();
-                return _worldPlane.BlockCanBeReplacedBySandBlock(vacantBlock)
-                       && waterBlocks.Count(waterBlock => vacantBlock.DistanceToOtherBlock(waterBlock) < 1) == 0;
-            })
+            .Where(vacantBlock => _worldPlane.BlockCanBeReplacedBySandBlock(vacantBlock))
             .OrderBy(_ => Random.value)
             .First();
+        
         var sandBlock = sandBlockRoot.GetComponentInChildren<Block>();
         _worldPlane.ReplaceBlock(block, sandBlock);
     }

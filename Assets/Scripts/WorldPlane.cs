@@ -679,12 +679,12 @@ public class WorldPlane : MonoBehaviour
             if (block.OccupiedByDesertHouse()) return false;
             if (block.OccupiedByGreens())
             {
-                return HasNearbyGreens(block.GetGridPosition());
+                return !HasNearbyGreens(block.GetGridPosition());
             }
         }
         else if (block.IsWater())
         {
-            return HasNearbyWater(block.GetGridPosition());
+            return !HasNearbyWater(block.GetGridPosition());
         }
         else if (block.IsOutsideWater())
         {
