@@ -371,7 +371,7 @@ public class WorldPlane : MonoBehaviour
         return topBlock;
     }
 
-    public List<Block> GetStack(Vector3 position)
+    public List<Block> GetStack(Vector3 position) 
     {
         var stack = blocksRepository.StreamPairs().Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
 
@@ -623,7 +623,7 @@ public class WorldPlane : MonoBehaviour
     {
         return blocksRepository
             .StreamBlocks()
-            .Where(block => block.HasOccupant() && block.GetOccupant().GetComponent<DocksSpawn>());
+            .Where(block => block.OccupiedByDocks());
     }
 
     public Block.BlockType GetMajorityBlockTypeWithinRange(Vector3 gridPosition, float range)

@@ -318,6 +318,7 @@ public class Block : MonoBehaviour
         Shrine,
         Block,
         Misc,
+        Docks,
         Null
     }
 
@@ -334,6 +335,9 @@ public class Block : MonoBehaviour
 
         var shrine = occupant.GetComponent<ShrineSpawn>();
         if (shrine) return OccupyingType.Shrine;
+
+        var docks = occupant.GetComponent<DocksSpawn>();
+        if (docks) return OccupyingType.Docks;
 
         return OccupyingType.Misc;
     }
@@ -365,6 +369,11 @@ public class Block : MonoBehaviour
     public bool OccupiedByShrine()
     {
         return !IsVacant() && _occupantType == OccupyingType.Shrine;
+    }
+    
+    public bool OccupiedByDocks()
+    {
+        return !IsVacant() && _occupantType == OccupyingType.Docks;
     }
 
     public GreensSpawn GetOccupantGreens()
