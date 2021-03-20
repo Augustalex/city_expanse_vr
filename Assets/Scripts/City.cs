@@ -17,16 +17,22 @@ public class City : MonoBehaviour
     private bool _sandSpawned;
     private SandSpreadController _sandSpreadController;
     private float _lastPlacedInnerCityHouse;
+    private int _ticket = -1;
+    private WorkQueue _workQueue;
 
     void Start()
     {
         _worldPlane = GetComponent<WorldPlane>();
         _lastPlacedHouse = Time.fixedTime - 10;
         _sandSpreadController = SandSpreadController.Get();
+        
+        _workQueue = WorkQueue.Get();
     }
 
     void Update()
     {
+        if (!CanWorkThisFrame()) return;
+        
         var delta = Time.fixedTime - _lastPlacedHouse;
         if (delta > 10f && Random.value < .1f)
         {
@@ -66,6 +72,16 @@ public class City : MonoBehaviour
         }
     }
 
+    private bool CanWorkThisFrame()
+    {
+        if (_workQueue.HasExpiredTicket(_ticket))
+        {
+            _ticket = _workQueue.GetTicket();
+        }
+
+        return _workQueue.HasTicketForFrame(_ticket);
+    }
+    
     private bool HasNoOtherBigHouses()
     {
         var amountOfBigHouses = _worldPlane.GetBlocksWithHouses()

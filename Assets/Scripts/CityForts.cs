@@ -11,16 +11,21 @@ public class CityForts : MonoBehaviour
     private WorldPlane _worldPlane;
     private FeatureToggles _featureToggles;
     private int _fortCount;
+    private WorkQueue _workQueue;
+    private int _ticket;
 
     void Start()
     {
         _worldPlane = WorldPlane.Get();
         _featureToggles = FeatureToggles.Get();
+        _workQueue = WorkQueue.Get();
     }
 
     void Update()
     {
         if (!_featureToggles.fort) return;
+        if (!CanWorkThisFrame()) return;
+        
         if (_fortCount > 1) return;
         var houseCount = _worldPlane.GetBlocksWithHousesStream().Count();
         if (houseCount < 3) return;
@@ -29,6 +34,16 @@ public class CityForts : MonoBehaviour
         {
             TrySpawnFort();
         }
+    }
+    
+    private bool CanWorkThisFrame()
+    {
+        if (_workQueue.HasExpiredTicket(_ticket))
+        {
+            _ticket = _workQueue.GetTicket();
+        }
+
+        return _workQueue.HasTicketForFrame(_ticket);
     }
 
     private void TrySpawnFort()

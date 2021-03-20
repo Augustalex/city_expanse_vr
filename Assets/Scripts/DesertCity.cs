@@ -10,15 +10,19 @@ public class DesertCity : MonoBehaviour
     private WorldPlane _worldPlane;
     private double _lastPlacedHouse;
     private bool _sandSpawned;
+    private WorkQueue _workQueue;
+    private int _ticket;
 
     void Start()
     {
         _worldPlane = GetComponent<WorldPlane>();
         _lastPlacedHouse = Time.fixedTime - 10;
+        _workQueue = WorkQueue.Get();
     }
 
     void Update()
     {
+        if (!CanWorkThisFrame()) return;
         if (Random.value < .1f) return;
 
         if (_worldPlane.CountBlocksOfType(Block.BlockType.Sand) > 0)
@@ -37,6 +41,16 @@ public class DesertCity : MonoBehaviour
                 }
             }
         }
+    }
+    
+    private bool CanWorkThisFrame()
+    {
+        if (_workQueue.HasExpiredTicket(_ticket))
+        {
+            _ticket = _workQueue.GetTicket();
+        }
+
+        return _workQueue.HasTicketForFrame(_ticket);
     }
 
     private bool CanSpawnAnotherHouse()
