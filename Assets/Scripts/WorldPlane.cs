@@ -207,11 +207,18 @@ public class WorldPlane : MonoBehaviour
     public void ReplaceBlock(Block toBeReplaced, Block replacement)
     {
         var gridPosition = toBeReplaced.GetGridPosition();
+        RemoveAndDestroyBlock(toBeReplaced);
 
-        RemoveBlockAt(gridPosition);
-        AddAndPositionBlock(replacement, gridPosition);
-
-        toBeReplaced.DestroySelf();
+        var blockBeneathPosition = gridPosition - Vector3.up;
+        var blockBeneath = blocksRepository.GetAtPosition(blockBeneathPosition);
+        if (blockBeneath)
+        {
+            AddBlockOnTopOf(replacement, replacement.transform.parent.gameObject, blockBeneath);
+        }
+        else
+        {
+            AddAndPositionBlock(replacement, gridPosition);
+        }
     }
 
     private void MakeSureTopGrassBlocksHaveCorrectTexture(Vector3 position)
@@ -297,7 +304,7 @@ public class WorldPlane : MonoBehaviour
             .Select(pair => pair.Value)
             .ToList();
     }
-    
+
     public IEnumerable<Block> GetVacantBlocksStream()
     {
         return blocksRepository.StreamPairs()
