@@ -81,7 +81,7 @@ public class FloodingWater : MonoBehaviour
             .GetNearbyLand(_block.GetGridPosition())
             .Where(otherBlock => otherBlock.GetGridPosition().y < blockHeight);
         var nearbyEmptyBlocks = CreateWaterForNearbyEmptyPositions();
-        var allNearbyBlocks = nearbyBlocks.Concat(nearbyEmptyBlocks); //TODO Water spawns over existing water, water spawns taller for longer after its spawn point. Maybe it's an issue with the GetStackHeight? Maybe an issue with the redone from LINQ to foreach in this function?
+        var allNearbyBlocks = nearbyBlocks.Concat(nearbyEmptyBlocks);
         foreach (var nearbyBlock in allNearbyBlocks)
         {
             if (nearbyBlock.HasOccupant() && !nearbyBlock.OccupiedByBlock())

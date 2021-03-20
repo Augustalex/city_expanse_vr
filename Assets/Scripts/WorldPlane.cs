@@ -390,28 +390,33 @@ public class WorldPlane : MonoBehaviour
             .Where(block => block != null)
             .Sum(block =>
             {
-                if (block.OccupiedByHouse() && block.GetOccupantHouse().IsMegaBig()) return -20;
-                if (block.OccupiedByHouse() && block.GetOccupantHouse().IsBig()) return -10;
-                if (block.OccupiedByHouse() && block.GetOccupantHouse()) return -1;
+                // if (block.OccupiedByHouse() && block.GetOccupantHouse().IsBig()) return -10;
+                if (block.OccupiedByHouse()) return -1;
 
-                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() &&
-                    block.GetGridPosition().y > 10) return 20;
-                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() &&
-                    block.GetGridPosition().y > 4) return 10;
-                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() &&
-                    block.GetGridPosition().y > 2) return 6;
-                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown() &&
-                    block.GetGridPosition().y > 0) return 4;
-                if (block.OccupiedByGreens() && block.GetOccupantGreens().IsGrown()) return 2;
+                var blockHeight = block.GetGridPosition().y;
+                
+                if (block.OccupiedByGreens())
+                {
+                    var greens = block.GetOccupantGreens();
+                    if (greens.IsGrown())
+                    {
+                        if (blockHeight > 10) return 20;
+                        if (blockHeight > 4) return 10;
+                        if (blockHeight > 2) return 6;
+                        if (blockHeight > 0) return 4;
 
-                if (block.IsGrass() && block.GetGridPosition().y > 10) return 4;
-                if (block.IsGrass() && block.GetGridPosition().y > 4) return 2;
-                if (block.IsGrass() && block.GetGridPosition().y > 2) return 1;
-                if (block.IsGrass() && block.GetGridPosition().y > 0) return .5f;
+                        return 2;
+                    }
+                }
 
-                if (block.IsWater() && block.GetGridPosition().y > 10) return 4;
-                if (block.IsWater() && block.GetGridPosition().y > 4) return 4;
-                if (block.IsWater() && block.GetGridPosition().y > 2) return 2;
+                if (block.IsGrass() && blockHeight > 10) return 4;
+                if (block.IsGrass() && blockHeight > 4) return 2;
+                if (block.IsGrass() && blockHeight > 2) return 1;
+                if (block.IsGrass() && blockHeight > 0) return .5f;
+
+                if (block.IsWater() && blockHeight > 10) return 4;
+                if (block.IsWater() && blockHeight > 4) return 4;
+                if (block.IsWater() && blockHeight > 2) return 2;
 
                 if (block.IsSand()) return -1;
 

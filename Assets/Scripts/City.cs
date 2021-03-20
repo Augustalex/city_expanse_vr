@@ -159,7 +159,7 @@ public class City : MonoBehaviour
 
     private void SpawnBigHouse()
     {
-        var candidates = new List<Block>();
+        List<Block> candidates = null;
 
         foreach (var block in _worldPlane.GetBlocksWithHousesStream())
         {
@@ -177,11 +177,16 @@ public class City : MonoBehaviour
 
             if (hasEnoughSurroundingNature)
             {
+                if (candidates == null)
+                {
+                    candidates = new List<Block>();
+                }
+                
                 candidates.Add(block);
             }
         }
 
-        if (candidates.Count > 0)
+        if (candidates != null)
         {
             var houseToUpgrade = candidates[Random.Range(0, candidates.Count)];
             houseToUpgrade.GetOccupantHouse().Upgrade();
