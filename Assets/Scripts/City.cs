@@ -161,7 +161,10 @@ public class City : MonoBehaviour
     {
         List<Block> candidates = null;
 
-        foreach (var block in _worldPlane.GetBlocksWithHousesStream())
+        foreach (var block in _worldPlane
+            .GetBlocksWithHousesStream()
+            .OrderBy(_ => Random.value)
+            .Take(5))
         {
             var occupantHouse = block.GetOccupantHouse();
             if (!occupantHouse.IsSmall()) continue;
@@ -181,7 +184,7 @@ public class City : MonoBehaviour
                 {
                     candidates = new List<Block>();
                 }
-                
+
                 candidates.Add(block);
             }
         }
