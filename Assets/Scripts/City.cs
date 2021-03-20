@@ -160,7 +160,7 @@ public class City : MonoBehaviour
         foreach (var block in _worldPlane
             .GetBlocksWithHousesStream()
             .OrderBy(_ => Random.value)
-            .Take(5))
+            .Take(2))
         {
             var occupantHouse = block.GetOccupantHouse();
             if (!occupantHouse.IsSmall()) continue;
