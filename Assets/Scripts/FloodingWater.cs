@@ -103,8 +103,7 @@ public class FloodingWater : MonoBehaviour
 
                 for (var y = lowestBlock.GetGridPosition().y + 1; y <= blockHeight; y++)
                 {
-                    var notYetHitTop = Math.Abs(y - blockHeight) > .5f;
-                    var useFullHeightWater = notYetHitTop;
+                    var useFullHeightWater = Math.Abs(y - blockHeight) > .5f;
                     var water = useFullHeightWater ? NewFullHeightWaterBlock() : NewShallowWater();
                     var waterBlock = water.GetComponentInChildren<Block>();
                     _worldPlane.AddBlockOnTopOf(waterBlock, water, lowestBlock);
