@@ -88,7 +88,7 @@ public class City : MonoBehaviour
     {
         var sandBlockRoot = Instantiate(sandBlockTemplate);
         var block = _worldPlane
-            .GetVacantBlocks()
+            .GetVacantBlocksStream()
             .Where(vacantBlock =>
             {
                 var waterBlocks = _worldPlane.GetWaterBlocks();
@@ -103,24 +103,22 @@ public class City : MonoBehaviour
 
     private void SpawnOneHouse()
     {
-        var allStableWaterBlocks = _worldPlane
-            .GetStableWaterBlocks();
-
-        var candidates = new List<Tuple<Block, Block>>();
-        foreach (var waterBlock in allStableWaterBlocks)
-        {
-            var levelVacantLots = _worldPlane.GetNearbyVacantLotsStream(waterBlock.GetGridPosition())
-                .Where(levelVacantLot => waterBlock.IsLevelWith(levelVacantLot));
-
-            foreach (var block in levelVacantLots)
+        var waterAndLot = _worldPlane
+            .GetStableShorelineBlocks()
+            .OrderBy(_ => Random.value)
+            .Take(10)
+            .SelectMany(waterBlock =>
             {
-                candidates.Add(new Tuple<Block, Block>(waterBlock, block));
-            }
-        }
+                return _worldPlane.GetNearbyVacantLotsStream(waterBlock.GetGridPosition())
+                    .Where(levelVacantLot => waterBlock.IsLevelWith(levelVacantLot))
+                    .Select(vacantLot => new Tuple<Block, Block>(waterBlock, vacantLot));
+            })
+            .OrderBy(_ => Random.value)
+            .FirstOrDefault();
 
-        if (candidates.Count > 0)
+        if (waterAndLot != null)
         {
-            var (waterBlock, vacantLot) = candidates.ElementAt(Random.Range(0, candidates.Count));
+            var (waterBlock, vacantLot) = waterAndLot;
             var house = Instantiate(tinyHouseTemplate);
             vacantLot.Occupy(house);
             var target = waterBlock.transform.position;
@@ -134,10 +132,10 @@ public class City : MonoBehaviour
     private void SpawnInnerCityHouse()
     {
         var candidates = new List<Tuple<Block, Block>>();
-        foreach (var bigHouse in _worldPlane .GetBlocksWithHousesStream())
+        foreach (var bigHouse in _worldPlane.GetBlocksWithHousesStream())
         {
             if (!bigHouse.GetOccupantHouse().IsBig()) continue;
-            
+
             foreach (var nearbyVacantLot in _worldPlane.GetNearbyVacantLotsStream(bigHouse.GetGridPosition()))
             {
                 candidates.Add(new Tuple<Block, Block>(bigHouse, nearbyVacantLot));

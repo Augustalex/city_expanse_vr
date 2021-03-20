@@ -16,7 +16,7 @@ public class FloodingWater : MonoBehaviour
     private int _ticket = -1;
     private WorkQueue _workQueue;
     private bool _flood;
-
+    
     void Start()
     {
         _life = Time.fixedTime;
@@ -29,6 +29,11 @@ public class FloodingWater : MonoBehaviour
 
     void Update()
     {
+        if (!_block.IsWaterLocked() && Random.value < .01f)
+        {
+            UpdateWaterLockedStatus();
+        }
+
         if (_block.IsPermaFrozen()) return;
 
         if (Time.fixedTime - _life > 1.25f)
@@ -44,6 +49,12 @@ public class FloodingWater : MonoBehaviour
                 SetAsStable();
             }
         }
+    }
+
+    private void UpdateWaterLockedStatus()
+    {
+        _block.SetWaterLocked(_worldPlane.GetNearbyBlocks(_block.GetGridPosition())
+            .All(block => block.IsWater()));
     }
 
     private bool CanFloodThisFrame()
@@ -70,7 +81,7 @@ public class FloodingWater : MonoBehaviour
             .GetNearbyLand(_block.GetGridPosition())
             .Where(otherBlock => otherBlock.GetGridPosition().y < blockHeight);
         var nearbyEmptyBlocks = CreateWaterForNearbyEmptyPositions();
-        var allNearbyBlocks = nearbyBlocks.Concat(nearbyEmptyBlocks);
+        var allNearbyBlocks = nearbyBlocks.Concat(nearbyEmptyBlocks); //TODO Water spawns over existing water, water spawns taller for longer after its spawn point. Maybe it's an issue with the GetStackHeight? Maybe an issue with the redone from LINQ to foreach in this function?
         foreach (var nearbyBlock in allNearbyBlocks)
         {
             if (nearbyBlock.HasOccupant() && !nearbyBlock.OccupiedByBlock())

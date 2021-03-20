@@ -29,6 +29,7 @@ public class Block : MonoBehaviour
     private Block _blockBeneath = null;
     private OccupyingType _occupantType = OccupyingType.Null;
     private Block _blockAbove = null;
+    private bool _waterLocked;
 
     private const int CloudLevel = 4;
 
@@ -452,5 +453,15 @@ public class Block : MonoBehaviour
     public bool IsStable()
     {
         return _stable;
+    }
+
+    public void SetWaterLocked(bool isWaterLocked)
+    {
+        _waterLocked = isWaterLocked;
+    }
+
+    public bool IsWaterLocked()
+    {
+        return _waterLocked;
     }
 }

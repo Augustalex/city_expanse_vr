@@ -182,7 +182,7 @@ public class WorldPlane : MonoBehaviour
     {
         blocksRepository.SetAtPosition(block, gridPosition);
         MakeBlockMoreUnique(block);
-        
+
         if (block.IsGrass())
         {
             block.MakeSureTopGrassBlocksHaveCorrectTexture();
@@ -234,10 +234,10 @@ public class WorldPlane : MonoBehaviour
             .ToList();
     }
 
-    public IEnumerable<Block> GetStableWaterBlocks()
+    public IEnumerable<Block> GetStableShorelineBlocks()
     {
         return blocksRepository.StreamBlocks()
-            .Where(b => b.blockType == Block.BlockType.Water && b.IsStable());
+            .Where(b => b.blockType == Block.BlockType.Water && b.IsStable() && !b.IsWaterLocked());
     }
 
     public IEnumerable<Block> GetWaterBlocksStream()
@@ -265,23 +265,22 @@ public class WorldPlane : MonoBehaviour
             .Select(newPosition => blocksRepository.GetAtPosition(newPosition));
     }
 
-    public List<Block> GetNearbyLots(Vector3 position)
+    public IEnumerable<Block> GetNearbyLotsStream(Vector3 position)
     {
         return GetNearbyBlocks(position)
-            .Where(b => b.IsLot())
-            .ToList();
+            .Where(b => b.IsLot());
     }
 
     public List<Block> GetNearbyVacantLots(Vector3 position)
     {
-        return GetNearbyLots(position)
+        return GetNearbyLotsStream(position)
             .Where(block => block.IsVacant())
             .ToList();
     }
 
     public IEnumerable<Block> GetNearbyVacantLotsStream(Vector3 position)
     {
-        return GetNearbyLots(position)
+        return GetNearbyLotsStream(position)
             .Where(block => block.IsVacant());
     }
 
@@ -298,13 +297,12 @@ public class WorldPlane : MonoBehaviour
             .Select(pair => pair.Value)
             .ToList();
     }
-
+    
     public IEnumerable<Block> GetVacantBlocksStream()
     {
         return blocksRepository.StreamPairs()
             .Where(pair => pair.Value.IsVacant())
-            .Select(pair => pair.Value)
-            .ToList();
+            .Select(pair => pair.Value);
     }
 
     public List<Block> GetBlocksWithHouses()
