@@ -4,27 +4,17 @@ using UnityEngine;
 
 public class Droplet : MonoBehaviour
 {
-    private void Update()
-    {
-        StartCoroutine(DestroySoon());
-    }
-
-    private IEnumerator DestroySoon()
-    {
-        yield return new WaitForSeconds(5);
-        if (gameObject != null)
-        {
-            Destroy(gameObject);
-        }
-    }
+    private bool _consumed = false;
 
     private void OnTriggerEnter(Collider other)
     {
+        if (_consumed) return;
+
         var farmSpawn = other.GetComponent<FarmSpawn>();
         if (farmSpawn && !farmSpawn.IsGrown())
         {
             farmSpawn.Grow();
-            Destroy(gameObject);
+            _consumed = true;
         }
         else
         {
@@ -32,7 +22,7 @@ public class Droplet : MonoBehaviour
             if (greenSpawn && !greenSpawn.IsGrown())
             {
                 greenSpawn.Grow();
-                Destroy(gameObject);
+                _consumed = true;
             }
             // else if (IsSand(other))
             // {

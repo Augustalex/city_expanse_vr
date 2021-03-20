@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -7,39 +7,65 @@ public class RainSpawn : MonoBehaviour
     public GameObject dropletTemplate;
     public GameObject stormTemplate;
 
-    private bool _storm = true;
     private CloudStyleControl _cloudStyleControl;
+    private readonly Queue<GameObject> _droplets = new Queue<GameObject>();
+    private FeatureToggles _featureToggles;
+    private CloudState _cloudState = CloudState.Normal;
+
+    private enum CloudState
+    {
+        Normal,
+        Storm
+    }
 
     private void Awake()
     {
         _cloudStyleControl = GetComponentInParent<CloudStyleControl>();
+
+        _cloudStyleControl.SetNormalMaterial();
+    }
+
+    private void Start()
+    {
+        _featureToggles = FeatureToggles.Get();
     }
 
     void Update()
     {
-        if (Random.value < .001f)
+        if (_droplets.Count > 10)
         {
-            _storm = !_storm;
-            if (_storm)
-            {
-                _cloudStyleControl.SetStormMaterial();
-            }
-            else
-            {
-                _cloudStyleControl.SetNormalMaterial();
-            }
+            var dropletToKill = _droplets.Dequeue();
+            Destroy(dropletToKill);
         }
-        
-        if (_storm)
+
+        if (_featureToggles.storms && Random.value < .001f) ToggleCloudState();
+
+        SpawnDroplet();
+    }
+
+    private void ToggleCloudState()
+    {
+        _cloudState = _cloudState == CloudState.Normal ? CloudState.Storm : CloudState.Normal;
+
+        if (_cloudState == CloudState.Storm)
         {
-            SpawnStormDroplet(RandomLocationInArea());
+            _cloudStyleControl.SetStormMaterial();
         }
         else
         {
-            if (Random.value < .5f)
-            {
-                SpawnDroplet(RandomLocationInArea());
-            }
+            _cloudStyleControl.SetNormalMaterial();
+        }
+    }
+
+    private void SpawnDroplet()
+    {
+        if (_cloudState == CloudState.Storm && Random.value < .5f)
+        {
+            SpawnStormDroplet(RandomLocationInArea());
+        }
+        else if (_cloudState == CloudState.Normal && Random.value < .5f)
+        {
+            SpawnDroplet(RandomLocationInArea());
         }
     }
 
@@ -50,7 +76,8 @@ public class RainSpawn : MonoBehaviour
 
     private void SpawnDroplet(Vector3 spawnPosition)
     {
-        Instantiate(dropletTemplate, spawnPosition, Quaternion.identity);
+        var droplet = Instantiate(dropletTemplate, spawnPosition, Quaternion.identity);
+        _droplets.Enqueue(droplet);
     }
 
     private Vector3 RandomLocationInArea()

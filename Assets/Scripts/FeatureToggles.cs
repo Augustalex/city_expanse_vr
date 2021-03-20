@@ -10,6 +10,7 @@ public class FeatureToggles : MonoBehaviour
   public bool fort;
   public bool woodcutters;
   public bool digAnywhere;
+  public bool storms;
 
   private static FeatureToggles _featureToggles;
 
