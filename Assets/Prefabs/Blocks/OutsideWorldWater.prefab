@@ -72,6 +72,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 4
+  _gridPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &1824904178023971892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,7 +87,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullHeightWaterBlockTemplate: {fileID: 1341636617038954440, guid: 51197bda1147db94e809a7f1464269f0,
     type: 3}
-  groundWaterBlockTemplate: {fileID: 612181966713644638}
+  groundWaterBlockTemplate: {fileID: 1341636617038954440, guid: 51197bda1147db94e809a7f1464269f0,
+    type: 3}
 --- !u!1001 &3081415308603476694
 PrefabInstance:
   m_ObjectHideFlags: 0

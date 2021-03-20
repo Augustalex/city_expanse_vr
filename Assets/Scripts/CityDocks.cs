@@ -8,25 +8,28 @@ public class CityDocks : MonoBehaviour
 {
     public GameObject dockSpawnTemplate;
     public GameObject boatTemplate;
-    
+
     private WorldPlane _worldPlane;
     private int _boatCount;
     private const int BoatCost = 4;
+    private int _ticket = -1;
+    private WorkQueue _workQueue;
 
     void Start()
     {
         _worldPlane = WorldPlane.Get();
+        _workQueue = WorkQueue.Get();
     }
 
     void Update()
     {
-        if (Random.value < .01f)
+        if (CanWorkThisFrame() && Random.value < .01f)
         {
             var houseCount = _worldPlane
                 .GetBlocksWithHouses()
                 .Count(blockWithHouse => blockWithHouse.GetOccupantHouse().IsBig());
             if (houseCount < 1) return;
-
+            
             var docks = _worldPlane.GetBlocksWithDocks().Count();
             if (docks > 0)
             {
@@ -39,27 +42,26 @@ public class CityDocks : MonoBehaviour
                 if (docksToHouseRatio > .05f) return;
             }
 
-            var candidates = _worldPlane.GetWaterBlocks()
-                .Where(waterBlock => waterBlock.IsGroundLevel() &&
-                                     _worldPlane.GetMajorityBlockTypeWithinRange(waterBlock.GetGridPosition(), 1f)
+            var candidate = _worldPlane.GetWaterBlocks()
+                .Where(waterBlock => waterBlock.IsGroundLevel() )
+                .OrderBy(_ => Random.value)
+                .Take(2)
+                .Where(waterBlock => _worldPlane.GetMajorityBlockTypeWithinRange(waterBlock.GetGridPosition(), 1f)
                                      == Block.BlockType.Water
-                                     && _worldPlane.NoNearby(waterBlock.GetGridPosition(), 2f, BlockHasDocksSpawn)
-                )
+                                     && _worldPlane.NoNearby(waterBlock.GetGridPosition(), 3f, BlockHasDocksSpawn))
                 .SelectMany(waterBlock =>
                 {
-                    var nearbyBlocks = _worldPlane.GetNearbyBlocks(waterBlock.GetGridPosition()).ToList();
-                    if (!nearbyBlocks.Any(otherBlock => otherBlock.IsWater())) return new List<Tuple<Block, Block>>();
-
-                    return nearbyBlocks
-                        .Where(block => block.IsGrass() && block.IsVacant())
+                    return _worldPlane
+                        .GetNearbyBlocks(waterBlock.GetGridPosition())
+                        .Where(block => Math.Abs(block.GetGridPosition().y - waterBlock.GetGridPosition().y) < .5f && block.IsGrass() && block.IsVacant())
                         .Select(block => new Tuple<Block, Block>(waterBlock, block));
                 })
-                .ToList();
+                .OrderBy(_ => Random.value)
+                .FirstOrDefault();
 
-            var candidatesCount = candidates.Count;
-            if (candidatesCount > 0)
+            if (candidate != null)
             {
-                var (waterBlock, vacantLot) = candidates[Random.Range(0, candidatesCount)];
+                var (waterBlock, vacantLot) = candidate;
                 var dockSpawn = Instantiate(dockSpawnTemplate);
                 vacantLot.Occupy(dockSpawn);
                 var target = waterBlock.transform.position;
@@ -67,6 +69,16 @@ public class CityDocks : MonoBehaviour
                 dockSpawn.transform.LookAt(target);
             }
         }
+    }
+    
+    private bool CanWorkThisFrame()
+    {
+        if (_workQueue.HasExpiredTicket(_ticket))
+        {
+            _ticket = _workQueue.GetTicket();
+        }
+
+        return _workQueue.HasTicketForFrame(_ticket);
     }
 
     private void TrySpawnBoat()
@@ -92,15 +104,14 @@ public class CityDocks : MonoBehaviour
             .Where(block =>
             {
                 var blockPosition = block.GetGridPosition();
-                
+
                 return block.IsGroundLevel()
                        && _worldPlane.GetBlocksWithDocks()
                            .Any(dock => Vector3.Distance(dock.GetGridPosition(), blockPosition) < 3f);
-
             })
             .OrderBy(_ => Random.value)
             .First();
-                        
+
         var boat = Instantiate(boatTemplate);
         var boatPosition = _worldPlane.ToRealCoordinates(waterBlock.GetGridPosition());
         boatPosition.y = 1.164f;
