@@ -55,7 +55,7 @@ public class Block : MonoBehaviour
     public void RemoveAsOccupant(GameObject selfAsProclaimedOccupant)
     {
         if (selfAsProclaimedOccupant == _occupiedBy)
-        {       
+        {
             ResetOccupantInfo();
             MakeSureTopGrassBlocksHaveCorrectTexture();
         }
@@ -226,10 +226,17 @@ public class Block : MonoBehaviour
 
     public void DestroyOccupant()
     {
-        var occupantBlock = _occupiedBy.GetComponent<Block>();
-        if (occupantBlock != null)
+        if (_occupiedBy != null)
         {
-            occupantBlock.DestroySelf();
+            var occupantBlock = _occupiedBy.GetComponent<Block>();
+            if (occupantBlock != null)
+            {
+                occupantBlock.DestroySelf();
+            }
+            else
+            {
+                Destroy(_occupiedBy);
+            }
         }
 
         ResetOccupantInfo();
@@ -370,7 +377,7 @@ public class Block : MonoBehaviour
     {
         return !IsVacant() && _occupantType == OccupyingType.Shrine;
     }
-    
+
     public bool OccupiedByDocks()
     {
         return !IsVacant() && _occupantType == OccupyingType.Docks;
@@ -408,7 +415,7 @@ public class Block : MonoBehaviour
 
         current.GetComponent<GrassBlock>().SetTopMaterial();
     }
-    
+
     public bool IsSand()
     {
         return blockType == BlockType.Sand;
