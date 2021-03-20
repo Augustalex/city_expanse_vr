@@ -87,7 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullHeightWaterBlockTemplate: {fileID: 1341636617038954440, guid: 51197bda1147db94e809a7f1464269f0,
     type: 3}
-  groundWaterBlockTemplate: {fileID: 1341636617038954440, guid: 51197bda1147db94e809a7f1464269f0,
+  groundWaterBlockTemplate: {fileID: 1341636617038954440, guid: 02cbe2d83c65d904a890ff58e046ad7f,
     type: 3}
 --- !u!1001 &3081415308603476694
 PrefabInstance:

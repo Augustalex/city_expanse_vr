@@ -3126,7 +3126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa62dd0aa20442c8acaae9f17777ae2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterBlockTemplate: {fileID: 1341636617038954440, guid: 51197bda1147db94e809a7f1464269f0,
+  waterBlockTemplate: {fileID: 1341636617038954440, guid: 02cbe2d83c65d904a890ff58e046ad7f,
     type: 3}
 --- !u!114 &1741071626
 MonoBehaviour:
@@ -3184,8 +3184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 963718dd3356d354084c4a1f87b645ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shrineTemplate: {fileID: 2723339866174918418, guid: 0a0b77f8ce37f0f409d1fc1994ab685a,
-    type: 3}
+  shrineTemplate: {fileID: 0}
 --- !u!114 &1741071630
 MonoBehaviour:
   m_ObjectHideFlags: 0
