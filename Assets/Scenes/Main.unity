@@ -4447,5 +4447,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7368031140900135407, guid: 68937571def759347acd3b801d52fef9,
+        type: 3}
+      propertyPath: normalMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: c69cfacd6cc8b3e4bbac9a2d034cbe59, type: 2}
+    - target: {fileID: 7368031140900135407, guid: 68937571def759347acd3b801d52fef9,
+        type: 3}
+      propertyPath: stormMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 2fe9f51544c2dbb4e876e063ac37ec4f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68937571def759347acd3b801d52fef9, type: 3}
