@@ -4,6 +4,8 @@ public class BlockFactory : MonoBehaviour
 {
     public GameObject grassBlockTemplate;
     public GameObject topWaterBlockTemplate;
+    public GameObject sandBlockTemplate;
+    
     private static BlockFactory _blockFactoryInstance;
 
     void Awake()

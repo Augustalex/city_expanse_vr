@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class WorldPlane : MonoBehaviour
 {
@@ -374,7 +375,7 @@ public class WorldPlane : MonoBehaviour
         return topBlock;
     }
 
-    public List<Block> GetStack(Vector3 position) 
+    public List<Block> GetStack(Vector3 position)
     {
         var stack = blocksRepository.StreamPairs().Where(pair => pair.Key.x == position.x && pair.Key.z == position.z);
 
@@ -397,7 +398,7 @@ public class WorldPlane : MonoBehaviour
                 if (block.OccupiedByHouse()) return -1;
 
                 var blockHeight = block.GetGridPosition().y;
-                
+
                 if (block.OccupiedByGreens())
                 {
                     var greens = block.GetOccupantGreens();
@@ -515,6 +516,44 @@ public class WorldPlane : MonoBehaviour
                                 {
                                     blockToUse = BlockFactory.Get().topWaterBlockTemplate;
                                 }
+                                else if (WithinRange(column, neededLeftColumn + 1, neededLeftColumn + 3) ||
+                                         WithinRange(column, neededRightColumn - 3, neededRightColumn - 1) ||
+                                         WithinRange(row, 1, 3) ||
+                                         WithinRange(row, dimensions.y - 4, dimensions.y - 2))
+                                {
+                                    if (WithinRange(column, neededLeftColumn + 1, neededLeftColumn + 2) ||
+                                        WithinRange(column, neededRightColumn - 2, neededRightColumn - 1) ||
+                                        WithinRange(row, 1, 2) ||
+                                        WithinRange(row, dimensions.y - 3, dimensions.y - 2))
+                                    {
+                                        if (WithinRange(column, neededLeftColumn + 1, neededLeftColumn + 1) ||
+                                            WithinRange(column, neededRightColumn - 1, neededRightColumn - 1) ||
+                                            WithinRange(row, 1, 1) ||
+                                            WithinRange(row, dimensions.y - 2, dimensions.y - 2))
+                                        {
+                                            if (Random.value < .7)
+                                            {
+                                                blockToUse = BlockFactory.Get().topWaterBlockTemplate;
+                                            }
+                                            else
+                                            {
+                                                blockToUse = BlockFactory.Get().sandBlockTemplate;
+                                            }
+                                        }
+                                        else if (Random.value < .2)
+                                        {
+                                            blockToUse = BlockFactory.Get().topWaterBlockTemplate;
+                                        }
+                                        else
+                                        {
+                                            blockToUse = BlockFactory.Get().sandBlockTemplate;
+                                        }
+                                    }
+                                    else if (Random.value < .8f)
+                                    {
+                                        blockToUse = BlockFactory.Get().sandBlockTemplate;
+                                    }
+                                }
                             }
 
                             var blockPosition = new Vector3(row, level, column);
@@ -538,6 +577,11 @@ public class WorldPlane : MonoBehaviour
                 }
             }
         }
+    }
+
+    private bool WithinRange(float value, float min, float max)
+    {
+        return value >= min && value <= max;
     }
 
     private bool IsWithinBounds(Vector3 point)

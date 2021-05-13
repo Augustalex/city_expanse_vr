@@ -3550,6 +3550,8 @@ MonoBehaviour:
     type: 3}
   topWaterBlockTemplate: {fileID: 612181966713644638, guid: 93e1621042f7a6642852b4811decd2c9,
     type: 3}
+  sandBlockTemplate: {fileID: 612181966713644638, guid: 90738e66673ec454b92002eb0d8e2672,
+    type: 3}
 --- !u!114 &1741071623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3654,7 +3656,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 963718dd3356d354084c4a1f87b645ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shrineTemplate: {fileID: 0}
+  shrineTemplate: {fileID: 3317631866390460118, guid: 6aa70512a5766ca48ac7db0c7930d8fa,
+    type: 3}
 --- !u!114 &1741071630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4706,6 +4709,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1741071623, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
       propertyPath: digAnywhere
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1741071623, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
+      propertyPath: desertsAreBeaches
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3645905919876899980, guid: 63f229cc46e53ef47a8bc7f7667512ce,
