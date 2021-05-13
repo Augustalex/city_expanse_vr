@@ -11,7 +11,7 @@ public class BoatFloat : MonoBehaviour
     
     void Start()
     {
-        _originalPositionY = transform.position.y;
+        _originalPositionY = transform.position.y + .005f;
     }
 
     void Update()
