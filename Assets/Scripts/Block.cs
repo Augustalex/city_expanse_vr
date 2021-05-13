@@ -417,6 +417,10 @@ public class Block : MonoBehaviour
         {
             current.GetComponent<GrassBlock>().SetNormalMaterial();
         }
+        else
+        {
+            current.GetComponent<GrassBlock>().SetTopMaterial();
+        }
     }
 
     public bool IsSand()
