@@ -19,20 +19,22 @@ public class City : MonoBehaviour
     private float _lastPlacedInnerCityHouse;
     private int _ticket = -1;
     private WorkQueue _workQueue;
+    private FeatureToggles _featureToggles;
 
     void Start()
     {
         _worldPlane = GetComponent<WorldPlane>();
         _lastPlacedHouse = Time.fixedTime - 10;
         _sandSpreadController = SandSpreadController.Get();
-        
+        _featureToggles = FeatureToggles.Get();
+
         _workQueue = WorkQueue.Get();
     }
 
     void Update()
     {
         if (!CanWorkThisFrame()) return;
-        
+
         var delta = Time.fixedTime - _lastPlacedHouse;
         if (delta > 10f && Random.value < .1f)
         {
@@ -56,17 +58,20 @@ public class City : MonoBehaviour
             SpawnBigHouse();
         }
 
-        if (_sandSpawned
-            ? Random.value < _sandSpreadController.startingThreshold
-            : Random.value < _sandSpreadController.continuationThreshold)
+        if (!_featureToggles.desertsAreBeaches)
         {
-            var houseCount = _worldPlane.GetBlocksWithHouses().Count;
-            if (houseCount > _sandSpreadController.houseCountThreshold)
+            if (!_sandSpawned
+                ? Random.value < _sandSpreadController.startingThreshold
+                : Random.value < _sandSpreadController.continuationThreshold)
             {
-                if (_worldPlane.CountBlocksOfType(Block.BlockType.Sand) == 0)
+                var houseCount = _worldPlane.GetBlocksWithHouses().Count;
+                if (houseCount > _sandSpreadController.houseCountThreshold)
                 {
-                    SpawnSandBlock();
-                    _sandSpawned = true;
+                    if (_worldPlane.CountBlocksOfType(Block.BlockType.Sand) == 0)
+                    {
+                        SpawnSandBlock();
+                        _sandSpawned = true;
+                    }
                 }
             }
         }
@@ -81,7 +86,7 @@ public class City : MonoBehaviour
 
         return _workQueue.HasTicketForFrame(_ticket);
     }
-    
+
     private bool HasNoOtherBigHouses()
     {
         var amountOfBigHouses = _worldPlane.GetBlocksWithHouses()
@@ -108,7 +113,7 @@ public class City : MonoBehaviour
             .Where(vacantBlock => _worldPlane.BlockCanBeReplacedBySandBlock(vacantBlock))
             .OrderBy(_ => Random.value)
             .First();
-        
+
         var sandBlock = sandBlockRoot.GetComponentInChildren<Block>();
         _worldPlane.ReplaceBlock(block, sandBlock);
     }
