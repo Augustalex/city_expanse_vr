@@ -10,16 +10,20 @@ public class Spreading : MonoBehaviour
     private WorldPlane _worldPlane;
     private Block _block;
     private SandSpreadController _sandSpreadController;
-
+    private FeatureToggles _featureToggles;
+    
     private void Start()
     {
         _sandSpreadController = SandSpreadController.Get();
         _worldPlane = WorldPlane.Get();
         _block = GetComponentInChildren<Block>();
+        _featureToggles = FeatureToggles.Get();
     }
 
     private void Update()
     {
+        if (_featureToggles.desertsAreBeaches) return;
+        
         var sandSpreadController = _sandSpreadController;
         
         if (Random.value < sandSpreadController.chance)

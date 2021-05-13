@@ -12,16 +12,19 @@ public class DesertCity : MonoBehaviour
     private bool _sandSpawned;
     private WorkQueue _workQueue;
     private int _ticket;
+    private FeatureToggles _featureToggles;
 
     void Start()
     {
         _worldPlane = GetComponent<WorldPlane>();
         _lastPlacedHouse = Time.fixedTime - 10;
         _workQueue = WorkQueue.Get();
+        _featureToggles = FeatureToggles.Get();
     }
 
     void Update()
     {
+        if (_featureToggles.desertsAreBeaches) return;
         if (!CanWorkThisFrame()) return;
         if (Random.value < .1f) return;
 
