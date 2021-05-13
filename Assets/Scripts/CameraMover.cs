@@ -35,7 +35,6 @@ public class CameraMover : MonoBehaviour
             var newYPosition = _camera.transform.position.y;
             var zoomProgress = Mathf.Clamp((newYPosition - cameraYMin) / (cameraYMax - cameraYMin), 0f, 1f);
             var easedZoomProgress = EaseOutExpo(zoomProgress);
-            Debug.Log("zoomProgress: " + zoomProgress + ", easedZoomProgress: " + easedZoomProgress);
 
             var minTilt = -6f;
             var maxTilt = 90f;
@@ -44,8 +43,6 @@ public class CameraMover : MonoBehaviour
             var differenceOfTilt = newTilt - currentTilt;
             if (currentTilt + differenceOfTilt <= maxTilt || currentTilt + differenceOfTilt >= minTilt)
             {
-                Debug.Log("newTilt: " + newTilt + ", " + "currentTilt: " + currentTilt + ", differenceOfTilt: " +
-                          differenceOfTilt);
                 _camera.transform.RotateAround(_camera.transform.position, _camera.transform.right, differenceOfTilt);
                      
             }
