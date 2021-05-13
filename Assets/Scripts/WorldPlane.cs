@@ -471,7 +471,7 @@ public class WorldPlane : MonoBehaviour
             case Size.Medium:
                 return new Vector2(9, 9);
             case Size.Large:
-                return new Vector2(24, 24);
+                return new Vector2(32, 32);
             default:
                 throw new Exception("There is no dimensions specified for size: " + size);
         }
