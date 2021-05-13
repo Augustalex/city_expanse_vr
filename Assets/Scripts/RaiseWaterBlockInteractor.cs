@@ -24,6 +24,6 @@ public class RaiseWaterBlockInteractor : BlockInteractor
         var blockComponent = other.gameObject.GetComponent<Block>();
 
         RaiseWater.Get().Use(blockComponent);
-        PlaySound(BlockSoundLibrary.BlockSound.PlaceItem);
+        PlaySound(BlockSoundLibrary.BlockSound.PlaceItem, other.transform.position);
     }
 }

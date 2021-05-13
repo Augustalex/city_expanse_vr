@@ -58,7 +58,7 @@ public class PlaceGreensBlockInteractor : BlockInteractor
         var greens = Instantiate(greensTemplate);
         blockComponent.Occupy(greens);
         blockComponent.ShortFreeze();
-        PlaySound(BlockSoundLibrary.BlockSound.PlaceItem);
+        PlaySound(BlockSoundLibrary.BlockSound.PlaceItem, blockComponent.gameObject.transform.position);
 
         StopRigidbodySoon(greens);
     }

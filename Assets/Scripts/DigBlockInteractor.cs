@@ -9,9 +9,9 @@ public class DigBlockInteractor : BlockInteractor
 
     public override void Interact(GameObject other)
     {
-        var blockComponent = other.gameObject.GetComponent<Block>();
+        var blockComponent = other.GetComponent<Block>();
         GetWorldPlane().RemoveAndDestroyBlock(blockComponent);
-        PlaySound(BlockSoundLibrary.BlockSound.Dig);
+        PlaySound(BlockSoundLibrary.BlockSound.Dig, other.transform.position);
     }
 
     public override bool Interactable(GameObject other)

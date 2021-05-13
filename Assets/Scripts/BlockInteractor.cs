@@ -97,12 +97,20 @@ public abstract class BlockInteractor : MonoBehaviour
         PlaySound(BlockSoundLibrary.BlockSound.Basic);
     }
 
-    public void PlaySound(BlockSoundLibrary.BlockSound blockSound)
+    public void PlaySound(BlockSoundLibrary.BlockSound blockSound, Vector3? position = null)
     {
         _audioSource.Stop();
 
         var sound = BlockSoundLibrary.Get().GetSound(blockSound);
-        _audioSource.PlayOneShot(sound, .02f * GameManager.MasterVolume);
+
+        if (position != null)
+        {
+            AudioSource.PlayClipAtPoint(sound, position.Value, .02f * GameManager.MasterVolume);
+        }
+        else
+        {
+            _audioSource.PlayOneShot(sound, .02f * GameManager.MasterVolume);
+        }
     }
 
     public void PlayMiscSound(AudioClip clip)
