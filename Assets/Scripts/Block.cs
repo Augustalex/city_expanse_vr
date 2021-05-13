@@ -487,4 +487,16 @@ public class Block : MonoBehaviour
     {
         return _waterLocked;
     }
+
+    public bool CanBeDugAsAnIndependentBlock()
+    {
+        if (FeatureToggles.Get().desertsAreBeaches)
+        {
+            return IsGrass() || IsSand();
+        }
+        else
+        {
+            return IsGrass();
+        }
+    }
 }

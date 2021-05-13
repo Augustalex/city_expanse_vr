@@ -28,7 +28,7 @@ public class DigBlockInteractor : BlockInteractor
         if (FeatureToggles.Get().digAnywhere)
         {
             return blockComponent
-                   && blockComponent.blockType == Block.BlockType.Grass
+                   && blockComponent.CanBeDugAsAnIndependentBlock()
                    && blockComponent.IsTopBlockInStack()
                    && blockComponent.IsVacant()
                    && !blockComponent.IsLowestLevel();
@@ -36,7 +36,7 @@ public class DigBlockInteractor : BlockInteractor
         else
         {
             return blockComponent
-                   && blockComponent.blockType == Block.BlockType.Grass
+                   && blockComponent.CanBeDugAsAnIndependentBlock()
                    && blockComponent.IsGroundLevel()
                    && blockComponent.IsVacant();
         }
