@@ -21,7 +21,38 @@ public class CameraMover : MonoBehaviour
         var change = Input.mouseScrollDelta.y;
         _camera.transform.position += new Vector3(0, change * .1f, 0);
 
-        const float bla = .75f;
+        var cameraYMax = 5f;
+        var cameraYMin = 1.3f;
+
+        var cameraXMin = -2f;
+        var cameraXMax = 4f;
+        
+        var cameraZMin = -3;
+        var cameraZMax = 3;
+
+        if (change > 0 || change < 0)
+        {
+            var newYPosition = _camera.transform.position.y;
+            var zoomProgress = Mathf.Clamp((newYPosition - cameraYMin) / (cameraYMax - cameraYMin), 0f, 1f);
+            var easedZoomProgress = EaseOutExpo(zoomProgress);
+            Debug.Log("zoomProgress: " + zoomProgress + ", easedZoomProgress: " + easedZoomProgress);
+
+            var minTilt = -6f;
+            var maxTilt = 90f;
+            var newTilt = (maxTilt - minTilt) * easedZoomProgress + minTilt;
+            var currentTilt = _camera.transform.rotation.eulerAngles.x;
+            var differenceOfTilt = newTilt - currentTilt;
+            if (currentTilt + differenceOfTilt <= maxTilt || currentTilt + differenceOfTilt >= minTilt)
+            {
+                Debug.Log("newTilt: " + newTilt + ", " + "currentTilt: " + currentTilt + ", differenceOfTilt: " +
+                          differenceOfTilt);
+                _camera.transform.RotateAround(_camera.transform.position, _camera.transform.right, differenceOfTilt);
+                     
+            }
+        }
+
+
+        const float cameraMovementSpeed = .75f;
         var direction = Vector3.zero;
         if (Input.GetKey(KeyCode.W))
         {
@@ -40,7 +71,19 @@ public class CameraMover : MonoBehaviour
             direction += Vector3.forward;
         }
 
-        _camera.transform.position += direction * (bla * Time.deltaTime);
+        _camera.transform.position += direction * (cameraMovementSpeed * Time.deltaTime);
+        
+        // var rotation = 0;
+        // if (Input.GetKey(KeyCode.Q))
+        // {
+        //     rotation -= 1;
+        // }
+        // else if (Input.GetKey(KeyCode.E))
+        // {
+        //     rotation += 1;
+        // }
+        //
+        // _camera.transform.RotateAround(_camera.transform.position, Vector3.up, rotation * 40 * Time.deltaTime);
 
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButton(0))
         {
@@ -88,6 +131,9 @@ public class CameraMover : MonoBehaviour
                 var curvedProgress = QuarticEaseIn(progress);
                 var speed = .05f * Mathf.Clamp(curvedProgress, 0, 1);
 
+
+                // _camera.transform.position = _startCameraPosition + _camera.transform.forward * (movementDelta.y * -speed) +
+                                             // _camera.transform.right * (-movementDelta.x * -speed);  
                 _camera.transform.position = _startCameraPosition +
                                              new Vector3(movementDelta.y, 0, -movementDelta.x).normalized * -speed;
             }
@@ -115,10 +161,15 @@ public class CameraMover : MonoBehaviour
 
         var newPosition = _camera.transform.position;
         _camera.transform.position = new Vector3(
-            Mathf.Clamp(newPosition.x, -1f, 1.5f),
-            Mathf.Clamp(newPosition.y, 2, 5),
-            Mathf.Clamp(newPosition.z, -2, 2)
-            );
+            Mathf.Clamp(newPosition.x, cameraXMin, cameraXMax),
+            Mathf.Clamp(newPosition.y, cameraYMin, cameraYMax),
+            Mathf.Clamp(newPosition.z, cameraZMin, cameraZMax)
+        );
+    }
+
+    private float EaseOutExpo(float x)
+    {
+        return x == 1 ? 1 : 1 - Mathf.Pow(2, -10 * x);
     }
 
     public float QuarticEaseIn(float p)
