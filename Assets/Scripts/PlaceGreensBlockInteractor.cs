@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,7 +42,10 @@ public class PlaceGreensBlockInteractor : BlockInteractor
 
         if (blockComponent.IsSand())
         {
-            InhabitBlock(blockComponent, desertGreensTemplate);
+            if (!FeatureToggles.Get().desertsAreBeaches)
+            {
+                InhabitBlock(blockComponent, desertGreensTemplate);
+            }
         }
         else if (blockComponent.IsGrass())
         {
