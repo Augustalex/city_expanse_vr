@@ -413,7 +413,10 @@ public class Block : MonoBehaviour
             current = current._blockAbove;
         }
 
-        current.GetComponent<GrassBlock>().SetTopMaterial();
+        if (current._gridPosition.y > Block.CloudLevel)
+        {
+            current.GetComponent<GrassBlock>().SetNormalMaterial();
+        }
     }
 
     public bool IsSand()
