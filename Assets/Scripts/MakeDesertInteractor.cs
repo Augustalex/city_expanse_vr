@@ -12,9 +12,9 @@ public class MakeDesertInteractor : BlockInteractor
 
         var blockComponent = other.gameObject.GetComponent<Block>();
         return blockComponent
-               && blockComponent.IsInteractable()
-               && blockComponent.IsVacant()
                && blockComponent.IsGroundLevel()
+               && blockComponent.IsGrass()
+               && blockComponent.IsInteractable()
                && !blockComponent.IsOutsideWater();
     }
 

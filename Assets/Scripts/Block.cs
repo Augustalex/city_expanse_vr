@@ -93,7 +93,14 @@ public class Block : MonoBehaviour
 
     public bool IsLot()
     {
-        return blockType == BlockType.Grass;
+        if (FeatureToggles.Get().desertsAreBeaches)
+        {
+            return IsGrass() || IsSand();
+        }
+        else
+        {
+            return IsGrass();
+        }
     }
 
     public bool IsLand()
