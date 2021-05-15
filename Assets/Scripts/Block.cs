@@ -506,4 +506,9 @@ public class Block : MonoBehaviour
             return IsGrass();
         }
     }
+
+    public bool IsLake()
+    {
+        return IsWater();
+    }
 }

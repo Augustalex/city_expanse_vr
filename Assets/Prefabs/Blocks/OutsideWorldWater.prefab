@@ -89,6 +89,8 @@ MonoBehaviour:
     type: 3}
   groundWaterBlockTemplate: {fileID: 1341636617038954440, guid: 02cbe2d83c65d904a890ff58e046ad7f,
     type: 3}
+  oceanWaterBlockTemplate: {fileID: 612181966713644638}
+  isOceanWater: 1
 --- !u!1001 &3081415308603476694
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -301,6 +301,12 @@ public class WorldPlane : MonoBehaviour
             .Where(b => b.IsLand());
     }
 
+    public IEnumerable<Block> GetNearbyLandOrLake(Vector3 position)
+    {
+        return GetNearbyBlocks(position)
+            .Where(b => b.IsLand() || b.IsLake());
+    }
+
     public List<Block> GetVacantBlocks()
     {
         return blocksRepository.StreamPairs()

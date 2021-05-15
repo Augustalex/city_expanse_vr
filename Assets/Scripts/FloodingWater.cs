@@ -9,6 +9,8 @@ public class FloodingWater : MonoBehaviour
 {
     public GameObject fullHeightWaterBlockTemplate;
     public GameObject groundWaterBlockTemplate;
+    public bool isOceanWater;
+
     private Block _block;
     private WorldPlane _worldPlane;
     private float _life;
@@ -16,13 +18,15 @@ public class FloodingWater : MonoBehaviour
     private int _ticket = -1;
     private WorkQueue _workQueue;
     private bool _flood;
-    
+    private BlockFactory _blockFactory;
+
     void Start()
     {
         _life = Time.fixedTime;
         _block = GetComponentInChildren<Block>();
         _worldPlane = GameObject.FindWithTag("WorldPlane").GetComponent<WorldPlane>();
         _workQueue = WorkQueue.Get();
+        _blockFactory = BlockFactory.Get();
 
         _block.SetAsUnstable();
     }
@@ -45,7 +49,15 @@ public class FloodingWater : MonoBehaviour
         {
             if (CanFloodThisFrame())
             {
-                FloodAll();
+                if (isOceanWater)
+                {
+                    FloodAllAsOcean();
+                }
+                else
+                {
+                    FloodAll();
+                }
+
                 SetAsStable();
             }
         }
@@ -97,7 +109,7 @@ public class FloodingWater : MonoBehaviour
                 {
                     var waterBlockBelow = NewFullHeightWaterBlock().GetComponentInChildren<Block>();
                     _worldPlane.ReplaceBlock(nearbyBlock, waterBlockBelow);
-                
+
                     lowestBlock = waterBlockBelow;
                 }
 
@@ -112,6 +124,56 @@ public class FloodingWater : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void FloodAllAsOcean()
+    {
+        _flood = false;
+        var blockHeight = _block.GetGridPosition().y;
+        var nearbyBlocks = _worldPlane
+            .GetNearbyLandOrLake(_block.GetGridPosition())
+            .Where(otherBlock => otherBlock.GetGridPosition().y < blockHeight);
+        var nearbyEmptyBlocks = CreateWaterForNearbyEmptyPositions();
+        var allNearbyBlocks = nearbyBlocks.Concat(nearbyEmptyBlocks);
+
+        foreach (var nearbyBlock in allNearbyBlocks)
+        {
+            if (nearbyBlock.HasOccupant() && !nearbyBlock.OccupiedByBlock())
+            {
+                nearbyBlock.DestroyOccupant();
+            }
+
+            if (nearbyBlock.IsVacant())
+            {
+                var waterBlockBelow = NewOceanFullHeightWaterBlock().GetComponentInChildren<Block>();
+                _worldPlane.ReplaceBlock(nearbyBlock, waterBlockBelow);
+
+                var lowestBlock = waterBlockBelow;
+
+                for (var y = lowestBlock.GetGridPosition().y + 1; y <= Block.GroundLevel - 1; y++)
+                {
+                    var water = NewOceanFullHeightWaterBlock();
+                    var waterBlock = water.GetComponentInChildren<Block>();
+                    _worldPlane.AddBlockOnTopOf(waterBlock, water, lowestBlock);
+
+                    lowestBlock = waterBlock;
+                }
+
+                var ocean = NewOceanShallowWaterBlock();
+                var oceanBlock = ocean.GetComponentInChildren<Block>();
+                _worldPlane.AddBlockOnTopOf(oceanBlock, ocean, lowestBlock);
+            }
+        }
+    }
+
+    private GameObject NewOceanShallowWaterBlock()
+    {
+        return Instantiate(_blockFactory.oceanShallowBlockTemplate);
+    }
+
+    private GameObject NewOceanFullHeightWaterBlock()
+    {
+        return Instantiate(_blockFactory.oceanFullHeightBlockTemplate);
     }
 
     private GameObject NewFullHeightWaterBlock()

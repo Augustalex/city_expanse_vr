@@ -88,6 +88,9 @@ MonoBehaviour:
   fullHeightWaterBlockTemplate: {fileID: 1341636617038954440}
   groundWaterBlockTemplate: {fileID: 1341636617038954440, guid: 02cbe2d83c65d904a890ff58e046ad7f,
     type: 3}
+  oceanWaterBlockTemplate: {fileID: 612181966713644638, guid: 93e1621042f7a6642852b4811decd2c9,
+    type: 3}
+  isOceanWater: 0
 --- !u!1001 &7077033207853759730
 PrefabInstance:
   m_ObjectHideFlags: 0
