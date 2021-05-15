@@ -19,10 +19,10 @@ public class CameraMover : MonoBehaviour
     void Update()
     {
         var change = Input.mouseScrollDelta.y;
-        _camera.transform.position += new Vector3(0, change * .1f, 0);
+        _camera.transform.position += new Vector3(0, change * .05f, 0);
 
         var cameraYMax = 5f;
-        var cameraYMin = 1.3f;
+        var cameraYMin = 1.4f;
 
         var cameraXMin = -2f;
         var cameraXMax = 4f;
@@ -36,7 +36,7 @@ public class CameraMover : MonoBehaviour
             var zoomProgress = Mathf.Clamp((newYPosition - cameraYMin) / (cameraYMax - cameraYMin), 0f, 1f);
             var easedZoomProgress = EaseOutExpo(zoomProgress);
 
-            var minTilt = -6f;
+            var minTilt = 4f;
             var maxTilt = 90f;
             var newTilt = (maxTilt - minTilt) * easedZoomProgress + minTilt;
             var currentTilt = _camera.transform.rotation.eulerAngles.x;
