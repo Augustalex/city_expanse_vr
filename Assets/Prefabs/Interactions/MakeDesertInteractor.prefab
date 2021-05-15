@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 2455081557484554951}
   - component: {fileID: 2455081557484554950}
   - component: {fileID: 2455081557484554949}
-  - component: {fileID: 2455081557484554948}
   - component: {fileID: 2455081557484555002}
   - component: {fileID: 2455081557484555003}
   - component: {fileID: 3713031235034289242}
   - component: {fileID: 5219915045160753932}
+  - component: {fileID: 6834365805135318019}
   m_Layer: 0
   m_Name: MakeDesertInteractor
   m_TagString: Untagged
@@ -98,19 +98,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2455081557484554948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2455081557484554947}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddf9dc71ed6973b4e8565b87b2abc10b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!54 &2455081557484555002
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -248,8 +235,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
-  blockGeneralInteractionSound: {fileID: 8300000, guid: c52b7226d1c22e3429e734bb48e42c7d,
-    type: 3}
-  volumeOverride: 0
   sandBlockTemplate: {fileID: 612181966713644638, guid: 90738e66673ec454b92002eb0d8e2672,
     type: 3}
+--- !u!114 &6834365805135318019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2455081557484554947}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 129c18a635ce273418c37c6087b034c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
