@@ -12,6 +12,7 @@ public class FeatureToggles : MonoBehaviour
   public bool digAnywhere;
   public bool storms;
   public bool desertsAreBeaches;
+  public bool houseSpawn;
 
   private static FeatureToggles _featureToggles;
 

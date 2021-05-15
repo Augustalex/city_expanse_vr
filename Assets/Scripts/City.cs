@@ -35,23 +35,27 @@ public class City : MonoBehaviour
     {
         if (!CanWorkThisFrame()) return;
 
-        var delta = Time.fixedTime - _lastPlacedHouse;
-        if (delta > 10f && Random.value < .1f)
+        if (_featureToggles.houseSpawn)
         {
-            if (CanSpawnAnotherHouse())
+            var delta = Time.fixedTime - _lastPlacedHouse;
+            if (delta > 10f && Random.value < .1f)
             {
-                SpawnOneHouse();
+                if (CanSpawnAnotherHouse())
+                {
+                    SpawnOneHouse();
+                }
+            }
+
+            var innerCityDelta = Time.fixedTime - _lastPlacedInnerCityHouse;
+            if (innerCityDelta > 10f && Random.value < .2f)
+            {
+                if (Random.value < .1f)
+                {
+                    SpawnInnerCityHouse();
+                }
             }
         }
 
-        var innerCityDelta = Time.fixedTime - _lastPlacedInnerCityHouse;
-        if (innerCityDelta > 10f && Random.value < .2f)
-        {
-            if (Random.value < .1f)
-            {
-                SpawnInnerCityHouse();
-            }
-        }
 
         if (Random.value < .01f && HasNoOtherBigHouses())
         {
