@@ -241,20 +241,20 @@ public class WorldPlane : MonoBehaviour
     public List<Block> GetWaterBlocks()
     {
         return blocksRepository.StreamBlocks()
-            .Where(b => b.blockType == Block.BlockType.Water)
+            .Where(b => b.blockType == Block.BlockType.Lake)
             .ToList();
     }
 
     public IEnumerable<Block> GetStableShorelineBlocks()
     {
         return blocksRepository.StreamBlocks()
-            .Where(b => b.blockType == Block.BlockType.Water && b.IsStable() && !b.IsWaterLocked());
+            .Where(b => b.blockType == Block.BlockType.Lake && b.IsStable() && !b.IsWaterLocked());
     }
 
     public IEnumerable<Block> GetWaterBlocksStream()
     {
         return blocksRepository.StreamBlocks()
-            .Where(b => b.blockType == Block.BlockType.Water);
+            .Where(b => b.blockType == Block.BlockType.Lake);
     }
 
     public IEnumerable<Block> GetNearbyBlocksWithinRange(Vector3 position, float radius)

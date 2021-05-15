@@ -64,7 +64,7 @@ public class BiomeBuilder
             return Biome.BiomeType.Sand;
         }
 
-        if (type == Block.BlockType.Water)
+        if (type == Block.BlockType.Lake)
         {
             return Biome.BiomeType.Shoreline;
         }

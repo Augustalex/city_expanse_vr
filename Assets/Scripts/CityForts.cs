@@ -59,7 +59,7 @@ public class CityForts : MonoBehaviour
                        && _worldPlane.NoNearby(
                            vacantBlock.GetGridPosition(),
                            2f,
-                           block => block.blockType == Block.BlockType.Water
+                           block => block.blockType == Block.BlockType.Lake
                        );
             });
 

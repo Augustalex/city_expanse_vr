@@ -47,7 +47,7 @@ public class CityDocks : MonoBehaviour
                 .OrderBy(_ => Random.value)
                 .Take(2)
                 .Where(waterBlock => _worldPlane.GetMajorityBlockTypeWithinRange(waterBlock.GetGridPosition(), 1f)
-                                     == Block.BlockType.Water
+                                     == Block.BlockType.Lake
                                      && _worldPlane.NoNearby(waterBlock.GetGridPosition(), 3f, BlockHasDocksSpawn))
                 .SelectMany(waterBlock =>
                 {

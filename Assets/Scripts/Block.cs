@@ -12,10 +12,11 @@ public class Block : MonoBehaviour
     public enum BlockType
     {
         Grass,
-        Water,
+        Lake,
         Sand,
         Soil,
-        OutsideWater
+        OutsideWater,
+        OceanWater
     }
 
     public BlockType blockType = BlockType.Grass;
@@ -110,12 +111,17 @@ public class Block : MonoBehaviour
                || blockType == BlockType.Sand;
     }
 
-    public bool IsLevelWith(Block block)
+    public bool IsLevelWith(Block block) // This seems to do something strange with water. Perhaps it is this logic that makes water fall as waterfalls, instead of filling up everything as a plane?
     {
         var thisLevelHeight = IsWater() ? _gridPosition.y + 1 : _gridPosition.y;
         var otherLevelHeight = block.IsWater() ? block.GetGridPosition().y + 1 : block.GetGridPosition().y;
 
         return Math.Abs(otherLevelHeight - thisLevelHeight) < .5f;
+    }
+
+    public bool IsOnSameHeightAs(Block block)
+    {
+        return Math.Abs(block.GetGridPosition().y - _gridPosition.y) < .5f;
     }
 
     public void ShortFreeze()
@@ -321,7 +327,7 @@ public class Block : MonoBehaviour
 
     public bool IsWater()
     {
-        return blockType == BlockType.Water;
+        return blockType == BlockType.Lake || blockType == BlockType.OceanWater;
     }
 
     enum OccupyingType
@@ -509,6 +515,6 @@ public class Block : MonoBehaviour
 
     public bool IsLake()
     {
-        return IsWater();
+        return blockType == BlockType.Lake;
     }
 }
