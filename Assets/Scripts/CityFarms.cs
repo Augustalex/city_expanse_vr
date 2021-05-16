@@ -71,6 +71,7 @@ public class CityFarms : MonoBehaviour
 
     public bool CanManuallyConstructAnyKindOfFarm()
     {
+        // TODO: Make Farms grow slowly over time. That why you can take your time with the game and not just speed build.
         float houseCount = _worldPlane.GetBlocksWithHousesStream().Count();
         return houseCount >= City.SelfSustainedHouses;
     }
