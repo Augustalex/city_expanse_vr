@@ -14,6 +14,7 @@ public class FeatureToggles : MonoBehaviour
   public bool desertsAreBeaches;
   public bool houseSpawn;
   public bool docksSpawn;
+  public bool farmExpandOnItsOwn;
   public bool interactionOverlay;
   public bool interactionGhost;
 

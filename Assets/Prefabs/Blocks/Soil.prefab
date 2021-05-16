@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 5374673363214197382}
   - component: {fileID: 4839519098655693104}
   - component: {fileID: 5892327060341599087}
+  - component: {fileID: 1965076264170239056}
   m_Layer: 0
   m_Name: Grass
   m_TagString: Untagged
@@ -140,6 +141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 3
+  _gridPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &5892327060341599087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,3 +156,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalMaterial: {fileID: 2100000, guid: 0184b296287748e449e368bedd213e22, type: 2}
   topMaterial: {fileID: 2100000, guid: 3964d61c77d723a478e201f6e2cac73a, type: 2}
+--- !u!114 &1965076264170239056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6809379898512305615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fb5216bc691c954f8ae0af8f4a8c6c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  farmController: {fileID: 0}

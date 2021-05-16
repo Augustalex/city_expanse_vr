@@ -17,6 +17,7 @@ public class InteractorHolder : MonoBehaviour
     private MakeDesertInteractor _makeDesertInteractor;
     private ConstructHouseBlockInteractor _constructHouseInteractor;
     private ConstructDocksBlockInteractor _constructDocksInteractor;
+    private ConstructFarmBlockInteractor _constructFarmBlockInteractor;
 
     public enum BlockInteractors
     {
@@ -27,7 +28,8 @@ public class InteractorHolder : MonoBehaviour
         SendMeteor,
         MakeDesert,
         ConstructHouse,
-        ConstructDocks
+        ConstructDocks,
+        ConstructFarm
     }
 
     private void Start()
@@ -55,6 +57,9 @@ public class InteractorHolder : MonoBehaviour
         _constructDocksInteractor = GetComponent<ConstructDocksBlockInteractor>();
         _constructDocksInteractor.enabled = false;
 
+        _constructFarmBlockInteractor = GetComponent<ConstructFarmBlockInteractor>();
+        _constructFarmBlockInteractor.enabled = false;
+
         _interactorComponents.AddRange(new List<BlockInteractor>
             {
                 _digInteractor,
@@ -64,7 +69,8 @@ public class InteractorHolder : MonoBehaviour
                 _sendMeteorInteractor,
                 _makeDesertInteractor,
                 _constructHouseInteractor,
-                _constructDocksInteractor
+                _constructDocksInteractor,
+                _constructFarmBlockInteractor
             }
         );
     }
@@ -109,6 +115,10 @@ public class InteractorHolder : MonoBehaviour
         else if (blockInteractor == BlockInteractors.ConstructDocks)
         {
             _constructDocksInteractor.enabled = true;
+        }
+        else if (blockInteractor == BlockInteractors.ConstructFarm)
+        {
+            _constructFarmBlockInteractor.enabled = true;
         }
     }
 

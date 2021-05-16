@@ -14,20 +14,27 @@ public class FarmController : MonoBehaviour
     private List<Block> _soils = new List<Block>();
     private WorldPlane _worldPlane;
     private bool _siloBuilt;
+    private FeatureToggles _featureToggles;
     private const int MaxFarmCount = 15;
 
-    private void Awake()
+    private void Awake() // FarmController is only created during the game, and is used right after being created. Therefore we must store static instances in the Awake method instead of Start.
     {
         _worldPlane = WorldPlane.Get();
+        _featureToggles = FeatureToggles.Get();
+    }
+    
+    public void AddBlockToSoilNetwork(Block block)
+    {
+        MakeToSoilWithFarm(block);
     }
 
     public Block MakeToSoilWithFarm(Block block)
     {
         var farmSpawn = Instantiate(farmSpawnTemplate, null, false);
         var farmBlock = MakeToSoilWith(block, farmSpawn);
-        
+
         FarmMasterController.Get().IncreaseFarmCount(1);
-        
+
         return farmBlock;
     }
 
@@ -35,6 +42,7 @@ public class FarmController : MonoBehaviour
     {
         var soilRoot = Instantiate(soilTemplate);
         var soilBlock = soilRoot.GetComponentInChildren<Block>();
+        soilBlock.GetComponent<SoilNode>().farmController = this;
 
         _worldPlane.ReplaceBlock(block, soilBlock);
 
@@ -55,7 +63,7 @@ public class FarmController : MonoBehaviour
 
     private void Update()
     {
-        if (FeatureToggles.Get().farmsGrowAtRandom)
+        if (_featureToggles.farmsGrowAtRandom)
         {
             if (Random.value < 0.005f)
             {
@@ -70,16 +78,19 @@ public class FarmController : MonoBehaviour
             }
         }
 
-        if (_soils.Count < MaxFarmCount * .6f || (_siloBuilt && _soils.Count <= MaxFarmCount))
+        if (_featureToggles.farmExpandOnItsOwn)
         {
-            if (Random.value < .001f)
+            if (_soils.Count < MaxFarmCount * .6f || (_siloBuilt && _soils.Count <= MaxFarmCount))
             {
-                Expand();
+                if (Random.value < .001f)
+                {
+                    Expand();
+                }
             }
-        }
-        else if (!_siloBuilt && Random.value < .001f)
-        {
-            BuildSilo();
+            else if (!_siloBuilt && Random.value < .001f)
+            {
+                BuildSilo();
+            }
         }
     }
 

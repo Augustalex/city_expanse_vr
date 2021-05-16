@@ -337,6 +337,11 @@ public class Block : MonoBehaviour
         return Convert.ToInt32(Mathf.Round(dist));
     }
 
+    public bool IsSoil()
+    {
+        return blockType == BlockType.Soil;
+    }
+
     public bool IsGrass()
     {
         return blockType == BlockType.Grass;
