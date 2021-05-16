@@ -8,6 +8,13 @@ public class PlaceGreensBlockInteractor : BlockInteractor
     public GameObject greensBlockTemplate;
     public GameObject desertGreensTemplate;
 
+    new void Start()
+    {
+        base.Start();
+
+        showInteractionGhost = true;
+    }
+    
     public void StopRigidbodySoon(GameObject greens)
     {
         StartCoroutine(DoSoon());
