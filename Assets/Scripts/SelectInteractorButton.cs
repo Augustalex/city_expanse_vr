@@ -13,7 +13,7 @@ public class SelectInteractorButton : MonoBehaviour
     {
         _workQueue = WorkQueue.Get();
     }
-    
+
     public void OnClick()
     {
         interactorHolder.SetInteractor(interactorType);
@@ -33,7 +33,7 @@ public class SelectInteractorButton : MonoBehaviour
                 }
             }
         }
-        
+
         GetComponent<Button>().interactable = _enabled;
     }
 
@@ -53,10 +53,28 @@ public class SelectInteractorButton : MonoBehaviour
         {
             return CanConstructHouse();
         }
+        else if (interactorType == InteractorHolder.BlockInteractors.ConstructDocks)
+        {
+            return CanConstructDocks();
+        }
+        else if (interactorType == InteractorHolder.BlockInteractors.ConstructFarm)
+        {
+            return CanConstructFarms();
+        }
         else
         {
             return true;
         }
+    }
+
+    private bool CanConstructFarms()
+    {
+        return CityFarms.Get().CanManuallyConstructAnyKindOfFarm();
+    }
+
+    private bool CanConstructDocks()
+    {
+        return CityDocks.Get().CanBuildADock();
     }
 
     private bool CanConstructHouse()

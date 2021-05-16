@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(City))]
 public class CityFarms : MonoBehaviour
@@ -8,6 +10,18 @@ public class CityFarms : MonoBehaviour
     private WorldPlane _worldPlane;
     private bool _placedFirstFarm;
     private FeatureToggles _featureToggles;
+
+    private static CityFarms _instance;
+
+    public static CityFarms Get()
+    {
+        return _instance;
+    }
+
+    private void Awake()
+    {
+        _instance = this;
+    }
 
     void Start()
     {
@@ -53,5 +67,13 @@ public class CityFarms : MonoBehaviour
 
             _placedFirstFarm = true;
         }
+    }
+
+    public bool CanManuallyConstructAnyKindOfFarm()
+    {
+        float houseCount = _worldPlane.GetBlocksWithHousesStream().Count();
+        float farms = FarmMasterController.Get().CountFarms();
+
+        return farms / houseCount < .2f;
     }
 }
