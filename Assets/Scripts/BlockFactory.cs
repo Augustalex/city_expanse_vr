@@ -8,6 +8,9 @@ public class BlockFactory : MonoBehaviour
     public GameObject oceanShallowBlockTemplate;
     public GameObject oceanFullHeightBlockTemplate;
     
+    public GameObject interactableGhostTemplate;
+    public GameObject nonInteractableGhostTemplate;
+    
     private static BlockFactory _blockFactoryInstance;
 
     void Awake()

@@ -15,7 +15,7 @@ public class FeatureToggles : MonoBehaviour
   public bool houseSpawn;
   public bool docksSpawn;
   public bool canInteractWithBlocksInRangeOverlay;
-  public bool houseGhosts;
+  public bool interactionGhost;
 
   private static FeatureToggles _featureToggles;
 

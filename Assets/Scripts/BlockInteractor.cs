@@ -13,17 +13,20 @@ public abstract class BlockInteractor : MonoBehaviour
 
     private AudioSource _audioSource;
     private FollowMainHandInteractor _followObject;
-    private bool _frozen = false;
+    private bool _frozen;
     private Vector3 _originalLocalPosition;
     private Vector3 _originalScale;
     private WorldPlane _worldPlane;
+    private bool _started;
 
     private List<Block> _highlighted = new List<Block>();
     private string _identifier = "uninstantiated";
 
-    protected bool HighlightInteractableBlocks = true;
-    protected bool HighlightNonInteractableBlocks = true;
     private FeatureToggles _featureToggles;
+
+    protected bool showInteractionGhost = false;
+    private GameObject _ghost;
+    private GameObject _nonInteractableGhost;
 
     private void Awake()
     {
@@ -47,6 +50,15 @@ public abstract class BlockInteractor : MonoBehaviour
             GetComponentInParent<BlockInteractionPalette>().Select(this);
             Activate();
         }
+        
+        
+        _ghost = Instantiate(BlockFactory.Get().interactableGhostTemplate);
+        _ghost.SetActive(false);
+
+        _nonInteractableGhost = Instantiate(BlockFactory.Get().nonInteractableGhostTemplate);
+        _nonInteractableGhost.SetActive(false);
+
+        _started = true;
     }
 
     protected void Update()
@@ -97,10 +109,22 @@ public abstract class BlockInteractor : MonoBehaviour
 
     public abstract bool Interactable(GameObject other);
 
-    public virtual void Inspect(GameObject other)
+    public void Inspect(GameObject other)
     {
-        if (! _featureToggles.canInteractWithBlocksInRangeOverlay) return;
-        
+        if (!_started) return;
+
+        if (_featureToggles.canInteractWithBlocksInRangeOverlay)
+        {
+            InspectWithOverlay(other);
+        }
+        else if(_featureToggles.interactionGhost && showInteractionGhost)
+        {
+            InspectWithGhost(other);
+        }
+    }
+
+    private void InspectWithOverlay(GameObject other)
+    {
         _highlighted.ForEach(h =>
         {
             if (h != null) h.RemoveHighlight();
@@ -123,6 +147,26 @@ public abstract class BlockInteractor : MonoBehaviour
                 nearbyBlock.Highlight(_identifier, Block.HighlightType.NonInteractable);
                 _highlighted.Add(nearbyBlock);
             }
+        }
+    }
+    
+    private void InspectWithGhost(GameObject other)
+    {
+        
+        var blockComponent = other.gameObject.GetComponent<Block>();
+        if (!blockComponent) return;
+
+        if (Interactable(other))
+        {
+            if (_nonInteractableGhost.activeSelf) _nonInteractableGhost.SetActive(false);
+            if (!_ghost.activeSelf) _ghost.SetActive(true);
+            _ghost.transform.position = other.transform.position + Vector3.up * .15f;
+        }
+        else
+        {
+            if (_ghost.activeSelf) _ghost.SetActive(false);
+            if (!_nonInteractableGhost.activeSelf) _nonInteractableGhost.SetActive(true);
+            _nonInteractableGhost.transform.position = other.transform.position + Vector3.up * .15f;
         }
     }
 
@@ -150,8 +194,14 @@ public abstract class BlockInteractor : MonoBehaviour
         }
     }
 
-    public virtual void Deactivate() // Override to specify things to clean up when switching interactors
+    public void Deactivate()
     {
+        if (_started && _featureToggles.interactionGhost && showInteractionGhost)
+        {
+            _nonInteractableGhost.SetActive(false);
+            _ghost.SetActive(false);
+        }
+        
         enabled = false;
     }
 

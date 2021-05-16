@@ -1449,10 +1449,6 @@ MonoBehaviour:
   isStartingInteractor: 0
   tinyHouseTemplate: {fileID: 2723339866174918418, guid: 3a64644beb96b3a4ea777cf8c96a15ff,
     type: 3}
-  ghostTemplate: {fileID: 3317631866390460118, guid: 8440c637f0490074795ac72038800dc5,
-    type: 3}
-  nonInteractableGhostTemplate: {fileID: 3317631866390460118, guid: b7c774b152b797547bc6fab4b6e0f28b,
-    type: 3}
 --- !u!114 &546754292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4149,6 +4145,10 @@ MonoBehaviour:
     type: 3}
   oceanFullHeightBlockTemplate: {fileID: 612181966713644638, guid: 2c8f7651a82d5be4ea16eba5b7b14574,
     type: 3}
+  interactableGhostTemplate: {fileID: 3317631866390460118, guid: 8440c637f0490074795ac72038800dc5,
+    type: 3}
+  nonInteractableGhostTemplate: {fileID: 3317631866390460118, guid: b7c774b152b797547bc6fab4b6e0f28b,
+    type: 3}
 --- !u!114 &1741071623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5543,6 +5543,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1741071623, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
       propertyPath: houseGhosts
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1741071623, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
+      propertyPath: interactionGhost
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3645905919876899980, guid: 63f229cc46e53ef47a8bc7f7667512ce,
