@@ -7,6 +7,13 @@ public class ConstructDocksBlockInteractor : BlockInteractor
 {
     public GameObject docksTemplate;
 
+    new void Start()
+    {
+        base.Start();
+
+        showInteractionGhost = true;
+    }
+
     public override bool Interactable(GameObject other)
     {
         if (!IsActivated()) return false;
