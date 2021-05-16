@@ -12,12 +12,10 @@ public class TileClicker : MonoBehaviour
     private bool _coolingDown;
     private float _cooldownTimeLeft;
     private float _lastLayer = 999f;
-    private FeatureToggles _featureToggles;
     private const float CooldownTime = 2f;
 
     void Start()
     {
-        _featureToggles = FeatureToggles.Get();
         _interactorHolder = GetComponent<InteractorHolder>();
     }
 
