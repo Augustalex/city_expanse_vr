@@ -21,17 +21,21 @@ public class TileClicker : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && _interactorHolder.AnyInteractorActive())
         {
             HideInteractorGhost();
-            
+
             if (Input.GetKey(KeyCode.LeftControl)) return;
 
             StartRayInteraction();
         }
         else
         {
-            StartRayInspection();
+            if (_interactorHolder.AnyInteractorActive())
+            {
+                StartRayInspection();
+            }
+
             ResetCooldown();
         }
 

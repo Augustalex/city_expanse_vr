@@ -5,6 +5,8 @@ using Random = UnityEngine.Random;
 
 public class BuildHouseBlockInteractor : BlockInteractor
 {
+    public override InteractorHolder.BlockInteractors InteractorType => InteractorHolder.BlockInteractors.ConstructHouse;
+
     public GameObject tinyHouseTemplate;
 
     public override bool Interactable(GameObject other)

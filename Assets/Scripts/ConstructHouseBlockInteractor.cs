@@ -9,6 +9,8 @@ public class ConstructHouseBlockInteractor : BlockInteractor
 {
     public GameObject tinyHouseTemplate;
 
+    public override InteractorHolder.BlockInteractors InteractorType => InteractorHolder.BlockInteractors.ConstructHouse;
+
     private new void Start()
     {
         base.Start();

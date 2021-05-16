@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MakeDesertInteractor : BlockInteractor
 {
+    public override InteractorHolder.BlockInteractors InteractorType => InteractorHolder.BlockInteractors.MakeDesert;
+
     public GameObject sandBlockTemplate;
 
     public override bool Interactable(GameObject other)

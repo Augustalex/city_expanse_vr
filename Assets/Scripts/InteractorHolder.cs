@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(DigBlockInteractor))]
@@ -18,6 +19,7 @@ public class InteractorHolder : MonoBehaviour
     private ConstructHouseBlockInteractor _constructHouseInteractor;
     private ConstructDocksBlockInteractor _constructDocksInteractor;
     private ConstructFarmBlockInteractor _constructFarmBlockInteractor;
+    private bool _hasInteractor;
 
     public enum BlockInteractors
     {
@@ -75,6 +77,11 @@ public class InteractorHolder : MonoBehaviour
         );
     }
 
+    public bool AnyInteractorActive()
+    {
+        return _hasInteractor;
+    }
+
     public BlockInteractor GetInteractor()
     {
         return _interactorComponents.Find(i => i.enabled);
@@ -120,16 +127,39 @@ public class InteractorHolder : MonoBehaviour
         {
             _constructFarmBlockInteractor.enabled = true;
         }
+
+        _hasInteractor = true;
     }
 
     private void DeactivateAllInteractors()
     {
         foreach (var i in _interactorComponents)
         {
-            if (i.IsActivated())
-            {
-                i.Deactivate();
-            }
+            DeactivateInteractor(i);
+        }
+    }
+
+    private void DeactivateInteractor(BlockInteractor interactor)
+    {
+        if (interactor.IsActivated())
+        {
+            interactor.Deactivate();
+        }
+    }
+
+    public bool HoldingInteractorOfType(BlockInteractors interactorType)
+    {
+        if (!_hasInteractor) return false;
+
+        return GetInteractor().InteractorType == interactorType;
+    }
+
+    public void CancelCurrentInteractor()
+    {
+        if (_hasInteractor)
+        {
+            DeactivateInteractor(GetInteractor());
+            _hasInteractor = false;
         }
     }
 }

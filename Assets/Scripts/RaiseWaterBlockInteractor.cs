@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class RaiseWaterBlockInteractor : BlockInteractor
 {
+    public override InteractorHolder.BlockInteractors InteractorType => InteractorHolder.BlockInteractors.RaiseWater;
+
     public override bool Interactable(GameObject other)
     {
         if (!IsActivated()) return false;

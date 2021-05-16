@@ -9,6 +9,8 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(AudioSource))]
 public abstract class BlockInteractor : MonoBehaviour
 {
+    public abstract InteractorHolder.BlockInteractors InteractorType { get; }
+
     public bool isStartingInteractor = false;
 
     private AudioSource _audioSource;

@@ -5,8 +5,10 @@ using Random = UnityEngine.Random;
 
 public class ConstructDocksBlockInteractor : BlockInteractor
 {
-    public GameObject docksTemplate;
+    public override InteractorHolder.BlockInteractors InteractorType => InteractorHolder.BlockInteractors.ConstructDocks;
 
+    public GameObject docksTemplate;
+    
     new void Start()
     {
         base.Start();

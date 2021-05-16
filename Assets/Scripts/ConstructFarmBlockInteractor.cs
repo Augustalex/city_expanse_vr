@@ -5,6 +5,8 @@ using Random = UnityEngine.Random;
 
 public class ConstructFarmBlockInteractor : BlockInteractor
 {
+    public override InteractorHolder.BlockInteractors InteractorType => InteractorHolder.BlockInteractors.ConstructFarm;
+
     new void Start()
     {
         base.Start();
@@ -54,14 +56,10 @@ public class ConstructFarmBlockInteractor : BlockInteractor
     private bool IsMasterFarmCandidate(GameObject other)
     {
         var vacantLot = other.gameObject.GetComponent<Block>();
-        
-        var amountOfNeighbouringWaterBlocks = GetWorldPlane().GetNearbyBlocks(vacantLot.GetGridPosition())
-            .Count(nearbyBlock => nearbyBlock.IsWater());
-        if (amountOfNeighbouringWaterBlocks > 0) return false;
 
         var nextToInnerCityHouse = GetWorldPlane()
             .GetNearbyBlocks(vacantLot.GetGridPosition())
-            .Any(b => b.OccupiedByHouse() && b.GetOccupantHouse().IsInnerCityHouse());
+            .Any(b => b.OccupiedByHouse());
 
         return nextToInnerCityHouse;
     }
@@ -75,11 +73,7 @@ public class ConstructFarmBlockInteractor : BlockInteractor
     private bool IsSoilCandidate(GameObject other)
     {
         var vacantLot = other.gameObject.GetComponent<Block>();
-
-        var amountOfNeighbouringWaterBlocks = GetWorldPlane().GetNearbyBlocks(vacantLot.GetGridPosition())
-            .Count(nearbyBlock => nearbyBlock.IsWater());
-        if (amountOfNeighbouringWaterBlocks > 0) return false;
-
+        
         var nearbyFarmController = GetClosestFarmController(vacantLot.GetGridPosition());
         return nearbyFarmController != null;
     }

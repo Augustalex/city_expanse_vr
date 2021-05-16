@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlaceGreensBlockInteractor : BlockInteractor
 {
+    public override InteractorHolder.BlockInteractors InteractorType => InteractorHolder.BlockInteractors.PlaceGreens;
+
     public GameObject greensBlockTemplate;
     public GameObject desertGreensTemplate;
 

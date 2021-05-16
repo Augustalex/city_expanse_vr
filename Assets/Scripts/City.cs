@@ -20,6 +20,17 @@ public class City : MonoBehaviour
     private int _ticket = -1;
     private WorkQueue _workQueue;
     private FeatureToggles _featureToggles;
+    private static City _instance;
+
+    private void Awake()
+    {
+        _instance = this;
+    }
+
+    public static City Get()
+    {
+        return _instance;
+    }
 
     void Start()
     {
@@ -99,7 +110,7 @@ public class City : MonoBehaviour
         return amountOfBigHouses < 2;
     }
 
-    private bool CanSpawnAnotherHouse()
+    public bool CanSpawnAnotherHouse()
     {
         var bigHouses = _worldPlane.GetBlocksWithHouses().Where(houseBlock => houseBlock.GetOccupantHouse().IsBig())
             .ToList();

@@ -2,6 +2,8 @@
 
 public class DigBlockInteractor : BlockInteractor
 {
+    public override InteractorHolder.BlockInteractors InteractorType => InteractorHolder.BlockInteractors.Dig;
+
     public override bool LockOnLayer()
     {
         return true;

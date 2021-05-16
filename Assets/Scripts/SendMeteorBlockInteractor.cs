@@ -2,6 +2,8 @@
 
 public class SendMeteorBlockInteractor : BlockInteractor
 {
+    public override InteractorHolder.BlockInteractors InteractorType => InteractorHolder.BlockInteractors.SendMeteor;
+
     public Camera mainCamera;
     public GameObject meteorTemplate;
     public AudioClip kaboomSound;

@@ -4,6 +4,8 @@ using Random = UnityEngine.Random;
 
 public class RaiseLandBlockInteractor : BlockInteractor
 {
+    public override InteractorHolder.BlockInteractors InteractorType => InteractorHolder.BlockInteractors.RaiseLand;
+
     public GameObject grassBlockTemplate;
 
     public override bool Interactable(GameObject other)

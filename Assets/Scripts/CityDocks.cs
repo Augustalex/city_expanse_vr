@@ -40,7 +40,7 @@ public class CityDocks : MonoBehaviour
             .GetBlocksWithHouses()
             .Count(blockWithHouse => blockWithHouse.GetOccupantHouse());
         if (houseCount < 1) return false;
-        
+
         var docks = _worldPlane.GetBlocksWithDocks().Count();
         if (docks > 0)
         {
@@ -64,16 +64,16 @@ public class CityDocks : MonoBehaviour
                 }
             }
         }
-        
+
         if (!_featureToggles.docksSpawn) return;
-        
+
         if (CanWorkThisFrame() && Random.value < .01f)
         {
             var houseCount = _worldPlane
                 .GetBlocksWithHouses()
                 .Count(blockWithHouse => blockWithHouse.GetOccupantHouse().IsBig());
             if (houseCount < 1) return;
-            
+
             var docks = _worldPlane.GetBlocksWithDocks().Count();
             if (docks > 0)
             {
@@ -82,7 +82,7 @@ public class CityDocks : MonoBehaviour
             }
 
             var candidate = _worldPlane.GetWaterBlocks()
-                .Where(waterBlock => waterBlock.IsGroundLevel() )
+                .Where(waterBlock => waterBlock.IsGroundLevel())
                 .OrderBy(_ => Random.value)
                 .Take(2)
                 .Where(waterBlock => _worldPlane.GetMajorityBlockTypeWithinRange(waterBlock.GetGridPosition(), 1f)
@@ -92,7 +92,9 @@ public class CityDocks : MonoBehaviour
                 {
                     return _worldPlane
                         .GetNearbyBlocks(waterBlock.GetGridPosition())
-                        .Where(block => Math.Abs(block.GetGridPosition().y - waterBlock.GetGridPosition().y) < .5f && block.IsGrass() && block.IsVacant())
+                        .Where(block =>
+                            Math.Abs(block.GetGridPosition().y - waterBlock.GetGridPosition().y) < .5f &&
+                            block.IsGrass() && block.IsVacant())
                         .Select(block => new Tuple<Block, Block>(waterBlock, block));
                 })
                 .OrderBy(_ => Random.value)
@@ -109,7 +111,7 @@ public class CityDocks : MonoBehaviour
             }
         }
     }
-    
+
     private bool CanWorkThisFrame()
     {
         if (_workQueue.HasExpiredTicket(_ticket))
