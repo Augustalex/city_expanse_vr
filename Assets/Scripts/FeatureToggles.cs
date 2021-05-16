@@ -14,7 +14,7 @@ public class FeatureToggles : MonoBehaviour
   public bool desertsAreBeaches;
   public bool houseSpawn;
   public bool docksSpawn;
-  public bool canInteractWithBlocksInRangeOverlay;
+  public bool interactionOverlay;
   public bool interactionGhost;
 
   private static FeatureToggles _featureToggles;

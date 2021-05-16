@@ -25,6 +25,7 @@ public abstract class BlockInteractor : MonoBehaviour
     private FeatureToggles _featureToggles;
 
     protected bool showInteractionGhost = false;
+
     private GameObject _ghost;
     private GameObject _nonInteractableGhost;
 
@@ -63,7 +64,7 @@ public abstract class BlockInteractor : MonoBehaviour
 
     protected void Update()
     {
-        if (_featureToggles.canInteractWithBlocksInRangeOverlay && _highlighted.Count > 0)
+        if (_featureToggles.interactionOverlay && _highlighted.Count > 0)
         {
             var newList = new List<Block>();
             foreach (var b in _highlighted)
@@ -113,11 +114,12 @@ public abstract class BlockInteractor : MonoBehaviour
     {
         if (!_started) return;
 
-        if (_featureToggles.canInteractWithBlocksInRangeOverlay)
+        if (_featureToggles.interactionOverlay)
         {
             InspectWithOverlay(other);
         }
-        else if(_featureToggles.interactionGhost && showInteractionGhost)
+        
+        if(_featureToggles.interactionGhost && showInteractionGhost)
         {
             InspectWithGhost(other);
         }
