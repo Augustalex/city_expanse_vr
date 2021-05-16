@@ -22,7 +22,8 @@ public class ConstructFarmBlockInteractor : BlockInteractor
                blockComponent.IsLot() &&
                blockComponent.IsVacant() &&
                blockComponent.IsInteractable() &&
-               IsCandidate(other);
+               (IsSoilCandidate(other)
+                || IsMasterFarmCandidate(other));
     }
 
     public override bool LockOnLayer()
@@ -32,13 +33,46 @@ public class ConstructFarmBlockInteractor : BlockInteractor
 
     public override void Interact(GameObject other)
     {
+        if (IsSoilCandidate(other))
+        {
+            SoilInteraction(other);
+        }
+        else
+        {
+            MasterFarmInteraction(other);
+        }
+    }
+
+    private void SoilInteraction(GameObject other)
+    {
         var vacantLot = other.gameObject.GetComponent<Block>();
 
         var nearbyFarmController = GetClosestFarmController(vacantLot.GetGridPosition());
         nearbyFarmController.AddBlockToSoilNetwork(vacantLot);
     }
 
-    private bool IsCandidate(GameObject other)
+    private bool IsMasterFarmCandidate(GameObject other)
+    {
+        var vacantLot = other.gameObject.GetComponent<Block>();
+        
+        var amountOfNeighbouringWaterBlocks = GetWorldPlane().GetNearbyBlocks(vacantLot.GetGridPosition())
+            .Count(nearbyBlock => nearbyBlock.IsWater());
+        if (amountOfNeighbouringWaterBlocks > 0) return false;
+
+        var nextToInnerCityHouse = GetWorldPlane()
+            .GetNearbyBlocks(vacantLot.GetGridPosition())
+            .Any(b => b.OccupiedByHouse() && b.GetOccupantHouse().IsInnerCityHouse());
+
+        return nextToInnerCityHouse;
+    }
+
+    private void MasterFarmInteraction(GameObject other)
+    {
+        var vacantLot = other.gameObject.GetComponent<Block>();
+        FarmMasterController.Get().SetupFarmControllerForBlock(vacantLot);
+    }
+
+    private bool IsSoilCandidate(GameObject other)
     {
         var vacantLot = other.gameObject.GetComponent<Block>();
 

@@ -7,14 +7,18 @@ public class CityFarms : MonoBehaviour
 {
     private WorldPlane _worldPlane;
     private bool _placedFirstFarm;
+    private FeatureToggles _featureToggles;
 
     void Start()
     {
         _worldPlane = WorldPlane.Get();
+        _featureToggles = FeatureToggles.Get();
     }
 
     void Update()
     {
+        if (!_featureToggles.farmsSpawn) return;
+        
         if (!_placedFirstFarm && Random.value < .01f)
         {
             var houses = _worldPlane.GetBlocksWithHousesNotNearWater().ToList();

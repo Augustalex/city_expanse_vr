@@ -6,6 +6,7 @@ public class FeatureToggles : MonoBehaviour
   public bool predators;
   public bool persons;
   public bool farmsGrowAtRandom;
+  public bool farmsSpawn;
   public bool biomes;
   public bool fort;
   public bool woodcutters;
