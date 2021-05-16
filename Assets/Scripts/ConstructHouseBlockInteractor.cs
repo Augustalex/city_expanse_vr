@@ -9,7 +9,8 @@ public class ConstructHouseBlockInteractor : BlockInteractor
 {
     public GameObject tinyHouseTemplate;
 
-    public override InteractorHolder.BlockInteractors InteractorType => InteractorHolder.BlockInteractors.ConstructHouse;
+    public override InteractorHolder.BlockInteractors InteractorType =>
+        InteractorHolder.BlockInteractors.ConstructHouse;
 
     private new void Start()
     {
@@ -78,7 +79,13 @@ public class ConstructHouseBlockInteractor : BlockInteractor
         }
 
         var innerCityCandidates = GetWorldPlane().GetNearbyBlocks(vacantLot.GetGridPosition())
-            .Where(otherBlock => otherBlock.OccupiedByHouse() && otherBlock.GetOccupantHouse().IsBig())
+            .Where(otherBlock =>
+            {
+                if (!otherBlock.OccupiedByHouse()) return false;
+
+                var house = otherBlock.GetOccupantHouse();
+                return house.IsBig() || house.IsInnerCityHouse();
+            })
             .ToList();
 
         if (innerCityCandidates.Count > 0)
