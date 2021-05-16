@@ -29,6 +29,7 @@ public class TileClicker : MonoBehaviour
         }
         else
         {
+            StartRayInspection();
             ResetCooldown();
         }
 
@@ -40,6 +41,15 @@ public class TileClicker : MonoBehaviour
                 ResetCooldown();
             }
         }
+    }
+
+    private void StartRayInspection()
+    {
+        RaycastHit hit;
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        if (!Physics.Raycast(ray, out hit, 1000.0f)) return;
+
+        _interactorHolder.GetInteractor().Inspect(hit.collider.gameObject);
     }
 
     private void StartRayInteraction()

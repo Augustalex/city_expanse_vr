@@ -257,9 +257,9 @@ public class WorldPlane : MonoBehaviour
             .Where(b => b.blockType == Block.BlockType.Lake);
     }
 
-    public IEnumerable<Block> GetNearbyBlocksWithinRange(Vector3 position, float radius)
+    public IEnumerable<Block> GetNearbyBlocksWithinRange(Vector3 blockGridPosition, float radius)
     {
-        var realCenterPosition = ToRealCoordinates(position);
+        var realCenterPosition = ToRealCoordinates(blockGridPosition);
         var sizeOfBlock = blockTemplate.transform.localScale.x;
 
         var hits = Physics.OverlapSphere(realCenterPosition, sizeOfBlock * radius * .75f);

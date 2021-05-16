@@ -17,7 +17,8 @@ public class ConstructDocksBlockInteractor : BlockInteractor
                blockComponent.IsLot() &&
                blockComponent.IsVacant() &&
                blockComponent.IsInteractable() &&
-               CityDocks.Get().CanBuildADock();
+               CityDocks.Get().CanBuildADock() &&
+               GetCandidate(other) != null;
     }
 
     public override bool LockOnLayer()
@@ -26,6 +27,23 @@ public class ConstructDocksBlockInteractor : BlockInteractor
     }
 
     public override void Interact(GameObject other)
+    {
+        var vacantLot = other.gameObject.GetComponent<Block>();
+
+        var candidate = GetCandidate(other);
+        if (candidate)
+        {
+            var dockSpawn = Instantiate(docksTemplate);
+            vacantLot.Occupy(dockSpawn);
+            var target = candidate.transform.position;
+            target.y = dockSpawn.transform.position.y;
+            dockSpawn.transform.LookAt(target);
+
+            PlaySound(BlockSoundLibrary.BlockSound.RaiseLand);
+        }
+    }
+
+    private Block GetCandidate(GameObject other)
     {
         var worldPlane = GetWorldPlane();
         var vacantLot = other.gameObject.GetComponent<Block>();
@@ -43,14 +61,11 @@ public class ConstructDocksBlockInteractor : BlockInteractor
         var candidatesCount = candidates.Count;
         if (candidatesCount > 0)
         {
-            var waterBlock = candidates[Random.Range(0, candidatesCount)];
-            var dockSpawn = Instantiate(docksTemplate);
-            vacantLot.Occupy(dockSpawn);
-            var target = waterBlock.transform.position;
-            target.y = dockSpawn.transform.position.y;
-            dockSpawn.transform.LookAt(target);
-
-            PlaySound(BlockSoundLibrary.BlockSound.RaiseLand);
+            return candidates[Random.Range(0, candidatesCount)];
+        }
+        else
+        {
+            return null;
         }
     }
 }

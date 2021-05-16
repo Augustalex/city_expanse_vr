@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -17,7 +18,8 @@ public class ConstructHouseBlockInteractor : BlockInteractor
         return blockComponent &&
                blockComponent.IsLot() &&
                blockComponent.IsVacant() &&
-               blockComponent.IsInteractable();
+               blockComponent.IsInteractable() &&
+               GetCandidate(other) != null;
     }
 
     public override bool LockOnLayer()
@@ -49,6 +51,33 @@ public class ConstructHouseBlockInteractor : BlockInteractor
         {
             SpawnInnerCityHouse(other);
         }
+    }
+
+    [CanBeNull]
+    private Block GetCandidate(GameObject other)
+    {
+        var vacantLot = other.gameObject.GetComponent<Block>();
+
+        var candidates = GetWorldPlane().GetNearbyBlocks(vacantLot.GetGridPosition())
+            .Where(otherBlock => otherBlock.IsWater() && otherBlock.IsOnSameHeightAs(vacantLot))
+            .ToList();
+
+        var candidatesCount = candidates.Count;
+        if (candidatesCount > 0)
+        {
+            return candidates[Random.Range(0, candidatesCount)];
+        }
+
+        var innerCityCandidates = GetWorldPlane().GetNearbyBlocks(vacantLot.GetGridPosition())
+            .Where(otherBlock => otherBlock.OccupiedByHouse() && otherBlock.GetOccupantHouse().IsBig())
+            .ToList();
+
+        if (innerCityCandidates.Count > 0)
+        {
+            return innerCityCandidates.ElementAt(Random.Range(0, innerCityCandidates.Count));
+        }
+
+        return null;
     }
 
     private void SpawnInnerCityHouse(GameObject other)

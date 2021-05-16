@@ -31,11 +31,20 @@ public class Block : MonoBehaviour
     private OccupyingType _occupantType = OccupyingType.Null;
     private Block _blockAbove = null;
     private bool _waterLocked;
+    private Vector3 _originalScale;
+    private bool _highlighted;
+    private float _highlightedAt;
+    private string _highlightedBy;
 
     private const int CloudLevel = 4;
 
     public event Action BeforeDestroy;
 
+    void Start()
+    {
+        _originalScale = transform.localScale;
+    }
+    
     public void DestroySelf()
     {
         OnBeforeDestroy();
@@ -516,5 +525,26 @@ public class Block : MonoBehaviour
     public bool IsLake()
     {
         return blockType == BlockType.Lake;
+    }
+
+    public void Highlight(string highlighterIdentifier)
+    {
+        transform.localScale = _originalScale * 1.1f;
+        _highlighted = true;
+        _highlightedBy = highlighterIdentifier;
+        _highlightedAt = Time.fixedTime;
+    }
+
+    public bool ShouldRemoveHighlight(string highlighterIdentifier)
+    {
+        return _highlighted
+               && _highlightedBy == highlighterIdentifier
+               && Time.fixedTime - _highlightedAt > 3;
+    }
+
+    public void RemoveHighlight()
+    {
+        transform.localScale = _originalScale;
+        _highlighted = false;
     }
 }

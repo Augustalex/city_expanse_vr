@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(FollowMainHandInteractor))]
 [RequireComponent(typeof(AudioSource))]
@@ -16,6 +17,9 @@ public abstract class BlockInteractor : MonoBehaviour
     private Vector3 _originalLocalPosition;
     private Vector3 _originalScale;
     private WorldPlane _worldPlane;
+
+    private List<Block> _highlighted = new List<Block>();
+    private string _identifier = Math.Round(Random.value * 9999999).ToString();
 
     private void Start()
     {
@@ -32,6 +36,29 @@ public abstract class BlockInteractor : MonoBehaviour
         {
             GetComponentInParent<BlockInteractionPalette>().Select(this);
             Activate();
+        }
+    }
+
+    void Update()
+    {
+        if (_highlighted.Count > 0)
+        {
+            var newList = new List<Block>();
+            foreach (var b in _highlighted)
+            {
+                if (b == null) continue;
+
+                if (b.ShouldRemoveHighlight(_identifier))
+                {
+                    b.RemoveHighlight();
+                }
+                else
+                {
+                    newList.Add(b);
+                }
+            }
+
+            _highlighted = newList;
         }
     }
 
@@ -59,6 +86,26 @@ public abstract class BlockInteractor : MonoBehaviour
     public abstract void Interact(GameObject other);
 
     public abstract bool Interactable(GameObject other);
+
+    public virtual void Inspect(GameObject other)
+    {
+        _highlighted.ForEach(h => h.RemoveHighlight());
+        _highlighted.Clear();
+
+        var blockComponent = other.gameObject.GetComponent<Block>();
+        if (!blockComponent) return;
+
+        var nearbyBlocks = GetWorldPlane().GetNearbyBlocksWithinRange(blockComponent.GetGridPosition(), 5f);
+        foreach (var nearbyBlock in nearbyBlocks)
+        {
+            if (Interactable(nearbyBlock.gameObject))
+            {
+                nearbyBlock.Highlight(_identifier);
+
+                _highlighted.Add(nearbyBlock);
+            }
+        }
+    }
 
     public void Activate()
     {
