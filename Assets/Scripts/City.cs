@@ -10,7 +10,7 @@ public class City : MonoBehaviour
     public GameObject tinyHouseTemplate;
     public GameObject sandBlockTemplate;
 
-    private const int SelfSustainedHouses = 3;
+    public static int SelfSustainedHouses = 3;
 
     private WorldPlane _worldPlane;
     private double _lastPlacedHouse;

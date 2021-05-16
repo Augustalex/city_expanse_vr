@@ -72,8 +72,6 @@ public class CityFarms : MonoBehaviour
     public bool CanManuallyConstructAnyKindOfFarm()
     {
         float houseCount = _worldPlane.GetBlocksWithHousesStream().Count();
-        float farms = FarmMasterController.Get().CountFarms();
-
-        return farms / houseCount < .2f;
+        return houseCount >= City.SelfSustainedHouses;
     }
 }
