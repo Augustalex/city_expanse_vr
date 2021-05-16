@@ -23,7 +23,6 @@ public class TileClicker : MonoBehaviour
 
     void Update()
     {
-
         if (Input.GetMouseButton(0))
         {
             HideInteractorGhost();
