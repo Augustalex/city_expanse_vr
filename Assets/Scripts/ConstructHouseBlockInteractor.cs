@@ -8,6 +8,67 @@ using Random = UnityEngine.Random;
 public class ConstructHouseBlockInteractor : BlockInteractor
 {
     public GameObject tinyHouseTemplate;
+    public GameObject ghostTemplate;
+    public GameObject nonInteractableGhostTemplate;
+    private GameObject _ghost;
+    private GameObject _nonInteractableGhost;
+    private FeatureToggles _featureToggles;
+    private bool _started;
+
+    private new void Start()
+    {
+        base.Start();
+
+        _featureToggles = FeatureToggles.Get();
+
+        _ghost = Instantiate(ghostTemplate);
+        _ghost.SetActive(false);
+
+        _nonInteractableGhost = Instantiate(nonInteractableGhostTemplate);
+        _nonInteractableGhost.SetActive(false);
+
+        _started = true;
+    }
+
+    public override void Deactivate()
+    {
+        if (_started && _featureToggles.houseGhosts)
+        {
+            _nonInteractableGhost.SetActive(false);
+            _ghost.SetActive(false);
+        }
+
+        base.Deactivate();
+    }
+
+    public override void Inspect(GameObject other)
+    {
+        if (!_started) return;
+
+        if (_featureToggles.houseGhosts)
+        {
+            var blockComponent = other.gameObject.GetComponent<Block>();
+            if (!blockComponent) return;
+
+            if (Interactable(other))
+            {
+                if (_nonInteractableGhost.activeSelf) _nonInteractableGhost.SetActive(false);
+                if (!_ghost.activeSelf) _ghost.SetActive(true);
+                _ghost.transform.position = other.transform.position + Vector3.up * .15f;
+            }
+            else
+            {
+                if (_ghost.activeSelf) _ghost.SetActive(false);
+                if (!_nonInteractableGhost.activeSelf) _nonInteractableGhost.SetActive(true);
+                _nonInteractableGhost.transform.position = other.transform.position + Vector3.up * .15f;
+            }
+        }
+        else
+        {
+            base.Inspect(other);
+        }
+    }
+
 
     public override bool Interactable(GameObject other)
     {

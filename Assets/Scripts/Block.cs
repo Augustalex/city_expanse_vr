@@ -19,6 +19,12 @@ public class Block : MonoBehaviour
         OceanWater
     }
 
+    public enum HighlightType
+    {
+        Interactable,
+        NonInteractable
+    }
+
     public BlockType blockType = BlockType.Grass;
 
     private bool _frozen;
@@ -44,7 +50,7 @@ public class Block : MonoBehaviour
     {
         _originalScale = transform.localScale;
     }
-    
+
     public void DestroySelf()
     {
         OnBeforeDestroy();
@@ -120,7 +126,9 @@ public class Block : MonoBehaviour
                || blockType == BlockType.Sand;
     }
 
-    public bool IsLevelWith(Block block) // This seems to do something strange with water. Perhaps it is this logic that makes water fall as waterfalls, instead of filling up everything as a plane?
+    public bool
+        IsLevelWith(
+            Block block) // This seems to do something strange with water. Perhaps it is this logic that makes water fall as waterfalls, instead of filling up everything as a plane?
     {
         var thisLevelHeight = IsWater() ? _gridPosition.y + 1 : _gridPosition.y;
         var otherLevelHeight = block.IsWater() ? block.GetGridPosition().y + 1 : block.GetGridPosition().y;
@@ -527,12 +535,19 @@ public class Block : MonoBehaviour
         return blockType == BlockType.Lake;
     }
 
-    public void Highlight(string highlighterIdentifier)
+    public void Highlight(string highlighterIdentifier, HighlightType highlightType)
     {
-        transform.localScale = _originalScale * 1.1f;
         _highlighted = true;
         _highlightedBy = highlighterIdentifier;
         _highlightedAt = Time.fixedTime;
+
+        if (highlightType == HighlightType.Interactable)
+        {
+            transform.localScale = _originalScale * 1.1f;
+        }
+        else if (highlightType == HighlightType.NonInteractable)
+        {
+        }
     }
 
     public bool ShouldRemoveHighlight(string highlighterIdentifier)

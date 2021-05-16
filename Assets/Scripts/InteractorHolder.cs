@@ -76,45 +76,50 @@ public class InteractorHolder : MonoBehaviour
 
     public void SetInteractor(BlockInteractors blockInteractor)
     {
+        DeactivateAllInteractors();
+
         if (blockInteractor == BlockInteractors.Dig)
         {
-            _interactorComponents.ForEach(i => i.enabled = false);
             _digInteractor.enabled = true;
         }
         else if (blockInteractor == BlockInteractors.RaiseWater)
         {
-            _interactorComponents.ForEach(i => i.enabled = false);
             _raiseWaterInteractor.enabled = true;
         }
         else if (blockInteractor == BlockInteractors.RaiseLand)
         {
-            _interactorComponents.ForEach(i => i.enabled = false);
             _raiseLandInteractor.enabled = true;
         }
         else if (blockInteractor == BlockInteractors.PlaceGreens)
         {
-            _interactorComponents.ForEach(i => i.enabled = false);
             _placeGreensInteractor.enabled = true;
         }
         else if (blockInteractor == BlockInteractors.SendMeteor)
         {
-            _interactorComponents.ForEach(i => i.enabled = false);
             _sendMeteorInteractor.enabled = true;
         }
         else if (blockInteractor == BlockInteractors.MakeDesert)
         {
-            _interactorComponents.ForEach(i => i.enabled = false);
             _makeDesertInteractor.enabled = true;
         }
         else if (blockInteractor == BlockInteractors.ConstructHouse)
         {
-            _interactorComponents.ForEach(i => i.enabled = false);
             _constructHouseInteractor.enabled = true;
         }
         else if (blockInteractor == BlockInteractors.ConstructDocks)
         {
-            _interactorComponents.ForEach(i => i.enabled = false);
             _constructDocksInteractor.enabled = true;
+        }
+    }
+
+    private void DeactivateAllInteractors()
+    {
+        foreach (var i in _interactorComponents)
+        {
+            if (i.IsActivated())
+            {
+                i.Deactivate();
+            }
         }
     }
 }

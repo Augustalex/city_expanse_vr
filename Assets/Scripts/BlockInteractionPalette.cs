@@ -31,7 +31,7 @@ public class BlockInteractionPalette : MonoBehaviour
         if (previousInteractor)
         {
             _activeInteractor = null;
-            previousInteractor.Deactivate();
+            previousInteractor.DeactivateFromPalette();
             previousInteractor.ResetPosition();
         }
 

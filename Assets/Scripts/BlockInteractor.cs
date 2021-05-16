@@ -19,18 +19,26 @@ public abstract class BlockInteractor : MonoBehaviour
     private WorldPlane _worldPlane;
 
     private List<Block> _highlighted = new List<Block>();
-    private string _identifier = Math.Round(Random.value * 9999999).ToString();
+    private string _identifier = "uninstantiated";
 
-    private void Start()
+    protected bool HighlightInteractableBlocks = true;
+    protected bool HighlightNonInteractableBlocks = true;
+
+    private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
         _followObject = GetComponent<FollowMainHandInteractor>();
+        _identifier = Math.Round(Random.value * 9999999).ToString();
+    }
+
+    protected void Start()
+    {
         _originalLocalPosition = transform.localPosition;
 
         _originalScale = transform.localScale * 1.5f;
         transform.localScale = _originalScale;
 
-        _worldPlane = GameObject.FindWithTag("WorldPlane").GetComponent<WorldPlane>();
+        _worldPlane = WorldPlane.Get();
 
         if (isStartingInteractor)
         {
@@ -39,7 +47,7 @@ public abstract class BlockInteractor : MonoBehaviour
         }
     }
 
-    void Update()
+    protected void Update()
     {
         if (_highlighted.Count > 0)
         {
@@ -89,7 +97,10 @@ public abstract class BlockInteractor : MonoBehaviour
 
     public virtual void Inspect(GameObject other)
     {
-        _highlighted.ForEach(h => h.RemoveHighlight());
+        _highlighted.ForEach(h =>
+        {
+            if (h != null) h.RemoveHighlight();
+        });
         _highlighted.Clear();
 
         var blockComponent = other.gameObject.GetComponent<Block>();
@@ -100,8 +111,12 @@ public abstract class BlockInteractor : MonoBehaviour
         {
             if (Interactable(nearbyBlock.gameObject))
             {
-                nearbyBlock.Highlight(_identifier);
-
+                nearbyBlock.Highlight(_identifier, Block.HighlightType.Interactable);
+                _highlighted.Add(nearbyBlock);
+            }
+            else
+            {
+                nearbyBlock.Highlight(_identifier, Block.HighlightType.NonInteractable);
                 _highlighted.Add(nearbyBlock);
             }
         }
@@ -114,8 +129,10 @@ public abstract class BlockInteractor : MonoBehaviour
         transform.localScale = _originalScale * 1.5f;
     }
 
-    public void Deactivate()
+    public void DeactivateFromPalette()
     {
+        Deactivate();
+
         _followObject.enabled = false;
         _frozen = true;
         transform.localScale = _originalScale;
@@ -129,9 +146,14 @@ public abstract class BlockInteractor : MonoBehaviour
         }
     }
 
+    public virtual void Deactivate() // Override to specify things to clean up when switching interactors
+    {
+        enabled = false;
+    }
+
     public bool IsActivated()
     {
-        return _followObject.enabled;
+        return enabled || _followObject.enabled;
     }
 
     public bool IsInteractable()

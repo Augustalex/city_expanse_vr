@@ -11,15 +11,20 @@ public class FollowMainHandInteractor : MonoBehaviour
     private void Start()
     {
         var handInteractorFollowPoint = HandInteractorFollowPoint.Get();
-        if (!handInteractorFollowPoint) _doNotFollow = true;
-        
-        _followPoint = handInteractorFollowPoint.followPoint;
+        if (handInteractorFollowPoint)
+        {
+            _followPoint = handInteractorFollowPoint.followPoint;
+        }
+        else
+        {
+            _doNotFollow = true;
+        }
     }
 
     void FixedUpdate()
     {
         if (_doNotFollow) return;
-        
+
         transform.position = _followPoint.position;
     }
 }
