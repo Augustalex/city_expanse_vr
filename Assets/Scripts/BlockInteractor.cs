@@ -154,7 +154,6 @@ public abstract class BlockInteractor : MonoBehaviour
     
     private void InspectWithGhost(GameObject other)
     {
-        
         var blockComponent = other.gameObject.GetComponent<Block>();
         if (!blockComponent) return;
 
@@ -258,5 +257,11 @@ public abstract class BlockInteractor : MonoBehaviour
     protected WorldPlane GetWorldPlane()
     {
         return _worldPlane;
+    }
+
+    public void HideGhost()
+    {
+      if(_nonInteractableGhost.activeSelf) _nonInteractableGhost.SetActive(false);
+      if(_ghost.activeSelf) _ghost.SetActive(false);
     }
 }

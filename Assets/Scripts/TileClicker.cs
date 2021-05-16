@@ -23,8 +23,11 @@ public class TileClicker : MonoBehaviour
 
     void Update()
     {
+
         if (Input.GetMouseButton(0))
         {
+            HideInteractorGhost();
+            
             if (Input.GetKey(KeyCode.LeftControl)) return;
 
             StartRayInteraction();
@@ -43,6 +46,11 @@ public class TileClicker : MonoBehaviour
                 ResetCooldown();
             }
         }
+    }
+
+    private void HideInteractorGhost()
+    {
+        _interactorHolder.GetInteractor().HideGhost();
     }
 
     private void StartRayInspection()
