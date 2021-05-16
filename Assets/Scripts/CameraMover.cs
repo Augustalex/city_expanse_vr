@@ -19,7 +19,7 @@ public class CameraMover : MonoBehaviour
     void Update()
     {
         var change = Input.mouseScrollDelta.y;
-        _camera.transform.position += new Vector3(0, change * .05f, 0);
+        _camera.transform.position += new Vector3(0, change * .1f, 0);
 
         var cameraYMax = 5f;
         var cameraYMin = 1.4f;

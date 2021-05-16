@@ -13,6 +13,7 @@ public class FeatureToggles : MonoBehaviour
   public bool storms;
   public bool desertsAreBeaches;
   public bool houseSpawn;
+  public bool docksSpawn;
 
   private static FeatureToggles _featureToggles;
 

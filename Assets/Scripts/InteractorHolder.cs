@@ -16,6 +16,7 @@ public class InteractorHolder : MonoBehaviour
     private SendMeteorBlockInteractor _sendMeteorInteractor;
     private MakeDesertInteractor _makeDesertInteractor;
     private ConstructHouseBlockInteractor _constructHouseInteractor;
+    private ConstructDocksBlockInteractor _constructDocksInteractor;
 
     public enum BlockInteractors
     {
@@ -25,13 +26,14 @@ public class InteractorHolder : MonoBehaviour
         PlaceGreens,
         SendMeteor,
         MakeDesert,
-        ConstructHouse
+        ConstructHouse,
+        ConstructDocks
     }
 
     private void Start()
     {
         _digInteractor = GetComponent<DigBlockInteractor>();
-        
+
         _raiseLandInteractor = GetComponent<RaiseLandBlockInteractor>();
         _raiseLandInteractor.enabled = false;
 
@@ -50,6 +52,9 @@ public class InteractorHolder : MonoBehaviour
         _constructHouseInteractor = GetComponent<ConstructHouseBlockInteractor>();
         _constructHouseInteractor.enabled = false;
 
+        _constructDocksInteractor = GetComponent<ConstructDocksBlockInteractor>();
+        _constructDocksInteractor.enabled = false;
+
         _interactorComponents.AddRange(new List<BlockInteractor>
             {
                 _digInteractor,
@@ -58,7 +63,8 @@ public class InteractorHolder : MonoBehaviour
                 _placeGreensInteractor,
                 _sendMeteorInteractor,
                 _makeDesertInteractor,
-                _constructHouseInteractor
+                _constructHouseInteractor,
+                _constructDocksInteractor
             }
         );
     }
@@ -104,6 +110,11 @@ public class InteractorHolder : MonoBehaviour
         {
             _interactorComponents.ForEach(i => i.enabled = false);
             _constructHouseInteractor.enabled = true;
+        }
+        else if (blockInteractor == BlockInteractors.ConstructDocks)
+        {
+            _interactorComponents.ForEach(i => i.enabled = false);
+            _constructDocksInteractor.enabled = true;
         }
     }
 }

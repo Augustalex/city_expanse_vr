@@ -14,15 +14,59 @@ public class CityDocks : MonoBehaviour
     private const int BoatCost = 4;
     private int _ticket = -1;
     private WorkQueue _workQueue;
+    private static CityDocks _instance;
+    private FeatureToggles _featureToggles;
+
+    private void Awake()
+    {
+        _instance = this;
+    }
+
+    public static CityDocks Get()
+    {
+        return _instance;
+    }
 
     void Start()
     {
         _worldPlane = WorldPlane.Get();
         _workQueue = WorkQueue.Get();
+        _featureToggles = FeatureToggles.Get();
+    }
+
+    public bool CanBuildADock()
+    {
+        var houseCount = _worldPlane
+            .GetBlocksWithHouses()
+            .Count(blockWithHouse => blockWithHouse.GetOccupantHouse());
+        if (houseCount < 1) return false;
+        
+        var docks = _worldPlane.GetBlocksWithDocks().Count();
+        if (docks > 0)
+        {
+            var docksToHouseRatio = (float) Mathf.Max(docks, 1) / (float) houseCount;
+            if (docksToHouseRatio > .1f) return false;
+        }
+
+        return true;
     }
 
     void Update()
     {
+        if (CanWorkThisFrame() && Random.value < .01f)
+        {
+            var docks = _worldPlane.GetBlocksWithDocks().Count();
+            if (docks > 0)
+            {
+                if (Random.value < .01f)
+                {
+                    TrySpawnBoat();
+                }
+            }
+        }
+        
+        if (!_featureToggles.docksSpawn) return;
+        
         if (CanWorkThisFrame() && Random.value < .01f)
         {
             var houseCount = _worldPlane
@@ -33,11 +77,6 @@ public class CityDocks : MonoBehaviour
             var docks = _worldPlane.GetBlocksWithDocks().Count();
             if (docks > 0)
             {
-                if (Random.value < .01f)
-                {
-                    TrySpawnBoat();
-                }
-                
                 var docksToHouseRatio = (float) Mathf.Max(docks, 1) / (float) houseCount;
                 if (docksToHouseRatio > .05f) return;
             }
@@ -120,7 +159,7 @@ public class CityDocks : MonoBehaviour
         _boatCount += 1;
     }
 
-    private static bool BlockHasDocksSpawn(Block block)
+    public static bool BlockHasDocksSpawn(Block block)
     {
         if (!block.HasOccupant()) return false;
         var dockSpawn = block.GetOccupant().GetComponent<DocksSpawn>();
