@@ -12,10 +12,12 @@ public class TileClicker : MonoBehaviour
     private bool _coolingDown;
     private float _cooldownTimeLeft;
     private float _lastLayer = 999f;
+    private FeatureToggles _featureToggles;
     private const float CooldownTime = 2f;
 
     void Start()
     {
+        _featureToggles = FeatureToggles.Get();
         _interactorHolder = GetComponent<InteractorHolder>();
     }
 
@@ -49,7 +51,7 @@ public class TileClicker : MonoBehaviour
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         if (!Physics.Raycast(ray, out hit, 1000.0f)) return;
 
-            _interactorHolder.GetInteractor().Inspect(hit.collider.gameObject);
+        _interactorHolder.GetInteractor().Inspect(hit.collider.gameObject);
     }
 
     private void StartRayInteraction()

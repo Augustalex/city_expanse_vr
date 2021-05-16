@@ -23,6 +23,7 @@ public abstract class BlockInteractor : MonoBehaviour
 
     protected bool HighlightInteractableBlocks = true;
     protected bool HighlightNonInteractableBlocks = true;
+    private FeatureToggles _featureToggles;
 
     private void Awake()
     {
@@ -38,6 +39,7 @@ public abstract class BlockInteractor : MonoBehaviour
         _originalScale = transform.localScale * 1.5f;
         transform.localScale = _originalScale;
 
+        _featureToggles = FeatureToggles.Get();
         _worldPlane = WorldPlane.Get();
 
         if (isStartingInteractor)
@@ -49,7 +51,7 @@ public abstract class BlockInteractor : MonoBehaviour
 
     protected void Update()
     {
-        if (_highlighted.Count > 0)
+        if (_featureToggles.canInteractWithBlocksInRangeOverlay && _highlighted.Count > 0)
         {
             var newList = new List<Block>();
             foreach (var b in _highlighted)
@@ -97,6 +99,8 @@ public abstract class BlockInteractor : MonoBehaviour
 
     public virtual void Inspect(GameObject other)
     {
+        if (! _featureToggles.canInteractWithBlocksInRangeOverlay) return;
+        
         _highlighted.ForEach(h =>
         {
             if (h != null) h.RemoveHighlight();
