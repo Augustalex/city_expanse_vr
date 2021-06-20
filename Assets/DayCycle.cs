@@ -14,6 +14,7 @@ public class DayCycle : MonoBehaviour
     public float time = 0;
 
     private float _worldLifeLength = 60 * 5;
+    private float _sunSpeed = 1f; 
 
     void Start()
     {
@@ -56,7 +57,7 @@ public class DayCycle : MonoBehaviour
 
     private void RotateSun()
     {
-        sun.transform.RotateAround(pivotPoint.transform.position, Vector3.forward + Vector3.left * .5f, Time.deltaTime * 10f);
+        sun.transform.RotateAround(pivotPoint.transform.position, Vector3.forward + Vector3.left * .5f, Time.deltaTime * _sunSpeed);
     }
 
     private void SetSunToDawn()
