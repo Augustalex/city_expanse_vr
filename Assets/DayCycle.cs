@@ -14,13 +14,13 @@ public class DayCycle : MonoBehaviour
     public float time = 0;
 
     private float _worldLifeLength = 60 * 1;
-    private float _sunSpeed = 1f; 
+    private float _sunSpeed = 1f;
 
     void Start()
     {
         RotateSun();
         SetSunLightSourcePositionAndRotation();
-        
+
         sun.transform.position = sunDayPosition.position;
         sun.transform.rotation = sunDayPosition.rotation;
     }
@@ -44,7 +44,12 @@ public class DayCycle : MonoBehaviour
                 {
                     time = 0;
                     SetSunToDawn();
+                    // TODO END MENACING MUSIC and START REGULAR MUSIC
                 });
+
+                // TODO TURN SKY RED
+                // TODO START MENACING MUSIC
+                // TODO ADD BURNING EFFECT TO METEOR
             }
         }
     }
@@ -57,7 +62,10 @@ public class DayCycle : MonoBehaviour
 
     private void RotateSun()
     {
-        sun.transform.RotateAround(pivotPoint.transform.position, Vector3.forward + Vector3.left * .5f, Time.deltaTime * _sunSpeed);
+        var transformPosition = pivotPoint.transform.position;
+        sun.transform.RotateAround(transformPosition, Vector3.forward + Vector3.left * .5f,
+            Time.deltaTime * _sunSpeed);
+        sun.transform.LookAt(transformPosition);
     }
 
     private void SetSunToDawn()

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3733697024516137354}
   m_Layer: 0
-  m_Name: SandBlock 1
+  m_Name: Sun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,13 +57,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7336908156962384415}
-  m_LocalRotation: {x: -0.31126735, y: 0.30027774, z: -0.30014676, w: 0.8502105}
-  m_LocalPosition: {x: -0.132, y: -0.273, z: 0.20174566}
-  m_LocalScale: {x: 1, y: 0.6, z: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.06, z: 0.1}
   m_Children: []
   m_Father: {fileID: 3733697024516137354}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -20.428001, y: 48.095, z: -48.082}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &6098483413155193049
 MeshFilter:
   m_ObjectHideFlags: 0
