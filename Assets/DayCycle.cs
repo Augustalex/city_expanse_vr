@@ -8,20 +8,20 @@ public class DayCycle : MonoBehaviour
     public GameObject sun;
     public GameObject pivotPoint;
     public GameObject sunLightSource;
+    public Transform sunDayPosition;
+    public Transform sunDawnPosition;
 
     public float time = 0;
 
-    private Vector3 _startPosition;
-    private Quaternion _startRotation;
     private float _worldLifeLength = 60 * 5;
 
     void Start()
     {
         RotateSun();
         SetSunLightSourcePositionAndRotation();
-
-        _startPosition = sun.transform.position;
-        _startRotation = sun.transform.rotation;
+        
+        sun.transform.position = sunDayPosition.position;
+        sun.transform.rotation = sunDayPosition.rotation;
     }
 
     void Update()
@@ -42,7 +42,7 @@ public class DayCycle : MonoBehaviour
                 meteorSender.Interact(target, () =>
                 {
                     time = 0;
-                    ResetSun();
+                    SetSunToDawn();
                 });
             }
         }
@@ -59,9 +59,9 @@ public class DayCycle : MonoBehaviour
         sun.transform.RotateAround(pivotPoint.transform.position, Vector3.forward + Vector3.left * .5f, Time.deltaTime * 10f);
     }
 
-    private void ResetSun()
+    private void SetSunToDawn()
     {
-        sun.transform.position = _startPosition;
-        sun.transform.rotation = _startRotation;
+        sun.transform.position = sunDawnPosition.position;
+        sun.transform.rotation = sunDawnPosition.rotation;
     }
 }
