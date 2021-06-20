@@ -1311,10 +1311,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
+  interactorEnabled: 0
   mainCamera: {fileID: 546754283}
   meteorTemplate: {fileID: 6276573657937102653, guid: 66105d64d7bffcb4daa596f586f4131b,
     type: 3}
   kaboomSound: {fileID: 8300000, guid: 51d537794fa1b94449d59d725181cd82, type: 3}
+  meteorStartingPosition: {fileID: 0}
 --- !u!114 &546754288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1328,6 +1330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
+  interactorEnabled: 0
 --- !u!114 &546754289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1449,6 +1452,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
+  interactorEnabled: 0
   tinyHouseTemplate: {fileID: 2723339866174918418, guid: 3a64644beb96b3a4ea777cf8c96a15ff,
     type: 3}
 --- !u!114 &546754292
@@ -1464,6 +1468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
+  interactorEnabled: 0
   greensBlockTemplate: {fileID: 2723339866174918418, guid: b9c955f3a6da1db4a8a201fdf8265787,
     type: 3}
   desertGreensTemplate: {fileID: 2723339866174918418, guid: ec3b0326e4260014999adacf043b13c1,
@@ -1481,6 +1486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
+  interactorEnabled: 0
 --- !u!114 &546754294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1494,6 +1500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
+  interactorEnabled: 0
   grassBlockTemplate: {fileID: 612181966713644638, guid: ae0f003ac96b3884c89d3b3c3916cd65,
     type: 3}
 --- !u!114 &546754295
@@ -1537,6 +1544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
+  interactorEnabled: 0
   sandBlockTemplate: {fileID: 612181966713644638, guid: 90738e66673ec454b92002eb0d8e2672,
     type: 3}
 --- !u!114 &546754298
@@ -1552,6 +1560,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
+  interactorEnabled: 0
   docksTemplate: {fileID: 2723339866174918418, guid: f8d36363b8c3e034c84d415fc1fe9f20,
     type: 3}
 --- !u!114 &546754299
@@ -1567,6 +1576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStartingInteractor: 0
+  interactorEnabled: 0
 --- !u!1 &555303015
 GameObject:
   m_ObjectHideFlags: 0
@@ -4639,6 +4649,36 @@ MonoBehaviour:
   fadeColor: {r: 0.01, g: 0.01, b: 0.01, a: 1}
   fadeOnStart: 1
   renderQueue: 5000
+--- !u!1 &1545129987
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1545129988}
+  m_Layer: 0
+  m_Name: MeteorStartingPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1545129988
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545129987}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4, y: 302.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1741071639}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1633261535
 GameObject:
   m_ObjectHideFlags: 0
@@ -5024,6 +5064,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e27763add682e464a8f5feb9bb610fda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1741071639 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3645905919876899980, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+    type: 3}
+  m_PrefabInstance: {fileID: 3645905921843291902}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1746575819
 GameObject:
   m_ObjectHideFlags: 0
@@ -5393,31 +5439,6 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 1530079725}
-    - target: {fileID: 478592867426106709, guid: 92041914f2655f44b98621aae4357243,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 892748349670766916, guid: 92041914f2655f44b98621aae4357243,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 926604117947981726, guid: 92041914f2655f44b98621aae4357243,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2284160532843542227, guid: 92041914f2655f44b98621aae4357243,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7294990380853737407, guid: 92041914f2655f44b98621aae4357243,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8097704663750696973, guid: 92041914f2655f44b98621aae4357243,
         type: 3}
       propertyPath: m_Name
@@ -5477,16 +5498,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -10.747009
-      objectReference: {fileID: 0}
-    - target: {fileID: 8469698527951788803, guid: 92041914f2655f44b98621aae4357243,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8653443871113648825, guid: 92041914f2655f44b98621aae4357243,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92041914f2655f44b98621aae4357243, type: 3}
@@ -6488,6 +6499,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23a86d170f578aa4e8299d753f491216, type: 3}
+--- !u!114 &2936299898417541121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5466632297109624802}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 129c18a635ce273418c37c6087b034c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3645905921843291902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6700,6 +6723,154 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70a87053d8fe6a54098b6f513f160ea3, type: 3}
+--- !u!4 &5466632297109624793
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5466632297109624802}
+  m_LocalRotation: {x: -0.8983295, y: -0.2701465, z: -0.23937854, w: 0.25044554}
+  m_LocalPosition: {x: 0.29944217, y: -1.1106929, z: -0.4616252}
+  m_LocalScale: {x: 0.034380283, y: 0.016140975, z: 0.022748245}
+  m_Children: []
+  m_Father: {fileID: 1741071639}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: -20.598001, z: 0}
+--- !u!82 &5466632297109624794
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5466632297109624802}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!1 &5466632297109624802
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5466632297109624793}
+  - component: {fileID: 5466632297109624794}
+  - component: {fileID: 5841171999178375909}
+  - component: {fileID: 2936299898417541121}
+  m_Layer: 0
+  m_Name: SendMeteorInteractor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &5841171999178375909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5466632297109624802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d656107abc8742b5b8eee4d959f06d02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isStartingInteractor: 0
+  interactorEnabled: 1
+  mainCamera: {fileID: 1530079725}
+  meteorTemplate: {fileID: 6276573657937102653, guid: 66105d64d7bffcb4daa596f586f4131b,
+    type: 3}
+  kaboomSound: {fileID: 8300000, guid: 51d537794fa1b94449d59d725181cd82, type: 3}
+  meteorStartingPosition: {fileID: 1545129988}
 --- !u!1001 &6888013235634890084
 PrefabInstance:
   m_ObjectHideFlags: 0

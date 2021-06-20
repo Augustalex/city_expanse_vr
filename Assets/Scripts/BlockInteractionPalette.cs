@@ -9,6 +9,8 @@ public class BlockInteractionPalette : MonoBehaviour
     private BlockInteractor _activeInteractor;
     private GameObject _itemContainer;
     private List<GameObject> _interactors;
+    
+    public GameObject homeSphere;
 
     void Start()
     {
@@ -47,6 +49,7 @@ public class BlockInteractionPalette : MonoBehaviour
         }
 
         _itemContainer.SetActive(true);
+        homeSphere.SetActive(true);
     }
 
     public void Hide()
@@ -60,5 +63,7 @@ public class BlockInteractionPalette : MonoBehaviour
         }
         
         _itemContainer.SetActive(false);
+        
+        homeSphere.SetActive(false);
     }
 }

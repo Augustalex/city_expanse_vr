@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class SendMeteorBlockInteractor : BlockInteractor
@@ -9,6 +10,8 @@ public class SendMeteorBlockInteractor : BlockInteractor
     public GameObject meteorTemplate;
     public AudioClip kaboomSound;
 
+    [CanBeNull] public Transform meteorStartingPosition;
+    
     private Meteor _meteor;
 
     public override bool Interactable(GameObject other)
@@ -37,7 +40,7 @@ public class SendMeteorBlockInteractor : BlockInteractor
         var meteorGameObject = Instantiate(meteorTemplate);
         var meteor = meteorGameObject.GetComponent<Meteor>();
         meteor.SetTarget(other.gameObject.transform.position);
-        meteor.Shoot(mainCamera.transform.position);
+        meteor.Shoot(meteorStartingPosition != null ? meteorStartingPosition.position : mainCamera.transform.position);
 
         PlaySound(BlockSoundLibrary.BlockSound.Meteor);
         meteor.BeforeDestroy += () => { };
