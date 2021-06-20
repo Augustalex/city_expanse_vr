@@ -7,6 +7,7 @@ public class DayCycle : MonoBehaviour
 {
     public GameObject sun;
     public GameObject pivotPoint;
+    public Transform sunTarget;
     public GameObject sunLightSource;
     public Transform sunDayPosition;
     public Transform sunDawnPosition;
@@ -14,7 +15,7 @@ public class DayCycle : MonoBehaviour
     public float time = 0;
 
     private float _worldLifeLength = 60 * 1;
-    private float _sunSpeed = 1f;
+    private float _sunSpeed = 10f;
 
     void Start()
     {
@@ -57,14 +58,15 @@ public class DayCycle : MonoBehaviour
     private void SetSunLightSourcePositionAndRotation()
     {
         sunLightSource.transform.position = sun.transform.position;
-        sunLightSource.transform.LookAt(pivotPoint.transform);
+        sunLightSource.transform.LookAt(sunTarget.transform);
     }
 
     private void RotateSun()
     {
+        var extraSpeed = sun.transform.position.y < -10f ? 50f : 0;
         var transformPosition = pivotPoint.transform.position;
         sun.transform.RotateAround(transformPosition, Vector3.forward + Vector3.left * .5f,
-            Time.deltaTime * _sunSpeed);
+            Time.deltaTime * (_sunSpeed + extraSpeed));
         sun.transform.LookAt(transformPosition);
     }
 
