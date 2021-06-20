@@ -31,6 +31,8 @@ public abstract class BlockInteractor : MonoBehaviour
     private GameObject _ghost;
     private GameObject _nonInteractableGhost;
 
+    public bool interactorEnabled = false;
+
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
@@ -205,12 +207,12 @@ public abstract class BlockInteractor : MonoBehaviour
             _ghost.SetActive(false);
         }
         
-        enabled = false;
+        interactorEnabled = false;
     }
 
     public bool IsActivated()
     {
-        return enabled || _followObject.enabled;
+        return interactorEnabled || _followObject.enabled;
     }
 
     public bool IsInteractable()

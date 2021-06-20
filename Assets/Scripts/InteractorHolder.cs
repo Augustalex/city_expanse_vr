@@ -39,28 +39,28 @@ public class InteractorHolder : MonoBehaviour
         _digInteractor = GetComponent<DigBlockInteractor>();
 
         _raiseLandInteractor = GetComponent<RaiseLandBlockInteractor>();
-        _raiseLandInteractor.enabled = false;
+        _raiseLandInteractor.interactorEnabled = false;
 
         _raiseWaterInteractor = GetComponent<RaiseWaterBlockInteractor>();
-        _raiseWaterInteractor.enabled = false;
+        _raiseWaterInteractor.interactorEnabled = false;
 
         _placeGreensInteractor = GetComponent<PlaceGreensBlockInteractor>();
-        _placeGreensInteractor.enabled = false;
+        _placeGreensInteractor.interactorEnabled = false;
 
         _sendMeteorInteractor = GetComponent<SendMeteorBlockInteractor>();
-        _sendMeteorInteractor.enabled = false;
+        _sendMeteorInteractor.interactorEnabled = false;
 
         _makeDesertInteractor = GetComponent<MakeDesertInteractor>();
-        _makeDesertInteractor.enabled = false;
+        _makeDesertInteractor.interactorEnabled = false;
 
         _constructHouseInteractor = GetComponent<ConstructHouseBlockInteractor>();
-        _constructHouseInteractor.enabled = false;
+        _constructHouseInteractor.interactorEnabled = false;
 
         _constructDocksInteractor = GetComponent<ConstructDocksBlockInteractor>();
-        _constructDocksInteractor.enabled = false;
+        _constructDocksInteractor.interactorEnabled = false;
 
         _constructFarmBlockInteractor = GetComponent<ConstructFarmBlockInteractor>();
-        _constructFarmBlockInteractor.enabled = false;
+        _constructFarmBlockInteractor.interactorEnabled = false;
 
         _interactorComponents.AddRange(new List<BlockInteractor>
             {
@@ -84,7 +84,7 @@ public class InteractorHolder : MonoBehaviour
 
     public BlockInteractor GetInteractor()
     {
-        return _interactorComponents.Find(i => i.enabled);
+        return _interactorComponents.Find(i => i.interactorEnabled);
     }
 
     public void SetInteractor(BlockInteractors blockInteractor)
@@ -93,39 +93,39 @@ public class InteractorHolder : MonoBehaviour
 
         if (blockInteractor == BlockInteractors.Dig)
         {
-            _digInteractor.enabled = true;
+            _digInteractor.interactorEnabled = true;
         }
         else if (blockInteractor == BlockInteractors.RaiseWater)
         {
-            _raiseWaterInteractor.enabled = true;
+            _raiseWaterInteractor.interactorEnabled = true;
         }
         else if (blockInteractor == BlockInteractors.RaiseLand)
         {
-            _raiseLandInteractor.enabled = true;
+            _raiseLandInteractor.interactorEnabled = true;
         }
         else if (blockInteractor == BlockInteractors.PlaceGreens)
         {
-            _placeGreensInteractor.enabled = true;
+            _placeGreensInteractor.interactorEnabled = true;
         }
         else if (blockInteractor == BlockInteractors.SendMeteor)
         {
-            _sendMeteorInteractor.enabled = true;
+            _sendMeteorInteractor.interactorEnabled = true;
         }
         else if (blockInteractor == BlockInteractors.MakeDesert)
         {
-            _makeDesertInteractor.enabled = true;
+            _makeDesertInteractor.interactorEnabled = true;
         }
         else if (blockInteractor == BlockInteractors.ConstructHouse)
         {
-            _constructHouseInteractor.enabled = true;
+            _constructHouseInteractor.interactorEnabled = true;
         }
         else if (blockInteractor == BlockInteractors.ConstructDocks)
         {
-            _constructDocksInteractor.enabled = true;
+            _constructDocksInteractor.interactorEnabled = true;
         }
         else if (blockInteractor == BlockInteractors.ConstructFarm)
         {
-            _constructFarmBlockInteractor.enabled = true;
+            _constructFarmBlockInteractor.interactorEnabled = true;
         }
 
         _hasInteractor = true;
