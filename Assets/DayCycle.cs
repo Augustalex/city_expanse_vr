@@ -34,7 +34,7 @@ public class DayCycle : MonoBehaviour
 
         if (time > _worldLifeLength)
         {
-            var block = WorldPlane.Get().blocksRepository.GetAtPosition(new Vector3(10, 0, 10));
+            var block = WorldPlane.Get().blocksRepository.GetAtPosition(new Vector3(17, 0, 17));
             SendMeteorBlockInteractor meteorSender = GameObject.FindObjectOfType<SendMeteorBlockInteractor>();
 
             var target = block.gameObject;
