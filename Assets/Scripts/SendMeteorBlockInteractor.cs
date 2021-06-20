@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class SendMeteorBlockInteractor : BlockInteractor
 {
@@ -25,6 +26,12 @@ public class SendMeteorBlockInteractor : BlockInteractor
         return false;
     }
 
+    public void Interact(GameObject other, Action afterMeteorHasHit)
+    {
+        Interact(other);
+        _meteor.BeforeDestroy += afterMeteorHasHit;
+    }
+    
     public override void Interact(GameObject other)
     {
         var meteorGameObject = Instantiate(meteorTemplate);
