@@ -13,6 +13,7 @@ public class DayCycle : MonoBehaviour
 
     private Vector3 _startPosition;
     private Quaternion _startRotation;
+    private float _worldLifeLength = 60 * 5;
 
     void Start()
     {
@@ -30,7 +31,7 @@ public class DayCycle : MonoBehaviour
 
         time += Time.deltaTime;
 
-        if (time > 100f)
+        if (time > _worldLifeLength)
         {
             var block = WorldPlane.Get().blocksRepository.GetAtPosition(new Vector3(10, 0, 10));
             SendMeteorBlockInteractor meteorSender = GameObject.FindObjectOfType<SendMeteorBlockInteractor>();
