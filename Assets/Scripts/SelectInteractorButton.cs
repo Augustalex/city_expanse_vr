@@ -34,7 +34,7 @@ public class SelectInteractorButton : MonoBehaviour
             }
         }
 
-        GetComponent<Button>().interactable = _enabled;
+        // GetComponent<Button>().interactable = _enabled;
     }
 
     private bool CanUpdateStatusThisFrame()
