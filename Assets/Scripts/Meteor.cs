@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using UnityEngine;
 
 public class Meteor : MonoBehaviour
@@ -8,7 +8,7 @@ public class Meteor : MonoBehaviour
     public event Action BeforeDestroy;
     public event Action Hit;
 
-    
+
     private Vector3 _target;
     private float _startTime;
     private const float Duration = 60;
@@ -41,7 +41,7 @@ public class Meteor : MonoBehaviour
         {
             StartFireBall();
             _fireBallStarted = true;
-            
+
             OnHit();
         }
     }
@@ -64,10 +64,14 @@ public class Meteor : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            var block = hit.gameObject.GetComponentInChildren<Block>();
-            if (block)
+            var blockRigidbody = hit.attachedRigidbody;
+            if (blockRigidbody)
             {
-                _worldPlane.RemoveAndDestroyBlock(block);
+                var block = blockRigidbody.gameObject.GetComponent<Block>();
+                if (block)
+                {
+                    _worldPlane.RemoveAndDestroyBlock(block);
+                }
             }
         }
     }

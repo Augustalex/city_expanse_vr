@@ -63,7 +63,11 @@ public class TileClicker : MonoBehaviour
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         if (!Physics.Raycast(ray, out hit, 1000.0f)) return;
 
-        _interactorHolder.GetInteractor().Inspect(hit.collider.gameObject);
+        var blockRigidbody = hit.collider.attachedRigidbody;
+        if (blockRigidbody)
+        {
+            _interactorHolder.GetInteractor().Inspect(blockRigidbody.gameObject);
+        }
     }
 
     private void StartRayInteraction()
@@ -78,16 +82,17 @@ public class TileClicker : MonoBehaviour
         }
         else if (_interactorHolder.AnyInteractorActive())
         {
-            if (_interactorHolder.GetInteractor().Interactable(hit.collider.gameObject))
+            var blockRigidbody = hit.collider.attachedRigidbody;
+            if (blockRigidbody && _interactorHolder.GetInteractor().Interactable(blockRigidbody.gameObject))
             {
-                StartBlockRayInteraction(hit);
+                StartBlockRayInteraction(blockRigidbody.gameObject);
             }
         }
     }
 
-    private void StartBlockRayInteraction(RaycastHit hit)
+    private void StartBlockRayInteraction(GameObject blockGameObject)
     {
-        var block = hit.collider.gameObject.GetComponent<Block>();
+        var block = blockGameObject.GetComponent<Block>();
         if (!block) return;
 
         var layer = block.GetGridPosition().y;
@@ -95,10 +100,9 @@ public class TileClicker : MonoBehaviour
         var sameLayerAsBefore = Math.Abs(_lastLayer - layer) < .5f;
         if (!_interactorHolder.GetInteractor().LockOnLayer() || !_coolingDown || sameLayerAsBefore)
         {
-            var colliderGameObject = hit.collider.gameObject;
             _interactorHolder.GetInteractor()
-                .ResurrectNearbyBlocks(colliderGameObject.GetComponent<Block>().GetGridPosition());
-            _interactorHolder.GetInteractor().Interact(colliderGameObject);
+                .ResurrectNearbyBlocks(blockGameObject.GetComponent<Block>().GetGridPosition());
+            _interactorHolder.GetInteractor().Interact(blockGameObject);
 
             _lastLayer = layer;
             _coolingDown = true;

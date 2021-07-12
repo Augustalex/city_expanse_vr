@@ -73,7 +73,6 @@ public class Block : MonoBehaviour
         if (selfAsProclaimedOccupant == _occupiedBy)
         {
             ResetOccupantInfo();
-            MakeSureTopGrassBlocksHaveCorrectTexture();
         }
     }
 
@@ -433,31 +432,7 @@ public class Block : MonoBehaviour
 
         return current;
     }
-
-    public void MakeSureTopGrassBlocksHaveCorrectTexture()
-    {
-        var current = this;
-        while (current._blockBeneath != null)
-        {
-            current = current._blockBeneath;
-        }
-
-        while (current._blockAbove)
-        {
-            current.GetComponent<GrassBlock>().SetNormalMaterial();
-            current = current._blockAbove;
-        }
-
-        if (current._gridPosition.y > Block.CloudLevel)
-        {
-            current.GetComponent<GrassBlock>().SetNormalMaterial();
-        }
-        else
-        {
-            current.GetComponent<GrassBlock>().SetTopMaterial();
-        }
-    }
-
+    
     public bool IsSand()
     {
         return blockType == BlockType.Sand;

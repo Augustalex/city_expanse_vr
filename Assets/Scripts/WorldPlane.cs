@@ -97,15 +97,8 @@ public class WorldPlane : MonoBehaviour
 
     public void RemoveAndDestroyBlock(Block block)
     {
-        var position = block.GetGridPosition();
-
         RemoveBlockAt(block.GetGridPosition());
         block.DestroySelf();
-
-        if (position.y > Block.LowestLevel)
-        {
-            MakeSureTopGrassBlocksHaveCorrectTexture(position - Vector3.up);
-        }
     }
 
     public void RemoveBlockAt(Vector3 position)
@@ -175,22 +168,12 @@ public class WorldPlane : MonoBehaviour
         MakeBlockMoreUnique(blockToAdd);
 
         blockAtBottom.PlaceOnTop(blockToAdd, blockToAddRoot);
-
-        if (blockToAdd.IsGrass())
-        {
-            blockToAdd.MakeSureTopGrassBlocksHaveCorrectTexture();
-        }
     }
 
     public void AddAndPositionBlock(Block block, Vector3 gridPosition)
     {
         blocksRepository.SetAtPosition(block, gridPosition);
         MakeBlockMoreUnique(block);
-
-        if (block.IsGrass())
-        {
-            block.MakeSureTopGrassBlocksHaveCorrectTexture();
-        }
 
         PositionBlock(block, gridPosition);
     }
@@ -225,19 +208,6 @@ public class WorldPlane : MonoBehaviour
         }
     }
 
-    private void MakeSureTopGrassBlocksHaveCorrectTexture(Vector3 position)
-    {
-        int topBlockLevel = Convert.ToInt32(Block.LowestLevel);
-        var block = blocksRepository.GetAtPosition(
-            new Vector3(
-                position.x,
-                topBlockLevel,
-                position.z
-            )
-        );
-        block.MakeSureTopGrassBlocksHaveCorrectTexture();
-    }
-
     public List<Block> GetWaterBlocks()
     {
         return blocksRepository.StreamBlocks()
@@ -265,7 +235,12 @@ public class WorldPlane : MonoBehaviour
         var hits = Physics.OverlapSphere(realCenterPosition, sizeOfBlock * radius * .75f);
 
         return hits
-            .Select(hit => hit.gameObject.GetComponent<Block>())
+            .Select(hit =>
+            {
+                var blockRigidbody = hit.attachedRigidbody;
+                
+                return blockRigidbody ? blockRigidbody.gameObject.GetComponent<Block>() : null;
+            })
             .Where(block => block != null);
     }
 
@@ -396,7 +371,12 @@ public class WorldPlane : MonoBehaviour
         var hits = Physics.OverlapSphere(realCenterPosition, sizeOfBlock * radius * .75f);
 
         return hits
-            .Select(hit => hit.gameObject.GetComponent<Block>())
+            .Select(hit =>
+            {
+                var blockRigidbody = hit.attachedRigidbody;
+                
+                return blockRigidbody ? blockRigidbody.gameObject.GetComponent<Block>() : null;
+            })
             .Where(block => block != null)
             .Sum(block =>
             {
