@@ -21,11 +21,14 @@ public class TileClicker : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButton(0) && _interactorHolder.AnyInteractorActive())
+        if (Input.GetMouseButton(0))
         {
-            HideInteractorGhost();
+            if (_interactorHolder.AnyInteractorActive())
+            {
+                HideInteractorGhost();
 
-            if (Input.GetKey(KeyCode.LeftControl)) return;
+                if (Input.GetKey(KeyCode.LeftControl)) return;
+            }
 
             StartRayInteraction();
         }
@@ -69,8 +72,21 @@ public class TileClicker : MonoBehaviour
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         if (!Physics.Raycast(ray, out hit, 1000.0f)) return;
 
-        if (!_interactorHolder.GetInteractor().Interactable(hit.collider.gameObject)) return;
+        if (hit.collider.CompareTag("CloudCollisionBox"))
+        {
+            StartCloudRayInteraction(hit);
+        }
+        else if (_interactorHolder.AnyInteractorActive())
+        {
+            if (_interactorHolder.GetInteractor().Interactable(hit.collider.gameObject))
+            {
+                StartBlockRayInteraction(hit);
+            }
+        }
+    }
 
+    private void StartBlockRayInteraction(RaycastHit hit)
+    {
         var block = hit.collider.gameObject.GetComponent<Block>();
         if (!block) return;
 
@@ -88,6 +104,11 @@ public class TileClicker : MonoBehaviour
             _coolingDown = true;
             _cooldownTimeLeft = CooldownTime;
         }
+    }
+
+    private void StartCloudRayInteraction(RaycastHit hit)
+    {
+        hit.collider.transform.parent.GetComponent<CloudMover>().CloudMouseDown();
     }
 
     private void ResetCooldown()

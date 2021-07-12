@@ -12,6 +12,8 @@ TagManager:
   - ItemContainer
   - MiddleFingerTracker
   - DesertHouse
+  - Cloud
+  - CloudCollisionBox
   layers:
   - Default
   - TransparentFX

@@ -1172,7 +1172,7 @@ GameObject:
   - component: {fileID: 546754299}
   m_Layer: 0
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7008,10 +7008,50 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2342963443903264421, guid: 68937571def759347acd3b801d52fef9,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7368031139705527644, guid: 68937571def759347acd3b801d52fef9,
+        type: 3}
+      propertyPath: m_TagString
+      value: CloudCollisionBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 7368031139705527646, guid: 68937571def759347acd3b801d52fef9,
+        type: 3}
+      propertyPath: m_Height
+      value: 2.5585892
+      objectReference: {fileID: 0}
+    - target: {fileID: 7368031139705527646, guid: 68937571def759347acd3b801d52fef9,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.9751717
+      objectReference: {fileID: 0}
+    - target: {fileID: 7368031139705527646, guid: 68937571def759347acd3b801d52fef9,
+        type: 3}
+      propertyPath: m_Center.x
+      value: -0.03703244
+      objectReference: {fileID: 0}
+    - target: {fileID: 7368031139705527646, guid: 68937571def759347acd3b801d52fef9,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.21966018
+      objectReference: {fileID: 0}
+    - target: {fileID: 7368031139705527646, guid: 68937571def759347acd3b801d52fef9,
+        type: 3}
+      propertyPath: m_Center.z
+      value: 0.00078067183
+      objectReference: {fileID: 0}
     - target: {fileID: 7368031140900135315, guid: 68937571def759347acd3b801d52fef9,
         type: 3}
       propertyPath: m_Name
       value: CloudHolder
+      objectReference: {fileID: 0}
+    - target: {fileID: 7368031140900135315, guid: 68937571def759347acd3b801d52fef9,
+        type: 3}
+      propertyPath: m_TagString
+      value: Cloud
       objectReference: {fileID: 0}
     - target: {fileID: 7368031140900135404, guid: 68937571def759347acd3b801d52fef9,
         type: 3}
