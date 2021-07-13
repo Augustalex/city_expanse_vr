@@ -12,11 +12,13 @@ public class TileClicker : MonoBehaviour
     private bool _coolingDown;
     private float _cooldownTimeLeft;
     private float _lastLayer = 999f;
+    private CloudMover _cloudMover;
     private const float CooldownTime = 2f;
 
     void Start()
     {
         _interactorHolder = GetComponent<InteractorHolder>();
+        _cloudMover = FindObjectOfType<CloudMover>();
     }
 
     void Update()
@@ -78,9 +80,9 @@ public class TileClicker : MonoBehaviour
 
         if (hit.collider.CompareTag("CloudCollisionBox"))
         {
-            StartCloudRayInteraction(hit);
+            StartCloudRayInteraction();
         }
-        else if (_interactorHolder.AnyInteractorActive())
+        else if (_interactorHolder.AnyInteractorActive() && !_cloudMover.IsMovingWithMouse())
         {
             var blockRigidbody = hit.collider.attachedRigidbody;
             if (blockRigidbody && _interactorHolder.GetInteractor().Interactable(blockRigidbody.gameObject))
@@ -110,9 +112,9 @@ public class TileClicker : MonoBehaviour
         }
     }
 
-    private void StartCloudRayInteraction(RaycastHit hit)
+    private void StartCloudRayInteraction()
     {
-        hit.collider.transform.parent.GetComponent<CloudMover>().CloudMouseDown();
+        _cloudMover.CloudMouseDown();
     }
 
     private void ResetCooldown()
