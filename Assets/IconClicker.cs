@@ -21,6 +21,14 @@ public class IconClicker : MonoBehaviour
             if (hit.collider.CompareTag("IconButton"))
             {
                 hit.collider.GetComponent<SelectInteractorButton>().OnClick();
+
+                var iconManagers = GameObject.FindObjectsOfType<IconManager>();
+                foreach (var iconManager in iconManagers)
+                {
+                    iconManager.TurnOff();
+                }
+                
+                hit.collider.GetComponent<IconManager>().TurnOn();
             }
         }
     }
