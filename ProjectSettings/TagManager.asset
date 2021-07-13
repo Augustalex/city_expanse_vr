@@ -14,6 +14,7 @@ TagManager:
   - DesertHouse
   - Cloud
   - CloudCollisionBox
+  - IconButton
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - 
   - 
   - Ignore Light
-  - 
+  - UI Light
   - 
   - 
   - 
