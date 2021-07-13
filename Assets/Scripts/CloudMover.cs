@@ -22,7 +22,6 @@ public class CloudMover : MonoBehaviour
 
         if (_movingCloudWithMouse)
         {
-            
             if (Input.GetMouseButtonUp(0))
             {
                 _movingCloudWithMouse = false;
@@ -131,5 +130,10 @@ public class CloudMover : MonoBehaviour
     public void CloudMouseDown()
     {
         _movingCloudWithMouse = true;
+    }
+
+    public bool IsMovingWithMouse()
+    {
+        return _movingCloudWithMouse;
     }
 }
