@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: house_small
+  m_Shader: {fileID: -6465566751694194690, guid: 73ee885b1da90c647af603295c12fd14,
+    type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - Texture2D_27F09FC3:
+        m_Texture: {fileID: 2800000, guid: 7047446df1d4ae4458241667e415248c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_D907243:
+        m_Texture: {fileID: 2800000, guid: 7f490ea6a573c804295e781d5b00d66c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_DC56D474:
+        m_Texture: {fileID: 2800000, guid: db2a16cbe7e6683449eaab0ee08f7eac, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_E64B095C:
+        m_Texture: {fileID: 2800000, guid: 500dc47ef31c3e14b90a380a31a79de7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_EDBCAB66:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Vector1_47797EFA: 0
+    - Vector1_60576991: -0.05
+    - Vector1_D0C24305: 0.1
+    m_Colors: []
