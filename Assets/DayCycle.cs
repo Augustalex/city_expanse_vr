@@ -14,22 +14,22 @@ public class DayCycle : MonoBehaviour
 
     public float time = 0;
 
-    private float _worldLifeLength = 60 * 1;
+    private float _worldLifeLength = 60 * 10;
     private float _sunSpeed = 1f;
 
     void Start()
     {
-        RotateSun();
-        SetSunLightSourcePositionAndRotation();
+        // RotateSun();
+        // SetSunLightSourcePositionAndRotation();
 
-        sun.transform.position = sunDayPosition.position;
-        sun.transform.rotation = sunDayPosition.rotation;
+        // sun.transform.position = sunDayPosition.position;
+        // sun.transform.rotation = sunDayPosition.rotation;
     }
 
     void Update()
     {
-        RotateSun();
-        SetSunLightSourcePositionAndRotation();
+        // RotateSun();
+        // SetSunLightSourcePositionAndRotation();
 
         time += Time.deltaTime;
 
@@ -44,7 +44,7 @@ public class DayCycle : MonoBehaviour
                 meteorSender.Interact(target, () =>
                 {
                     time = 0;
-                    SetSunToDawn();
+                    // SetSunToDawn();
                     // TODO END MENACING MUSIC and START REGULAR MUSIC
                 });
 

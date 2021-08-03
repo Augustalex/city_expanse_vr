@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -932,6 +932,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sun
       objectReference: {fileID: 0}
+    - target: {fileID: 4819917707544932321, guid: 4e71fa52f10b84740b99037617f207f8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819917707544932321, guid: 4e71fa52f10b84740b99037617f207f8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819917707544932321, guid: 4e71fa52f10b84740b99037617f207f8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -11.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7986177297535929541, guid: 4e71fa52f10b84740b99037617f207f8,
         type: 3}
       propertyPath: m_CastShadows
@@ -1162,6 +1177,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c94046f05d7930a439bbac8118ecf6e5, type: 3}
+--- !u!1 &516135485 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2733008678408945710, guid: 4e71fa52f10b84740b99037617f207f8,
+    type: 3}
+  m_PrefabInstance: {fileID: 291736846}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &516135489
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516135485}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d44093dd5f91b7e4c995d6386c8c97da, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &521409208
 GameObject:
   m_ObjectHideFlags: 0
@@ -3409,6 +3449,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FireBall
+      objectReference: {fileID: 0}
+    - target: {fileID: 2568791395192630608, guid: 8377b73533b4d274e929841c802620a3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2568791395192630620, guid: 8377b73533b4d274e929841c802620a3,
         type: 3}
@@ -6198,12 +6243,12 @@ PrefabInstance:
     - target: {fileID: 6799975207418983605, guid: c802c51796ffa5844b79eb4f25fcec4a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -491.94
+      value: -484
       objectReference: {fileID: 0}
     - target: {fileID: 6799975207418983605, guid: c802c51796ffa5844b79eb4f25fcec4a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 30
+      value: 14.3
       objectReference: {fileID: 0}
     - target: {fileID: 6799975207418983605, guid: c802c51796ffa5844b79eb4f25fcec4a,
         type: 3}
@@ -6264,7 +6309,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1948762937
 MonoBehaviour:
   m_ObjectHideFlags: 0

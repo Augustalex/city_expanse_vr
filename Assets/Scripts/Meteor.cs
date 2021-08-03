@@ -11,7 +11,7 @@ public class Meteor : MonoBehaviour
 
     private Vector3 _target;
     private float _startTime;
-    private float _duration = 60;
+    private float _duration = 20;
     private bool _started = false;
     private Vector3 _startingPosition;
     private bool _landed;
