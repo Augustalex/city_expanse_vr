@@ -23,22 +23,22 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
   m_AmbientEquatorColor: {r: 0.38581347, g: 0.8018868, b: 0.4925719, a: 1}
   m_AmbientGroundColor: {r: 0.4245283, g: 0.2805923, b: 0.16820933, a: 1}
-  m_AmbientIntensity: 2.69
+  m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 3c23073151db5bc4b965e49ecd2109ab, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
   m_DefaultReflectionMode: 0
-  m_DefaultReflectionResolution: 128
+  m_DefaultReflectionResolution: 512
   m_ReflectionBounces: 5
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_Sun: {fileID: 1834032022}
+  m_IndirectSpecularColor: {r: 0.07131314, g: 0.20301217, b: 0.3786046, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5892,6 +5892,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 592212085}
   m_PrefabAsset: {fileID: 0}
+--- !u!108 &1834032022 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 2345206285181399852, guid: 4014b25e61600624bbc2d4d6ec6ab870,
+    type: 3}
+  m_PrefabInstance: {fileID: 2345206284148728252}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1851425288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7852,50 +7858,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2342963443903264421, guid: 68937571def759347acd3b801d52fef9,
-        type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368031139705527644, guid: 68937571def759347acd3b801d52fef9,
-        type: 3}
-      propertyPath: m_TagString
-      value: CloudCollisionBox
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368031139705527646, guid: 68937571def759347acd3b801d52fef9,
-        type: 3}
-      propertyPath: m_Height
-      value: 2.5585892
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368031139705527646, guid: 68937571def759347acd3b801d52fef9,
-        type: 3}
-      propertyPath: m_Radius
-      value: 0.9751717
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368031139705527646, guid: 68937571def759347acd3b801d52fef9,
-        type: 3}
-      propertyPath: m_Center.x
-      value: -0.03703244
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368031139705527646, guid: 68937571def759347acd3b801d52fef9,
-        type: 3}
-      propertyPath: m_Center.y
-      value: 0.21966018
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368031139705527646, guid: 68937571def759347acd3b801d52fef9,
-        type: 3}
-      propertyPath: m_Center.z
-      value: 0.00078067183
-      objectReference: {fileID: 0}
     - target: {fileID: 7368031140900135315, guid: 68937571def759347acd3b801d52fef9,
         type: 3}
       propertyPath: m_Name
       value: CloudHolder
-      objectReference: {fileID: 0}
-    - target: {fileID: 7368031140900135315, guid: 68937571def759347acd3b801d52fef9,
-        type: 3}
-      propertyPath: m_TagString
-      value: Cloud
       objectReference: {fileID: 0}
     - target: {fileID: 7368031140900135404, guid: 68937571def759347acd3b801d52fef9,
         type: 3}
@@ -7952,15 +7918,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7368031140900135407, guid: 68937571def759347acd3b801d52fef9,
-        type: 3}
-      propertyPath: stormMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: 2fe9f51544c2dbb4e876e063ac37ec4f, type: 2}
-    - target: {fileID: 7368031140900135407, guid: 68937571def759347acd3b801d52fef9,
-        type: 3}
-      propertyPath: normalMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: c69cfacd6cc8b3e4bbac9a2d034cbe59, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68937571def759347acd3b801d52fef9, type: 3}
