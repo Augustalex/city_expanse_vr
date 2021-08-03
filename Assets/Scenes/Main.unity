@@ -5901,6 +5901,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 291978253648691828, guid: a049df6ed6433a549b111521bbde16b4,
         type: 3}
+      propertyPath: interactorType
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 291978253648691828, guid: a049df6ed6433a549b111521bbde16b4,
+        type: 3}
       propertyPath: interactorHolder
       value: 
       objectReference: {fileID: 546754286}
