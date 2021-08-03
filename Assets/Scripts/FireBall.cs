@@ -18,7 +18,7 @@ public class FireBall : MonoBehaviour
                 OnBeforeDestroy();
                 _destroyed = true;
 
-                Destroy(gameObject, 1);
+                Destroy(gameObject, 2);
             }
         }
         else

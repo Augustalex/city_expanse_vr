@@ -20,10 +20,10 @@ public class IntroSun : MonoBehaviour
     {
         if (_started)
         {
-            transform.position += new Vector3(0, -1, 0) * Time.deltaTime * .12f;
+            transform.position += new Vector3(0, -1, 0) * Time.deltaTime * .4f;
 
             var elapsedTime = Time.fixedTime - _startedAt;
-            var currentAlpha = Mathf.Lerp(1.4f, .2f, Mathf.Clamp01(elapsedTime / 10f));
+            var currentAlpha = Mathf.Lerp(1.4f, .2f, Mathf.Clamp01(elapsedTime / 6f));
             RenderSettings.skybox.SetFloat("_Exposure", currentAlpha);
             RenderSettings.reflectionIntensity =
                 Mathf.Max(0, RenderSettings.reflectionIntensity - .07f * Time.deltaTime);
