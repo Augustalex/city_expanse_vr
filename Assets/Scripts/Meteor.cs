@@ -11,13 +11,24 @@ public class Meteor : MonoBehaviour
 
     private Vector3 _target;
     private float _startTime;
-    private const float Duration = 60;
+    private float _duration = 60;
     private bool _started = false;
     private Vector3 _startingPosition;
     private bool _landed;
     private bool _fireBallStarted;
     private GameObject _fireBall;
     private WorldPlane _worldPlane;
+    private bool _isIntro;
+
+    public void SetDuration(float newDuration)
+    {
+        _duration = newDuration;
+    }
+
+    public void SetToIntroMode()
+    {
+        _isIntro = true;
+    }
 
     private void Start()
     {
@@ -28,7 +39,7 @@ public class Meteor : MonoBehaviour
     {
         if (_started)
         {
-            var progress = Mathf.Clamp((Time.fixedTime - _startTime) / Duration, 0, 1.5f);
+            var progress = Mathf.Clamp((Time.fixedTime - _startTime) / _duration, 0, 1.5f);
             transform.position = Vector3.Lerp(_startingPosition, _target, progress);
 
             if (progress > 1)
@@ -78,8 +89,12 @@ public class Meteor : MonoBehaviour
 
     private void ResetWorld()
     {
-        _worldPlane.ResetAtSize(WorldPlane.Size.Large);
-        FarmMasterController.OnResetWorld();
+        if (!_isIntro)
+        {
+            _worldPlane.ResetAtSize(WorldPlane.Size.Large);
+            FarmMasterController.OnResetWorld();
+        }
+
         OnBeforeDestroy();
         Destroy(gameObject);
     }
