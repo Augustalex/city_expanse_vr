@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraMover : MonoBehaviour
 {
     private const float CameraYMax = 5f;
-    private const float CameraYMin = 1.4f;
+    private const float CameraYMin = 1.6f;
     private const float CameraXMin = -2f;
     private const float CameraXMax = 4f;
     private const int CameraZMin = -3;
@@ -52,7 +52,7 @@ public class CameraMover : MonoBehaviour
             var zoomProgress = Mathf.Clamp((newYPosition - CameraYMin) / (CameraYMax - CameraYMin), 0f, 1f);
             var easedZoomProgress = EaseOutExpo(zoomProgress);
 
-            var minTilt = 4f;
+            var minTilt = 12f;
             var maxTilt = 90f;
             var newTilt = (maxTilt - minTilt) * easedZoomProgress + minTilt;
             var currentTilt = _camera.transform.rotation.eulerAngles.x;
