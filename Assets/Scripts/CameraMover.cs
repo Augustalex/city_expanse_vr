@@ -16,10 +16,12 @@ public class CameraMover : MonoBehaviour
     private Vector3 _startCameraPosition;
     private bool _leftDown;
     private Vector3 _startLeftMouseButtonMovePosition;
+    private PostProcessingController _postProcessingController;
 
     void Start()
     {
         _camera = GetComponent<Camera>();
+        _postProcessingController = PostProcessingController.Get();
     }
 
     void Update()
@@ -60,6 +62,19 @@ public class CameraMover : MonoBehaviour
             if (currentTilt + differenceOfTilt <= maxTilt || currentTilt + differenceOfTilt >= minTilt)
             {
                 _camera.transform.RotateAround(_camera.transform.position, _camera.transform.right, differenceOfTilt);
+            }
+
+            if (zoomProgress < .3f)
+            {
+                _postProcessingController.SetDofLevel(PostProcessingController.DofLevel.High);
+            }
+            else if (zoomProgress < .6f)
+            {
+                _postProcessingController.SetDofLevel(PostProcessingController.DofLevel.Medium);
+            }
+            else
+            {
+                _postProcessingController.SetDofLevel(PostProcessingController.DofLevel.Low);
             }
         }
     }

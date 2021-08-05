@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -6,19 +7,53 @@ using UnityEngine.Rendering.Universal;
 
 public class PostProcessingController : MonoBehaviour
 {
-    void Start()
+    private static PostProcessingController _instance;
+
+    public static PostProcessingController Get()
     {
-        
+        return _instance;
+    }
+    
+    private void Awake()
+    {
+        _instance = this;
     }
 
-    void Update()
+    public enum DofLevel
+    {
+        Low,
+        Medium,
+        High
+    }
+    
+    public void SetDofLevel(DofLevel level)
+    {
+        Debug.Log("SetDofLevel: " + level.ToString());
+        
+        SetDof(10f);
+        return;
+        switch (level)
+        {
+            case DofLevel.Low:
+                SetDof(10f);
+                break;
+            case DofLevel.Medium:
+                SetDof(47.9f);
+                break;
+            case DofLevel.High:
+                SetDof(76.6f);
+                break;
+        }
+    }
+
+    public void SetDof(float focalLength)
     {
         var volume = GetComponent<Volume>();
         DepthOfField dof;
+        
         if (volume.profile.TryGet(out dof))
         {
-            Debug.Log("UPDATING!");
-            dof.focalLength = new ClampedFloatParameter(10f, 10f, 10f, true);
+            dof.focalLength.value = focalLength;
         }
     }
 }
