@@ -17,11 +17,13 @@ public class CameraMover : MonoBehaviour
     private bool _leftDown;
     private Vector3 _startLeftMouseButtonMovePosition;
     private PostProcessingController _postProcessingController;
+    private FlatInterfaceController _flatInterfaceController;
 
     void Start()
     {
         _camera = GetComponent<Camera>();
         _postProcessingController = PostProcessingController.Get();
+        _flatInterfaceController = FlatInterfaceController.Get();
     }
 
     void Update()
@@ -64,16 +66,19 @@ public class CameraMover : MonoBehaviour
                 _camera.transform.RotateAround(_camera.transform.position, _camera.transform.right, differenceOfTilt);
             }
 
-            if (zoomProgress < .3f)
+            if (zoomProgress < .08f)
             {
+                _flatInterfaceController.Disable();
                 _postProcessingController.SetDofLevel(PostProcessingController.DofLevel.High);
             }
-            else if (zoomProgress < .6f)
+            else if (zoomProgress < .23f)
             {
+                _flatInterfaceController.Enable();
                 _postProcessingController.SetDofLevel(PostProcessingController.DofLevel.Medium);
             }
             else
             {
+                _flatInterfaceController.Enable();
                 _postProcessingController.SetDofLevel(PostProcessingController.DofLevel.Low);
             }
         }

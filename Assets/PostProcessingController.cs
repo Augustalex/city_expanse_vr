@@ -28,32 +28,30 @@ public class PostProcessingController : MonoBehaviour
     
     public void SetDofLevel(DofLevel level)
     {
-        Debug.Log("SetDofLevel: " + level.ToString());
-        
-        SetDof(10f);
-        return;
         switch (level)
         {
             case DofLevel.Low:
-                SetDof(10f);
+                SetDof(1f, 1f, 1f);
                 break;
             case DofLevel.Medium:
-                SetDof(47.9f);
+                SetDof(0.36f, 35.8f, 11.81f);
                 break;
             case DofLevel.High:
-                SetDof(76.6f);
+                SetDof(1.06f, 142f, 29.34f);
                 break;
         }
     }
 
-    public void SetDof(float focalLength)
+    public void SetDof(float focusDistance, float focalLength, float aperture)
     {
         var volume = GetComponent<Volume>();
         DepthOfField dof;
         
         if (volume.profile.TryGet(out dof))
         {
+            dof.focusDistance.value = focusDistance;
             dof.focalLength.value = focalLength;
+            dof.aperture.value = aperture;
         }
     }
 }
