@@ -33,14 +33,7 @@ public class IntroMeteor : MonoBehaviour
 
     private void StartGame()
     {
-            SceneManager.LoadScene("Main", LoadSceneMode.Single);
-        // StartCoroutine(DoSoon());
-        //
-        // IEnumerator DoSoon()
-        // {
-        //     yield return new WaitForSeconds(3);
-        //     
-        // }
+        SceneManager.LoadScene("Main", LoadSceneMode.Single);
     }
 
     public void Interact(Vector3 target, Action afterMeteorHasHit)
