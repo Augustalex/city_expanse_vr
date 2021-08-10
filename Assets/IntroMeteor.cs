@@ -17,13 +17,23 @@ public class IntroMeteor : MonoBehaviour
     public GameObject meteorTemplate;
 
     private Meteor _meteor;
+    private bool _submitted;
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (GetSubmit() && !_submitted)
         {
+            _submitted = true;
+            
+            if (Input.touchCount > 0) TouchGlobals.usingTouch = true;
+            
             TriggerMeteor();
         }
+    }
+    
+    private bool GetSubmit()
+    {
+        return Input.GetKeyDown(KeyCode.Return) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began);
     }
 
     private void TriggerMeteor()

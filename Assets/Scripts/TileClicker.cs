@@ -23,7 +23,7 @@ public class TileClicker : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (GetPointerDown())
         {
             if (_interactorHolder.AnyInteractorActive())
             {
@@ -59,10 +59,20 @@ public class TileClicker : MonoBehaviour
         _interactorHolder.GetInteractor().HideGhost();
     }
 
+    private Vector2 GetPointerPosition()
+    {
+        return Input.touchCount > 0 ? Input.GetTouch(0).position : (Vector2) Input.mousePosition;
+    }
+
+    private bool GetPointerDown()
+    {
+        return Input.GetMouseButton(0) || (Input.touchCount == 1);
+    }
+
     private void StartRayInspection()
     {
         RaycastHit hit;
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = mainCamera.ScreenPointToRay(GetPointerPosition());
         if (!Physics.Raycast(ray, out hit, 1000.0f)) return;
 
         var blockRigidbody = hit.collider.attachedRigidbody;
@@ -75,7 +85,7 @@ public class TileClicker : MonoBehaviour
     private void StartRayInteraction()
     {
         RaycastHit hit;
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = mainCamera.ScreenPointToRay(GetPointerPosition());
         if (!Physics.Raycast(ray, out hit, 1000.0f)) return;
 
         if (hit.collider.CompareTag("CloudCollisionBox"))
