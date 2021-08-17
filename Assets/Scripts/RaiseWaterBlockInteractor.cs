@@ -10,7 +10,8 @@ public class RaiseWaterBlockInteractor : BlockInteractor
         if (!IsActivated()) return false;
 
         var blockComponent = other.gameObject.GetComponent<Block>();
-
+        if (!blockComponent) return false;
+        
         if (blockComponent.IsWater() || blockComponent.IsOutsideWater()) return false;
         
         return blockComponent && blockComponent.IsInteractable() && blockComponent.IsVacant();

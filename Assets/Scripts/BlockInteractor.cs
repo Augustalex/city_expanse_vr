@@ -91,10 +91,11 @@ public abstract class BlockInteractor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (Interactable(other.gameObject))
+        var blockRigidbody = other.attachedRigidbody;
+        if (blockRigidbody && Interactable(blockRigidbody.gameObject))
         {
-            ResurrectNearbyBlocks(other.GetComponent<Block>().GetGridPosition());
-            Interact(other.gameObject);
+            ResurrectNearbyBlocks(blockRigidbody.GetComponent<Block>().GetGridPosition());
+            Interact(blockRigidbody.gameObject);
         }
     }
 
