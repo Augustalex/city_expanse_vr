@@ -11,7 +11,7 @@ public class FollowHead : MonoBehaviour
     private bool _paletteInSight;
     private BlockInteractionPalette _activePalette;
 
-    void Awake()
+    void Start()
     {
         closedFistDetector.OpenFist += ShowActivePalette;
         closedFistDetector.CloseFist += HideActivePalette;

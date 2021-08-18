@@ -1,16 +1,21 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FollowObject : MonoBehaviour
 {
-    public GameObject target;
+    public CameraRigContainer.FingerType fingerType;
 
-    void FixedUpdate()
+    private GameObject _target;
+
+    private void Start()
     {
-        if (target)
-        {
-            transform.position = target.transform.position;
-        }
+        _target = CameraRigContainer.Get().GetFingerFromType(fingerType);
+    }
+
+    void Update()
+    {
+        transform.position = _target.transform.position;
     }
 }

@@ -6,7 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(InteractorHolder))]
 public class TileClicker : MonoBehaviour
 {
-    public Camera mainCamera;
+    [HideInInspector]
+    public Camera mainCamera = null;
 
     private InteractorHolder _interactorHolder;
     private bool _coolingDown;
@@ -19,6 +20,7 @@ public class TileClicker : MonoBehaviour
     {
         _interactorHolder = GetComponent<InteractorHolder>();
         _cloudMover = FindObjectOfType<CloudMover>();
+        mainCamera = Camera.main;
     }
 
     void Update()

@@ -9,7 +9,7 @@ public class CloudMover : MonoBehaviour
 
     void Start()
     {
-        _mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+        _mainCamera = Camera.main ? Camera.main : GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         _rigidbody = GetComponent<Rigidbody>();
         _worldPlane = WorldPlane.Get();
     }

@@ -33,7 +33,7 @@ public abstract class BlockInteractor : MonoBehaviour
 
     public bool interactorEnabled = false;
 
-    private void Awake()
+    protected void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
         _followObject = GetComponent<FollowMainHandInteractor>();
@@ -213,6 +213,10 @@ public abstract class BlockInteractor : MonoBehaviour
 
     public bool IsActivated()
     {
+        if (_followObject == null)
+        {
+            Debug.Log(gameObject);
+        }
         return interactorEnabled || _followObject.enabled;
     }
 

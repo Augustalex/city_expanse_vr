@@ -6,13 +6,21 @@ public class SendMeteorBlockInteractor : BlockInteractor
 {
     public override InteractorHolder.BlockInteractors InteractorType => InteractorHolder.BlockInteractors.SendMeteor;
 
-    public Camera mainCamera;
+    [HideInInspector]
+    public Camera mainCamera = null;
+    
     public GameObject meteorTemplate;
     public AudioClip kaboomSound;
 
     [CanBeNull] public Transform meteorStartingPosition;
     
     private Meteor _meteor;
+
+    new void Awake()
+    {
+        base.Awake();
+        mainCamera = Camera.main;
+    }
 
     public override bool Interactable(GameObject other)
     {
