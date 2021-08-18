@@ -16,7 +16,7 @@ public class IntroSunSource : MonoBehaviour
     {
         if (_started)
         {
-            _light.intensity = Mathf.Max(0, _light.intensity - .15f * Time.deltaTime);
+            // _light.intensity = Mathf.Max(0, _light.intensity - .3f * Time.deltaTime);
         }
     }
 

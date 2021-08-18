@@ -71,6 +71,8 @@ public class Meteor : MonoBehaviour
 
     private void DestroyBlocksInsideFireBall()
     {
+        if (_isIntro) return;
+        
         var hits = Physics.OverlapSphere(_fireBall.transform.position, _fireBall.transform.localScale.x * .5f);
 
         foreach (var hit in hits)

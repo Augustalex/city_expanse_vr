@@ -15,6 +15,7 @@ TagManager:
   - Cloud
   - CloudCollisionBox
   - IconButton
+  - SunClock
   layers:
   - Default
   - TransparentFX

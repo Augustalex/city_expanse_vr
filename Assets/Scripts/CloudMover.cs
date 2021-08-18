@@ -22,14 +22,14 @@ public class CloudMover : MonoBehaviour
 
         if (_movingCloudWithMouse)
         {
-            if (Input.GetMouseButtonUp(0))
+            if (GetPointerUp())
             {
                 _movingCloudWithMouse = false;
             }
             else
             {
                 RaycastHit hit;
-                Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+                Ray ray = _mainCamera.ScreenPointToRay(GetPointerPosition());
                 if (Physics.Raycast(ray, out hit, 1000.0f))
                 {
                     var cloudPosition = transform.position;
@@ -106,7 +106,17 @@ public class CloudMover : MonoBehaviour
                 ForceMode.VelocityChange);
         }
     }
+    
+    private Vector2 GetPointerPosition()
+    {
+        return Input.touchCount > 0 ? Input.GetTouch(0).position : (Vector2) Input.mousePosition;
+    }
 
+    private bool GetPointerUp()
+    {
+        return Input.GetMouseButtonUp(0) || Input.GetTouch(0).phase == TouchPhase.Ended;
+    }
+    
     private bool IsOutsideFront()
     {
         return transform.position.z > _worldPlane.Top() - .2f;
