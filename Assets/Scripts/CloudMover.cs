@@ -114,7 +114,7 @@ public class CloudMover : MonoBehaviour
 
     private bool GetPointerUp()
     {
-        return Input.GetMouseButtonUp(0) || Input.GetTouch(0).phase == TouchPhase.Ended;
+        return Input.GetMouseButtonUp(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended);
     }
     
     private bool IsOutsideFront()
