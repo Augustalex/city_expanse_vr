@@ -43,7 +43,7 @@ public class GreensSpawn : MonoBehaviour
         _grown = true;
         
         _greens.SetActive(true);
-        _seed.SetActive(false);
+        // _seed.SetActive(false);
     }
 
     public bool IsGrown()
