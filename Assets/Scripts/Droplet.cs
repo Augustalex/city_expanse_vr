@@ -19,11 +19,12 @@ public class Droplet : MonoBehaviour
         else
         {
             var greenSpawn = other.GetComponent<GreensSpawn>();
-            if (greenSpawn && !greenSpawn.IsGrown())
+            if (greenSpawn)
             {
-                greenSpawn.Grow();
+                greenSpawn.OnReceiveRain();
                 _consumed = true;
             }
+
             // else if (IsSand(other))
             // {
             // MakeSandToGrass(other);

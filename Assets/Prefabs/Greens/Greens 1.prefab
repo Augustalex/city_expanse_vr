@@ -210,6 +210,8 @@ MonoBehaviour:
   bushTemplates:
   - {fileID: 670017585916442160, guid: ce1e10006adfd38499263efd3ae0d5f3, type: 3}
   - {fileID: 1550649853102879622, guid: 64c63b3310dc94b45b9ef10a88567d05, type: 3}
+  - {fileID: 670017585916442160, guid: ce1e10006adfd38499263efd3ae0d5f3, type: 3}
+  - {fileID: 1550649853102879622, guid: 64c63b3310dc94b45b9ef10a88567d05, type: 3}
 --- !u!1001 &3320531556970138703
 PrefabInstance:
   m_ObjectHideFlags: 0

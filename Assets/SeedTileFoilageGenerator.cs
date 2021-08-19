@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Build.Content;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SeedTileFoilageGenerator : MonoBehaviour
 {
@@ -9,7 +6,7 @@ public class SeedTileFoilageGenerator : MonoBehaviour
 
     void Start()
     {
-        var bushCount = Random.Range(2, 4);
+        var bushCount = Random.Range(1, 2);
 
         for (int i = 0; i < bushCount; i++)
         {
@@ -18,7 +15,7 @@ public class SeedTileFoilageGenerator : MonoBehaviour
 
             var randomDirection = Random.insideUnitCircle;
             var randomDirection3D = new Vector3(randomDirection.x, 0, randomDirection.y);
-            var newRandomPosition = randomDirection3D * .5f;
+            var newRandomPosition = randomDirection3D * .4f;
             bush.transform.localPosition = new Vector3(newRandomPosition.x, 0, newRandomPosition.z);
             // bush.transform.localScale = new Vector3(1, 1, 1);
         }

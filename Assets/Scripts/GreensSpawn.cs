@@ -11,13 +11,15 @@ public class GreensSpawn : MonoBehaviour
     {
         Small,
         Big,
-        Huge
+        Huge,
+        Crazy
     }
 
     private bool _grown;
     private GameObject _greens;
     private GameObject _seed;
     private Vector3 _originalScale;
+    private int _rain = 0;
 
     void Awake()
     {
@@ -63,15 +65,37 @@ public class GreensSpawn : MonoBehaviour
     {
         if (size == TreeSize.Big)
         {
-            transform.localScale = _originalScale * 1.25f;
+            transform.localScale = _originalScale * 2f;
         }
         else if (size == TreeSize.Huge)
         {
-            transform.localScale = _originalScale * 1.8f;
+            transform.localScale = _originalScale * 4f;
+        }
+        else if (size == TreeSize.Crazy)
+        {
+            transform.localScale = _originalScale * 8f;
         }
         else
         {
             transform.localScale = _originalScale;
+        }
+    }
+
+    public void OnReceiveRain()
+    {
+        if (!_grown)
+        {
+            Grow();
+        }
+        else
+        {
+            if (_rain > 42) return;
+        
+            _rain += 1;
+        
+            if(_rain > 12) SetSize(TreeSize.Big);
+            else if(_rain > 30) SetSize(TreeSize.Huge);
+            else if(_rain == 42) SetSize(TreeSize.Crazy);
         }
     }
 }
