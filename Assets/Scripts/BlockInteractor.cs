@@ -32,6 +32,7 @@ public abstract class BlockInteractor : MonoBehaviour
     private GameObject _nonInteractableGhost;
 
     public bool interactorEnabled = false;
+    private float _lastInteract;
 
     protected void Awake()
     {
@@ -55,8 +56,8 @@ public abstract class BlockInteractor : MonoBehaviour
             GetComponentInParent<BlockInteractionPalette>().Select(this);
             Activate();
         }
-        
-        
+
+
         _ghost = Instantiate(BlockFactory.Get().interactableGhostTemplate);
         _ghost.SetActive(false);
 
@@ -123,8 +124,8 @@ public abstract class BlockInteractor : MonoBehaviour
         {
             InspectWithOverlay(other);
         }
-        
-        if(_featureToggles.interactionGhost && showInteractionGhost)
+
+        if (_featureToggles.interactionGhost && showInteractionGhost)
         {
             InspectWithGhost(other);
         }
@@ -156,7 +157,7 @@ public abstract class BlockInteractor : MonoBehaviour
             }
         }
     }
-    
+
     private void InspectWithGhost(GameObject other)
     {
         var blockComponent = other.gameObject.GetComponent<Block>();
@@ -207,7 +208,7 @@ public abstract class BlockInteractor : MonoBehaviour
             _nonInteractableGhost.SetActive(false);
             _ghost.SetActive(false);
         }
-        
+
         interactorEnabled = false;
     }
 
@@ -217,6 +218,7 @@ public abstract class BlockInteractor : MonoBehaviour
         {
             Debug.Log(gameObject);
         }
+
         return interactorEnabled || _followObject.enabled;
     }
 
@@ -232,6 +234,9 @@ public abstract class BlockInteractor : MonoBehaviour
 
     public void PlaySound(BlockSoundLibrary.BlockSound blockSound, Vector3? position = null)
     {
+        if (Time.time - _lastInteract < .1f) return;
+        _lastInteract = Time.time;
+
         _audioSource.Stop();
 
         var sound = BlockSoundLibrary.Get().GetSound(blockSound);
@@ -270,7 +275,7 @@ public abstract class BlockInteractor : MonoBehaviour
 
     public void HideGhost()
     {
-      if(_nonInteractableGhost.activeSelf) _nonInteractableGhost.SetActive(false);
-      if(_ghost.activeSelf) _ghost.SetActive(false);
+        if (_nonInteractableGhost.activeSelf) _nonInteractableGhost.SetActive(false);
+        if (_ghost.activeSelf) _ghost.SetActive(false);
     }
 }

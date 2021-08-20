@@ -14,7 +14,7 @@ public class DayCycle : MonoBehaviour
 
     public float time = 0;
 
-    private float _worldLifeLength = 60 * 5;
+    private float _worldLifeLength = 60 * 10;
     private float _sunSpeed = 1.5f;
 
     void Start()
