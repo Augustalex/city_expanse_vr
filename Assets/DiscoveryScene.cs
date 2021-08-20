@@ -16,6 +16,7 @@ public class DiscoveryScene : MonoBehaviour
     private float _timeShown;
     private DiscoveryManager _discoverManager;
     private bool _listenerSetup = false;
+    private bool _beenShownBefore = false;
 
     public static DiscoveryScene Get()
     {
@@ -76,6 +77,12 @@ public class DiscoveryScene : MonoBehaviour
             || Input.GetKeyDown(KeyCode.Escape))
         {
             ToggleAllOff();
+
+            if (!_beenShownBefore)
+            {
+                MenuScene.Get().Show();
+                _beenShownBefore = true;
+            }
         }
     }
 
