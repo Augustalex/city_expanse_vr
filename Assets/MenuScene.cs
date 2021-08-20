@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditorInternal.Profiling.Memory.Experimental;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MenuScene : MonoBehaviour
 {
@@ -51,11 +47,11 @@ public class MenuScene : MonoBehaviour
 
     public void Show()
     {
+        _shown = true;
+        
         _camera.SetActive(true);
         _trophiesRoot.SetActive(true);
         _trophies.Refresh();
-        
-        _shown = true;
     }
 
     private void Hide()
@@ -64,5 +60,10 @@ public class MenuScene : MonoBehaviour
         _trophiesRoot.SetActive(false);
 
         _shown = false;
+    }
+
+    public bool IsShowing()
+    {
+        return _shown;
     }
 }

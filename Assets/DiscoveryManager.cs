@@ -18,12 +18,37 @@ public class DiscoveryManager : MonoBehaviour
     private readonly Dictionary<Discoverable, bool> _discoveries = new Dictionary<Discoverable, bool>();
 
     public event Action<Discoverable> NewDiscover;
-    
+
     private static DiscoveryManager _instance;
+
+    public Queue<Discoverable> unpublished = new Queue<Discoverable>();
+    private MenuScene _menuScene;
+    private float _lastPublished;
 
     void Awake()
     {
         _instance = this;
+    }
+
+    void Start()
+    {
+        _menuScene = MenuScene.Get();
+    }
+
+    void Update()
+    {
+        if (!_menuScene.IsShowing())
+        {
+            if (unpublished.Count > 0)
+            {
+                var timeSinceLastShown = Time.time - _lastPublished;
+                if (timeSinceLastShown > 2)
+                {
+                    var next = unpublished.Dequeue();
+                    OnNewDiscover(next);
+                }
+            }
+        }
     }
 
     public static DiscoveryManager Get()
@@ -35,7 +60,7 @@ public class DiscoveryManager : MonoBehaviour
     {
         _discoveries[discoverable] = true;
 
-        OnNewDiscover(discoverable);
+        unpublished.Enqueue(discoverable);
     }
 
     public bool IsDiscovered(Discoverable discoverable)
@@ -44,12 +69,13 @@ public class DiscoveryManager : MonoBehaviour
         {
             _discoveries[discoverable] = false;
         }
-        
+
         return _discoveries[discoverable];
     }
 
     protected virtual void OnNewDiscover(Discoverable obj)
     {
+        _lastPublished = Time.time;
         NewDiscover?.Invoke(obj);
     }
 }
