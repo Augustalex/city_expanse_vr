@@ -42,7 +42,7 @@ public class Block : MonoBehaviour
     private float _highlightedAt;
     private string _highlightedBy;
 
-    private const int CloudLevel = 4;
+    private const int CloudLevel = 6;
 
     public event Action BeforeDestroy;
 

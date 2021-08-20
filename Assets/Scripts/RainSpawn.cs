@@ -32,7 +32,7 @@ public class RainSpawn : MonoBehaviour
 
     void Update()
     {
-        if (_droplets.Count > 10)
+        if (_droplets.Count > 30)
         {
             var dropletToKill = _droplets.Dequeue();
             Destroy(dropletToKill);

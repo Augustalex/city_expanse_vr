@@ -4554,7 +4554,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &855836642
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -8798,7 +8798,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   smoothShader: {fileID: 2100000, guid: 4e77c7c8ea9e6154db0745db3c0b902c, type: 2}
   stunningShader: {fileID: 2100000, guid: 682c9480beccce446a2b0fff325eb074, type: 2}
-  shaderType: 1
+  shaders:
+  - {fileID: 2100000, guid: d24a0c7c93f41f7458e8d48e7758b6fb, type: 2}
+  - {fileID: 2100000, guid: f4da30491e1baee40a4184d703377951, type: 2}
+  - {fileID: 2100000, guid: 70e3e3a2608473544a7c02301206a7e3, type: 2}
 --- !u!114 &1741071636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11676,6 +11679,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7368031140456756850, guid: 68937571def759347acd3b801d52fef9,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.37
+      objectReference: {fileID: 0}
     - target: {fileID: 7368031140900135315, guid: 68937571def759347acd3b801d52fef9,
         type: 3}
       propertyPath: m_Name
@@ -11694,7 +11702,7 @@ PrefabInstance:
     - target: {fileID: 7368031140900135404, guid: 68937571def759347acd3b801d52fef9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.65
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7368031140900135404, guid: 68937571def759347acd3b801d52fef9,
         type: 3}

@@ -8,14 +8,9 @@ public class WaterShaderController : MonoBehaviour
 
     public Material stunningShader;
 
-    public enum ShaderType
-    {
-        Smooth,
-        Stunning
-    };
-
-    public ShaderType shaderType = ShaderType.Stunning;
-
+    public Material[] shaders;
+    private int _shaderIndex;
+    
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.F1))
@@ -32,6 +27,19 @@ public class WaterShaderController : MonoBehaviour
             foreach (var c in controlled)
             {
                 c.GetComponent<MeshRenderer>().material = smoothShader;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.F3))
+        {
+            var shader = shaders[_shaderIndex];
+
+            _shaderIndex += 1;
+            if (_shaderIndex >= shaders.Length) _shaderIndex = 0;
+            
+            var controlled = FindObjectsOfType<ControllerWaterShader>();
+            foreach (var c in controlled)
+            {
+                c.GetComponent<MeshRenderer>().material = shader;
             }
         }
     }
