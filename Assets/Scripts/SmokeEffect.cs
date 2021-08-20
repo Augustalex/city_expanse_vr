@@ -10,7 +10,7 @@ public class SmokeEffect : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (ShouldPlayOnHit() && !_played && other.GetComponent<Block>() != null)
+        if (ShouldPlayOnHit() && !_played && other.GetComponentInParent<Block>() != null)
         {
             PlayAll();
 
@@ -43,7 +43,9 @@ public class SmokeEffect : MonoBehaviour
 
     private void PlaySmokeEffect()
     {
-        GetComponent<ParticleSystem>().Play();
+        var ps = GetComponent<ParticleSystem>();
+        ps.Clear();
+        ps.Play();
     }
 
     private void PlayHitGroundSound()

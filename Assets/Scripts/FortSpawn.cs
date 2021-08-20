@@ -7,6 +7,8 @@ public class FortSpawn : MonoBehaviour
     public GameObject[] tinyHouseTemplates;
     
     private FireworksEffect _fireworksEffect;
+    
+    private static int _fortCount = 0;
 
     void Awake()
     {
@@ -23,6 +25,16 @@ public class FortSpawn : MonoBehaviour
             yield return new WaitForSeconds(.05f);
             _fireworksEffect.Activate();
         }
+    }
+
+    void Start()
+    {
+        if (_fortCount == 0)
+        {
+            DiscoveryScene.Get().DiscoveredCliffHouse();
+        }
+
+        _fortCount += 1;
     }
     
     private void SetupHouse(GameObject[] templates)

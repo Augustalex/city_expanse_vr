@@ -8,6 +8,8 @@ public class ShrineSpawn : MonoBehaviour
     public AudioClip upgradeSound;
     
     private FireworksEffect _fireworksEffect;
+    
+    private static int _shrineCount = 0;
 
     void Awake()
     {
@@ -25,6 +27,16 @@ public class ShrineSpawn : MonoBehaviour
             yield return new WaitForSeconds(.05f);
             _fireworksEffect.Activate();
         }
+    }
+
+    void Start()
+    {
+        if (_shrineCount == 0)
+        {
+            DiscoveryScene.Get().DiscoveredForrestShrine();
+        }
+
+        _shrineCount += 1;
     }
     
     private void SetupHouse(GameObject[] templates)

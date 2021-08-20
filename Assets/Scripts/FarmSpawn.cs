@@ -7,6 +7,8 @@ public class FarmSpawn : MonoBehaviour
     private FarmState _state = FarmState.Dead;
     private SmokeEffect _smokeEffect;
 
+    private static int _farmCount = 0;
+
     private enum FarmState
     {
         Dead,
@@ -16,6 +18,13 @@ public class FarmSpawn : MonoBehaviour
     private void Start()
     {
         _smokeEffect = GetComponentInChildren<SmokeEffect>();
+
+        if (_farmCount == 0)
+        {
+            DiscoveryScene.Get().DiscoveredFarm();
+        }
+
+        _farmCount += 1;
     }
 
     public void Grow()

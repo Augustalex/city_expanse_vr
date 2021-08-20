@@ -13,7 +13,8 @@ public class GreensSpawn : MonoBehaviour
         Small,
         Big,
         Huge,
-        Crazy
+        Crazy,
+        Tiny
     }
 
     private bool _grown;
@@ -78,6 +79,11 @@ public class GreensSpawn : MonoBehaviour
         else if (size == TreeSize.Crazy)
         {
             transform.localScale = _originalScale * 2.5f;
+        }
+        else if (size == TreeSize.Tiny)
+        {
+            _greens.SetActive(false);
+            _seed.SetActive(true);
         }
         else
         {

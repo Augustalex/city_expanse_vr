@@ -5,6 +5,8 @@ public class SiloSpawn : MonoBehaviour
 {
     public GameObject[] siloTemplates;
     private SmokeEffect _smokeEffect;
+    
+    private static int _siloCount = 0;
 
     private void Start()
     {
@@ -16,6 +18,13 @@ public class SiloSpawn : MonoBehaviour
         _smokeEffect.PlayOnNextHit();
         farm.transform.Rotate(new Vector3(0, Random.value * 360, 0));
         LaunchFromAbove();
+
+        if (_siloCount == 0)
+        {
+            DiscoveryScene.Get().DiscoveredSilo();
+        }
+        
+        _siloCount += 1;
     }
 
     private void LaunchFromAbove()

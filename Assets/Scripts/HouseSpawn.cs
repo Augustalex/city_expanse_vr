@@ -8,23 +8,29 @@ public class HouseSpawn : MonoBehaviour
     public GameObject[] largeHouseTemplates;
     public GameObject[] megaHouseTemplates;
     public AudioClip upgradeSound;
-    
+
     private GameObject _activeHouse;
-    private int _size;
+    private int _size = 0;
     private FireworksEffect _fireworksEffect;
     private float _lifeStartedAt;
     private bool _innerCity;
+    private bool _setup = false;
+    private SmokeEffect _smokeEffect;
 
     void Awake()
     {
-        SetupHouse(0, tinyHouseTemplates);
-        _fireworksEffect = GetComponentInChildren<FireworksEffect>();
+        // _fireworksEffect = GetComponentInChildren<FireworksEffect>();
 
-        _fireworksEffect.ActivatedHit += PlayUpgradeSound;
-        
+        // _fireworksEffect.ActivatedHit += PlayUpgradeSound;
         _lifeStartedAt = Time.fixedTime;
     }
-    
+
+    void Start()
+    {
+        _smokeEffect = GetComponentInChildren<SmokeEffect>();
+        Upgrade();
+    }
+
     public bool GoodTimeToUpgrade()
     {
         return Time.fixedTime - _lifeStartedAt > 1f;
@@ -32,25 +38,32 @@ public class HouseSpawn : MonoBehaviour
 
     public void Upgrade()
     {
-        if (_size == 0)
+        if (!_setup)
+        {
+            SetupHouse(0, tinyHouseTemplates);
+            _setup = true;
+        }
+        else if (_size == 0)
         {
             SetupHouse(1, largeHouseTemplates);
-            _fireworksEffect.SetHitBoxSize(2);
+            // _fireworksEffect.SetHitBoxSize(2);
         }
         else if (_size == 1)
         {
             SetupHouse(2, megaHouseTemplates);
-            _fireworksEffect.SetHitBoxSize(5);
+            // _fireworksEffect.SetHitBoxSize(5);
         }
 
-        StartCoroutine(ActivateFireworksSoon());
+        _smokeEffect.PlayOnNextHit();
         LaunchFromAbove();
+        
+        // StartCoroutine(ActivateFireworksSoon());
 
-        IEnumerator ActivateFireworksSoon()
-        {
-            yield return new WaitForSeconds(.05f);
-            _fireworksEffect.Activate();
-        }
+        // IEnumerator ActivateFireworksSoon()
+        // {
+            // yield return new WaitForSeconds(.05f);
+            // _fireworksEffect.Activate();
+        // }
     }
 
     private void PlayUpgradeSound()
@@ -62,14 +75,17 @@ public class HouseSpawn : MonoBehaviour
     {
         GetComponent<Rigidbody>().AddForce(Vector3.up * 2, ForceMode.Impulse);
     }
-    
+
     private void SetupHouse(int size, GameObject[] templates)
     {
-        Destroy(_activeHouse);
+        if (_activeHouse)
+        {
+            Destroy(_activeHouse);
+        }
 
         var houseTemplate = templates[Random.Range(0, templates.Length)];
         var house = Instantiate(houseTemplate, transform, false);
-                    
+
         _activeHouse = house;
         _size = size;
     }
@@ -78,12 +94,12 @@ public class HouseSpawn : MonoBehaviour
     {
         return _size == 0;
     }
-    
+
     public bool IsBig()
     {
         return _size == 1;
     }
-    
+
     public bool IsMegaBig()
     {
         return _size == 2;

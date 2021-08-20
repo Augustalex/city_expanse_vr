@@ -17,6 +17,8 @@ public class CityDocks : MonoBehaviour
     private static CityDocks _instance;
     private FeatureToggles _featureToggles;
 
+    private bool _firstDocksSpawned = false;
+
     private void Awake()
     {
         _instance = this;
@@ -108,6 +110,12 @@ public class CityDocks : MonoBehaviour
                 var target = waterBlock.transform.position;
                 target.y = dockSpawn.transform.position.y;
                 dockSpawn.transform.LookAt(target);
+
+                if (!_firstDocksSpawned)
+                {
+                    DiscoveryScene.Get().DiscoveredDocks();
+                    _firstDocksSpawned = true;
+                }
             }
         }
     }

@@ -22,6 +22,11 @@ public class City : MonoBehaviour
     private FeatureToggles _featureToggles;
     private static City _instance;
 
+    private bool _placedFirstHouse = false;
+    private bool _firstBigHouse = false;
+    
+    private DiscoveryScene _discoveryScene;
+
     private void Awake()
     {
         _instance = this;
@@ -40,6 +45,8 @@ public class City : MonoBehaviour
         _featureToggles = FeatureToggles.Get();
 
         _workQueue = WorkQueue.Get();
+
+        _discoveryScene = DiscoveryScene.Get();
     }
 
     void Update()
@@ -158,6 +165,12 @@ public class City : MonoBehaviour
             house.transform.LookAt(target);
 
             _lastPlacedHouse = Time.fixedTime;
+
+            if (!_placedFirstHouse)
+            {
+                _placedFirstHouse = true;
+                _discoveryScene.DiscoveredHouse();
+            }
         }
     }
 
@@ -226,6 +239,12 @@ public class City : MonoBehaviour
             var houseToUpgrade = candidates[Random.Range(0, candidates.Count)];
             houseToUpgrade.GetOccupantHouse().Upgrade();
             _lastPlacedHouse = Time.fixedTime;
+            
+            if (!_firstBigHouse)
+            {
+                _firstBigHouse = true;
+                _discoveryScene.DiscoveredBigHouse();
+            }
         }
     }
 
