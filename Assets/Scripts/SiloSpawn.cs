@@ -21,7 +21,7 @@ public class SiloSpawn : MonoBehaviour
 
         if (_siloCount == 0)
         {
-            DiscoveryScene.Get().DiscoveredSilo();
+            DiscoveryManager.Get().RegisterNewDiscover(DiscoveryManager.Discoverable.Silo);
         }
         
         _siloCount += 1;

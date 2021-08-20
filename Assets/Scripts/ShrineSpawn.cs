@@ -33,7 +33,7 @@ public class ShrineSpawn : MonoBehaviour
     {
         if (_shrineCount == 0)
         {
-            DiscoveryScene.Get().DiscoveredForrestShrine();
+            DiscoveryManager.Get().RegisterNewDiscover(DiscoveryManager.Discoverable.ForrestShrine);
         }
 
         _shrineCount += 1;

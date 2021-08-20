@@ -177,7 +177,7 @@ public class CameraMover : MonoBehaviour
         }
         else
         {
-            if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButton(0))
+            if (Input.GetMouseButton(1))
             {
                 if (!_leftDown)
                 {
@@ -201,7 +201,7 @@ public class CameraMover : MonoBehaviour
                 _leftDown = true;
             }
 
-            if (!Input.GetMouseButton(0))
+            if (!Input.GetMouseButton(1))
             {
                 _leftDown = false;
             }
@@ -255,7 +255,7 @@ public class CameraMover : MonoBehaviour
 
     private void HandleRightDragMovement()
     {
-        if (Input.GetMouseButton(1))
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButton(0))
         {
             if (!_shouldFireCameraInTargetDirection)
             {
@@ -279,7 +279,7 @@ public class CameraMover : MonoBehaviour
 
             _shouldFireCameraInTargetDirection = true;
         }
-        else
+        else if(!Input.GetMouseButton(0))
         {
             if (_shouldFireCameraInTargetDirection)
             {

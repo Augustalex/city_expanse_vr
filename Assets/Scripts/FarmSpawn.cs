@@ -21,7 +21,7 @@ public class FarmSpawn : MonoBehaviour
 
         if (_farmCount == 0)
         {
-            DiscoveryScene.Get().DiscoveredFarm();
+            DiscoveryManager.Get().RegisterNewDiscover(DiscoveryManager.Discoverable.Farm);
         }
 
         _farmCount += 1;

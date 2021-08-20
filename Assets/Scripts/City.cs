@@ -24,8 +24,6 @@ public class City : MonoBehaviour
 
     private bool _placedFirstHouse = false;
     private bool _firstBigHouse = false;
-    
-    private DiscoveryScene _discoveryScene;
 
     private void Awake()
     {
@@ -45,8 +43,6 @@ public class City : MonoBehaviour
         _featureToggles = FeatureToggles.Get();
 
         _workQueue = WorkQueue.Get();
-
-        _discoveryScene = DiscoveryScene.Get();
     }
 
     void Update()
@@ -169,7 +165,7 @@ public class City : MonoBehaviour
             if (!_placedFirstHouse)
             {
                 _placedFirstHouse = true;
-                _discoveryScene.DiscoveredHouse();
+                DiscoveryManager.Get().RegisterNewDiscover(DiscoveryManager.Discoverable.House);
             }
         }
     }
@@ -243,7 +239,7 @@ public class City : MonoBehaviour
             if (!_firstBigHouse)
             {
                 _firstBigHouse = true;
-                _discoveryScene.DiscoveredBigHouse();
+                DiscoveryManager.Get().RegisterNewDiscover(DiscoveryManager.Discoverable.BigHouse);
             }
         }
     }

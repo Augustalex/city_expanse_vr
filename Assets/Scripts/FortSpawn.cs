@@ -31,7 +31,7 @@ public class FortSpawn : MonoBehaviour
     {
         if (_fortCount == 0)
         {
-            DiscoveryScene.Get().DiscoveredCliffHouse();
+            DiscoveryManager.Get().RegisterNewDiscover(DiscoveryManager.Discoverable.CliffHouse);
         }
 
         _fortCount += 1;

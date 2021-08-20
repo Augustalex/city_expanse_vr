@@ -113,7 +113,7 @@ public class CityDocks : MonoBehaviour
 
                 if (!_firstDocksSpawned)
                 {
-                    DiscoveryScene.Get().DiscoveredDocks();
+                    DiscoveryManager.Get().RegisterNewDiscover(DiscoveryManager.Discoverable.Docks);
                     _firstDocksSpawned = true;
                 }
             }

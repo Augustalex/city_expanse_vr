@@ -54,7 +54,6 @@ public class CityForrestShrine : MonoBehaviour
                 .GetNearbyBlocksWithinRange(block.GetGridPosition(), 8)
                 .Count(otherBlock => otherBlock.OccupiedByGrownGreens());
 
-            Debug.Log(greensNearby);
             if (greensNearby > 80)
             {
                 SpawnShrine(block);
