@@ -212,6 +212,31 @@ MonoBehaviour:
   - {fileID: 1550649853102879622, guid: 64c63b3310dc94b45b9ef10a88567d05, type: 3}
   - {fileID: 670017585916442160, guid: ce1e10006adfd38499263efd3ae0d5f3, type: 3}
   - {fileID: 1550649853102879622, guid: 64c63b3310dc94b45b9ef10a88567d05, type: 3}
+  miscTemplates:
+  - {fileID: 1545839586617714, guid: 028027f5e6bfe2e4bb51f3be0aceed06, type: 3}
+  - {fileID: 1189090924586164, guid: b281c6294e101724e9e1e4410f5557cd, type: 3}
+  - {fileID: 1295785772323214, guid: d6f0074bbb2f22242bed3cb7f8c87a41, type: 3}
+  - {fileID: 1150320398043032, guid: 59e07f35e7740c44ba6fe47b27ded1fc, type: 3}
+  - {fileID: 1475206913656112, guid: e570590132746cb4fafc2b161083ae75, type: 3}
+  - {fileID: 1532742678220686, guid: 13db47fc441294c45804c1c03f752e55, type: 3}
+  - {fileID: 1072878899551514, guid: c12a4047a15ab3342abf6d73c8128a4d, type: 3}
+  - {fileID: 1595795426762104, guid: 89fd0941639669748b66947d756df118, type: 3}
+  - {fileID: 1844196729905536, guid: e0bd15bec4487de469925c62e93db78b, type: 3}
+  - {fileID: 1919092520382332, guid: ddd05300a285e5946ae2723619ab32e4, type: 3}
+  - {fileID: 1747090391572830, guid: 563a7417981f1f04ab3a484eaf91d922, type: 3}
+  rockTemplates:
+  - {fileID: 1545284419762390, guid: 77b95d518dd24624b9baaa072094bfcb, type: 3}
+  - {fileID: 1136410170050514, guid: 776e4179c67bbce45bfe586d805ed1b1, type: 3}
+  - {fileID: 1588695694357282, guid: ef7f09302dcbb494fa7fa6b50de8f241, type: 3}
+  - {fileID: 1765881378657734, guid: e168f5d59d0657f44aea2a71d92ef39d, type: 3}
+  - {fileID: 1832396019814904, guid: d0082c69565d1894b95f941dcef0abf3, type: 3}
+  - {fileID: 1663760089543352, guid: 5f8124340f58c7842a99486ec1e5d44e, type: 3}
+  - {fileID: 1853057613824546, guid: 9911d0c340ccc74449e8ecea1a7369af, type: 3}
+  - {fileID: 1809308514339848, guid: 01cc85436acdf604fb53ed65ce9a77cc, type: 3}
+  - {fileID: 1275837788246996, guid: 300af311324cedc4cbcea2142292bc28, type: 3}
+  - {fileID: 1986631312122830, guid: 10d34ca8daa6caf458bcf9746c06a126, type: 3}
+  - {fileID: 1822502927068284, guid: e0ff1c3fe24c34d40bd6dc7ad4295f10, type: 3}
+  - {fileID: 1050810324231342, guid: 7ed424ab627e11f41af3ad0ea72e403f, type: 3}
 --- !u!1001 &3320531556970138703
 PrefabInstance:
   m_ObjectHideFlags: 0
