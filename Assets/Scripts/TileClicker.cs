@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(InteractorHolder))]
 public class TileClicker : MonoBehaviour
 {
-    [HideInInspector]
-    public Camera mainCamera = null;
+    [HideInInspector] public Camera mainCamera = null;
 
     private InteractorHolder _interactorHolder;
     private bool _coolingDown;
     private float _cooldownTimeLeft;
     private float _lastLayer = 999f;
     private CloudMover _cloudMover;
+    private MenuScene _menuScene;
+    private DiscoveryScene _discoveryScene;
     private const float CooldownTime = 2f;
 
     void Start()
@@ -21,6 +23,9 @@ public class TileClicker : MonoBehaviour
         _interactorHolder = GetComponent<InteractorHolder>();
         _cloudMover = FindObjectOfType<CloudMover>();
         mainCamera = Camera.main;
+
+        _menuScene = MenuScene.Get();
+        _discoveryScene = DiscoveryScene.Get();
     }
 
     void Update()
@@ -34,7 +39,10 @@ public class TileClicker : MonoBehaviour
                 if (Input.GetKey(KeyCode.LeftControl)) return;
             }
 
-            StartRayInteraction();
+            if (!_discoveryScene.Visible() && !_menuScene.IsShowing())
+            {
+                StartRayInteraction();
+            }
         }
         else
         {

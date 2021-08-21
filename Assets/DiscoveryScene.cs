@@ -149,4 +149,9 @@ public class DiscoveryScene : MonoBehaviour
 
         AudioSource.PlayClipAtPoint(newDiscovery, Vector3.zero, .6f);
     }
+
+    public bool Visible()
+    {
+        return _anyToggleOn;
+    }
 }
