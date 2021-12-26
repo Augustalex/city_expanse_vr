@@ -37,7 +37,12 @@ public class InteractorSelector : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             TurnOffAll();
-            TurnOnInteractor(InteractorHolder.BlockInteractors.SendMeteor);
+            TurnOnInteractor(InteractorHolder.BlockInteractors.MakeDesert);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            TurnOffAll();
+            TurnOnInteractor(InteractorHolder.BlockInteractors.Move);
         }
     }
 

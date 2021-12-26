@@ -177,34 +177,34 @@ public class CameraMover : MonoBehaviour
         }
         else
         {
-            if (Input.GetMouseButton(1))
-            {
-                if (!_leftDown)
-                {
-                    _startLeftMouseButtonMovePosition = Input.mousePosition;
-                    _camera.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                }
-                else
-                {
-                    var endPosition = Input.mousePosition;
-                    var mouseDirection = (endPosition - _startLeftMouseButtonMovePosition).normalized;
-
-                    var curvedProgress = (endPosition - _startLeftMouseButtonMovePosition).magnitude / 250;
-                    var speed = .025f * Mathf.Clamp(curvedProgress, 0, 1);
-
-                    var newDirection = _camera.transform.rotation * mouseDirection * speed;
-                    newDirection.y = 0;
-
-                    _camera.transform.position += newDirection;
-                }
-
-                _leftDown = true;
-            }
-
-            if (!Input.GetMouseButton(1))
-            {
-                _leftDown = false;
-            }
+            // if (Input.GetMouseButton(1))
+            // {
+            //     if (!_leftDown)
+            //     {
+            //         _startLeftMouseButtonMovePosition = Input.mousePosition;
+            //         _camera.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            //     }
+            //     else
+            //     {
+            //         var endPosition = Input.mousePosition;
+            //         var mouseDirection = (endPosition - _startLeftMouseButtonMovePosition).normalized;
+            //
+            //         var curvedProgress = (endPosition - _startLeftMouseButtonMovePosition).magnitude / 250;
+            //         var speed = .025f * Mathf.Clamp(curvedProgress, 0, 1);
+            //
+            //         var newDirection = _camera.transform.rotation * mouseDirection * speed;
+            //         newDirection.y = 0;
+            //
+            //         _camera.transform.position += newDirection;
+            //     }
+            //
+            //     _leftDown = true;
+            // }
+            //
+            // if (!Input.GetMouseButton(1))
+            // {
+            //     _leftDown = false;
+            // }
         }
     }
 

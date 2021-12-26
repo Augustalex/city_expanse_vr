@@ -29,7 +29,7 @@ public class RaiseWaterBlockInteractor : BlockInteractor
 
         RaiseWater.Get().Use(blockComponent);
 
-            PlaySound(BlockSoundLibrary.BlockSound.PlaceItem, other.transform.position);
-            _lastInteract = Time.time;
+        PlaySound(BlockSoundLibrary.BlockSound.PlaceItem, other.transform.position);
+        _lastInteract = Time.time;
     }
 }

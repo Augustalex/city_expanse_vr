@@ -19,6 +19,7 @@ public class InteractorHolder : MonoBehaviour
     private ConstructHouseBlockInteractor _constructHouseInteractor;
     private ConstructDocksBlockInteractor _constructDocksInteractor;
     private ConstructFarmBlockInteractor _constructFarmBlockInteractor;
+    private MoveInteractor _moveBlockInteractor;
     private bool _hasInteractor;
 
     public enum BlockInteractors
@@ -31,7 +32,8 @@ public class InteractorHolder : MonoBehaviour
         MakeDesert,
         ConstructHouse,
         ConstructDocks,
-        ConstructFarm
+        ConstructFarm,
+        Move
     }
 
     private void Start()
@@ -61,7 +63,10 @@ public class InteractorHolder : MonoBehaviour
 
         _constructFarmBlockInteractor = GetComponent<ConstructFarmBlockInteractor>();
         _constructFarmBlockInteractor.interactorEnabled = false;
-
+        
+        _moveBlockInteractor = GetComponent<MoveInteractor>();
+        _moveBlockInteractor.interactorEnabled = false;
+        
         _interactorComponents.AddRange(new List<BlockInteractor>
             {
                 _digInteractor,
@@ -72,7 +77,8 @@ public class InteractorHolder : MonoBehaviour
                 _makeDesertInteractor,
                 _constructHouseInteractor,
                 _constructDocksInteractor,
-                _constructFarmBlockInteractor
+                _constructFarmBlockInteractor,
+                _moveBlockInteractor
             }
         );
     }
@@ -126,6 +132,10 @@ public class InteractorHolder : MonoBehaviour
         else if (blockInteractor == BlockInteractors.ConstructFarm)
         {
             _constructFarmBlockInteractor.interactorEnabled = true;
+        }
+        else if (blockInteractor == BlockInteractors.Move)
+        {
+            _moveBlockInteractor.interactorEnabled = true;
         }
 
         _hasInteractor = true;

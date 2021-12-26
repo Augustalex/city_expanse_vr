@@ -76,7 +76,7 @@ public class TileClicker : MonoBehaviour
 
     private bool GetPointerDown()
     {
-        return Input.GetMouseButton(0) || (Input.touchCount == 1);
+        return Input.GetMouseButton(0) || (Input.touchCount == 1) || Input.GetMouseButton(1);
     }
 
     private void StartRayInspection()
