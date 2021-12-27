@@ -16,7 +16,7 @@ public class RaiseLandBlockInteractor : BlockInteractor
 
         return blockComponent &&
                blockComponent.blockType == Block.BlockType.Grass &&
-               blockComponent.IsVacant() &&
+               (blockComponent.OccupiedByGreens() || blockComponent.IsVacant()) &&
                blockComponent.IsInteractable();
     }
 
@@ -28,7 +28,8 @@ public class RaiseLandBlockInteractor : BlockInteractor
     public override void Interact(GameObject other)
     {
         var blockComponent = other.gameObject.GetComponent<Block>();
-
+        blockComponent.DestroyOccupant();
+        
         var grass = Instantiate(grassBlockTemplate);
         var grassBlock = grass.GetComponentInChildren<Block>();
         GetWorldPlane().AddBlockOnTopOf(grassBlock, grass, blockComponent);

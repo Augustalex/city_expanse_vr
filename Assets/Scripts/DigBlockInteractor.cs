@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class DigBlockInteractor : BlockInteractor
 {
@@ -14,7 +15,7 @@ public class DigBlockInteractor : BlockInteractor
     {
         var blockComponent = other.GetComponent<Block>();
         GetWorldPlane().RemoveAndDestroyBlock(blockComponent);
-
+        
         if (Time.time - _lastInteract > .1f)
         {
             PlaySound(BlockSoundLibrary.BlockSound.Dig, other.transform.position);
@@ -37,8 +38,7 @@ public class DigBlockInteractor : BlockInteractor
         {
             return blockComponent
                    && blockComponent.CanBeDugAsAnIndependentBlock()
-                   && blockComponent.IsTopBlockInStack()
-                   && blockComponent.IsVacant()
+                   && (blockComponent.OccupiedByGreens() || (blockComponent.IsVacant() && blockComponent.IsTopBlockInStack()))
                    && !blockComponent.IsLowestLevel();
         }
         else
@@ -46,7 +46,7 @@ public class DigBlockInteractor : BlockInteractor
             return blockComponent
                    && blockComponent.CanBeDugAsAnIndependentBlock()
                    && blockComponent.IsGroundLevel()
-                   && blockComponent.IsVacant();
+                   && (blockComponent.OccupiedByGreens() || blockComponent.IsVacant());
         }
     }
 }

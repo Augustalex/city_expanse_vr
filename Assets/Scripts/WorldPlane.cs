@@ -25,6 +25,7 @@ public class WorldPlane : MonoBehaviour
     private Vector2 _currentDimensions;
     private Vector2 _currentMinBound = new Vector2(0, 0);
     private static WorldPlane _worldPlaneInstance;
+    private bool _doneGeneratingWorld = false;
 
     private void Awake()
     {
@@ -63,6 +64,11 @@ public class WorldPlane : MonoBehaviour
     public static WorldPlane Get()
     {
         return _worldPlaneInstance;
+    }
+
+    public bool WorldGenerationDone()
+    {
+        return _doneGeneratingWorld;
     }
 
     public Vector3 ToRealCoordinates(Vector3 position)
@@ -105,20 +111,20 @@ public class WorldPlane : MonoBehaviour
     {
         blocksRepository.Remove(position);
     }
-
+    
     private IEnumerable<Vector3> GetNeighbouringPositions(Vector3 position)
     {
         var middle = Math.Abs(position.x % 2) < .5f;
         var positionY = 0;
         var translations = new List<Vector3>
         {
-            new Vector3(-1, positionY, 0),
+            new Vector3(-1, positionY, middle ? -1 : 0),
             new Vector3(-1, positionY, middle ? 0 : 1),
 
             new Vector3(0, positionY, -1),
             new Vector3(0, positionY, 1),
 
-            new Vector3(1, positionY, 0),
+            new Vector3(1, positionY, middle ? -1 : 0),
             new Vector3(1, positionY, middle ? 0 : 1),
         };
         var nearbyPositions = translations
@@ -250,6 +256,14 @@ public class WorldPlane : MonoBehaviour
             .Where(newPosition => blocksRepository.HasAtPosition(newPosition))
             .Select(newPosition => blocksRepository.GetAtPosition(newPosition));
     }
+    
+    public IEnumerable<Block> GetNearbyLevelBlocks(Vector3 position)
+    {
+        return GetNeighbouringPositions(position)
+            .Select(p => new Vector3(p.x, position.y, p.z))
+            .Where(newPosition => blocksRepository.HasAtPosition(newPosition))
+            .Select(newPosition => blocksRepository.GetAtPosition(newPosition));
+    }
 
     public IEnumerable<Block> GetNearbyLotsStream(Vector3 position)
     {
@@ -288,6 +302,12 @@ public class WorldPlane : MonoBehaviour
             .Where(pair => pair.Value.IsVacant())
             .Select(pair => pair.Value)
             .ToList();
+    }
+    
+    public IEnumerable<KeyValuePair<Vector3, Block>> GetAllTopLots()
+    {
+        return blocksRepository.StreamPairs()
+            .Where(pair => pair.Value.IsTopBlockInStack() && pair.Value.IsLand());
     }
 
     public IEnumerable<Block> GetVacantBlocksStream()
@@ -563,6 +583,8 @@ public class WorldPlane : MonoBehaviour
                 }
             }
         }
+
+        _doneGeneratingWorld = true;
     }
 
     private bool WithinRange(float value, float min, float max)

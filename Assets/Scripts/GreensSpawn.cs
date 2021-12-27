@@ -23,6 +23,11 @@ public class GreensSpawn : MonoBehaviour
     private Vector3 _originalScale;
     private int _rain = 0;
 
+    public Block GetBlockRelative()
+    {
+        return GetComponent<BlockRelative>().block;
+    }
+    
     void Awake()
     {
         var rotation = new Vector3(0, Random.value * 360, 0);
@@ -47,10 +52,10 @@ public class GreensSpawn : MonoBehaviour
         _grown = true;
 
         _greens.SetActive(true);
-        if (Random.value < .5f)
-        {
+        // if (Random.value < .5f)
+        // {
             _seed.SetActive(false);
-        }
+        // }
     }
 
     public bool IsGrown()

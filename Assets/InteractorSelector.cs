@@ -14,6 +14,8 @@ public class InteractorSelector : MonoBehaviour
     
     void Update()
     {
+        return; // Disabled since now there is only the move interaction
+        
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             TurnOffAll();

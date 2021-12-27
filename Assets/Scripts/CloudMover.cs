@@ -51,6 +51,16 @@ public class CloudMover : MonoBehaviour
 
             return;
         }
+        else
+        {
+            if (Random.value < .01f)
+            {
+                var plane = Random.insideUnitCircle;
+                var randomDirection = new Vector3(plane.x, 0, plane.y);
+                var randomForce = maxForce * .5f;
+                _rigidbody.AddForce(randomDirection * randomForce, ForceMode.Impulse);
+            }
+        }
 
         if (IsOutsideLeft())
         {

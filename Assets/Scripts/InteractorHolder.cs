@@ -81,6 +81,9 @@ public class InteractorHolder : MonoBehaviour
                 _moveBlockInteractor
             }
         );
+        
+        //Force enable Move interactor - since it is now the only interactor
+        SetInteractor(BlockInteractors.Move);
     }
 
     public bool AnyInteractorActive()

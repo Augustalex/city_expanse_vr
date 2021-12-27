@@ -16,6 +16,9 @@ TagManager:
   - CloudCollisionBox
   - IconButton
   - SunClock
+  - LakeSpawnHighlight
+  - LakeSpawn
+  - GreensSpawn
   layers:
   - Default
   - TransparentFX

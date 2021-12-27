@@ -53,8 +53,15 @@ public abstract class BlockInteractor : MonoBehaviour
 
         if (isStartingInteractor)
         {
-            GetComponentInParent<BlockInteractionPalette>().Select(this);
-            Activate();
+            var blockInteractorPalette = GetComponentInParent<BlockInteractionPalette>();
+            if (blockInteractorPalette)
+            {
+                blockInteractorPalette.Select(this);
+            }
+            else
+            {
+                Activate();
+            }
         }
 
 

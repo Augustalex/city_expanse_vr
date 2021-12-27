@@ -105,6 +105,10 @@ public class Block : MonoBehaviour
         return GetOccupantType() == OccupyingType.Block;
     }
 
+    public int GetHeight()
+    {
+        return (int) _gridPosition.y;
+    }
 
     public bool IsLot()
     {

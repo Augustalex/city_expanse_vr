@@ -17,6 +17,9 @@ public class TileClicker : MonoBehaviour
     private MenuScene _menuScene;
     private DiscoveryScene _discoveryScene;
     private const float CooldownTime = 2f;
+    
+    private bool _preventInteractionCooldown;
+    private float _preventInteractionCooldownTimeLeft;
 
     void Start()
     {
@@ -62,6 +65,15 @@ public class TileClicker : MonoBehaviour
                 ResetCooldown();
             }
         }
+        
+        if (_preventInteractionCooldown)
+        {
+            _preventInteractionCooldownTimeLeft -= Time.deltaTime;
+            if (_preventInteractionCooldownTimeLeft < 0)
+            {
+                _preventInteractionCooldown = false;
+            }
+        }
     }
 
     private void HideInteractorGhost()
@@ -79,6 +91,11 @@ public class TileClicker : MonoBehaviour
         return Input.GetMouseButton(0) || (Input.touchCount == 1) || Input.GetMouseButton(1);
     }
 
+    public bool IsRightClick()
+    {
+        return Input.GetMouseButton(1);
+    }
+
     private void StartRayInspection()
     {
         RaycastHit hit;
@@ -94,6 +111,8 @@ public class TileClicker : MonoBehaviour
 
     private void StartRayInteraction()
     {
+        if (_preventInteractionCooldown) return;
+        
         RaycastHit hit;
         Ray ray = mainCamera.ScreenPointToRay(GetPointerPosition());
         if (!Physics.Raycast(ray, out hit, 1000.0f)) return;
@@ -102,12 +121,37 @@ public class TileClicker : MonoBehaviour
         {
             StartCloudRayInteraction();
         }
+        else if (hit.collider.CompareTag("LakeSpawnHighlight"))
+        {
+            var lakeSpawn = hit.collider.gameObject.GetComponent<LakeSpawnHighlight>().GetLakeSpawn();
+            if (IsRightClick())
+            {
+                lakeSpawn.DestroyLakeSpawn();
+            }
+            else
+            {
+                LakeSpawner.Get().ActivateLakeSpawn(lakeSpawn);
+            }
+            
+            _preventInteractionCooldown = true;
+            _preventInteractionCooldownTimeLeft = 1;
+        }
         else if (_interactorHolder.AnyInteractorActive() && !_cloudMover.IsMovingWithMouse())
         {
             var blockRigidbody = hit.collider.attachedRigidbody;
-            if (blockRigidbody && _interactorHolder.GetInteractor().Interactable(blockRigidbody.gameObject))
+            if (blockRigidbody)
             {
-                StartBlockRayInteraction(blockRigidbody.gameObject);
+                var target = blockRigidbody.gameObject;
+                if (target.CompareTag("GreensSpawn"))
+                {
+                    Debug.Log("GREENSSPAWN!");
+                    target = target.GetComponent<GreensSpawn>().GetBlockRelative().gameObject;
+                }
+            
+                if (_interactorHolder.GetInteractor().Interactable(target))
+                {
+                    StartBlockRayInteraction(target);
+                }
             }
         }
     }

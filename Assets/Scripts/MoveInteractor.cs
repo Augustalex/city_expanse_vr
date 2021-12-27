@@ -12,6 +12,9 @@ public class MoveInteractor : BlockInteractor
     private int _count;
     public override InteractorHolder.BlockInteractors InteractorType => InteractorHolder.BlockInteractors.Move;
 
+    private const int MoveBufferCount = 12;
+    private const int DigMouseButton = 0;
+    private const int RaiseMouseButton = 1;
 
     public override bool LockOnLayer()
     {
@@ -22,7 +25,7 @@ public class MoveInteractor : BlockInteractor
     {
         var blockComponent = other.GetComponent<Block>();
 
-        if (Input.GetMouseButton(1) && _count < 30)
+        if (Input.GetMouseButton(DigMouseButton) && _count < MoveBufferCount)
         {
                 var isWater = blockComponent.IsWater();
                 if (_count == 0)
@@ -42,7 +45,7 @@ public class MoveInteractor : BlockInteractor
                     digBlockInteractor.Interact(other);
                 }
         } 
-        else if (Input.GetMouseButton(0) && _count > 0)
+        else if (Input.GetMouseButton(RaiseMouseButton) && _count > 0)
         {
             if (_count > 0 && _activeBlockType == Block.BlockType.Lake && blockComponent.IsOutsideWater())
             {
@@ -70,7 +73,7 @@ public class MoveInteractor : BlockInteractor
         var blockComponent = other.GetComponent<Block>();
         if (!blockComponent) return false;
         
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(DigMouseButton))
         {
             var isWater = blockComponent.IsWater();
             if (_count == 0)
@@ -87,7 +90,7 @@ public class MoveInteractor : BlockInteractor
                 return digBlockInteractor.Interactable(other);
             }
         }
-        else if (Input.GetMouseButton(0) && _count > 0)
+        else if (Input.GetMouseButton(RaiseMouseButton) && _count > 0)
         {
             if (_count > 0 && _activeBlockType == Block.BlockType.Lake && blockComponent.IsOutsideWater()) return true;
             
