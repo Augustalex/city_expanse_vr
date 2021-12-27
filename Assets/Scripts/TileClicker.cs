@@ -16,8 +16,8 @@ public class TileClicker : MonoBehaviour
     private CloudMover _cloudMover;
     private MenuScene _menuScene;
     private DiscoveryScene _discoveryScene;
-    private const float CooldownTime = 2f;
-    
+    private const float CooldownTime = .4f;
+
     private bool _preventInteractionCooldown;
     private float _preventInteractionCooldownTimeLeft;
 
@@ -134,23 +134,26 @@ public class TileClicker : MonoBehaviour
             }
             
             _preventInteractionCooldown = true;
-            _preventInteractionCooldownTimeLeft = 1;
+            _preventInteractionCooldownTimeLeft = .25f;
         }
-        else if (_interactorHolder.AnyInteractorActive() && !_cloudMover.IsMovingWithMouse())
+        else if (!_cloudMover.IsMovingWithMouse())
         {
-            var blockRigidbody = hit.collider.attachedRigidbody;
-            if (blockRigidbody)
+            if (_interactorHolder.AnyInteractorActive())
             {
-                var target = blockRigidbody.gameObject;
-                if (target.CompareTag("GreensSpawn"))
+                var blockRigidbody = hit.collider.attachedRigidbody;
+                if (blockRigidbody)
                 {
-                    Debug.Log("GREENSSPAWN!");
-                    target = target.GetComponent<GreensSpawn>().GetBlockRelative().gameObject;
-                }
+                    var target = blockRigidbody.gameObject;
+                    if (target.CompareTag("GreensSpawn"))
+                    {
+                        Debug.Log("GREENSSPAWN!");
+                        target = target.GetComponent<GreensSpawn>().GetBlockRelative().gameObject;
+                    }
             
-                if (_interactorHolder.GetInteractor().Interactable(target))
-                {
-                    StartBlockRayInteraction(target);
+                    if (_interactorHolder.GetInteractor().Interactable(target))
+                    {
+                        StartBlockRayInteraction(target);
+                    }
                 }
             }
         }
@@ -170,6 +173,10 @@ public class TileClicker : MonoBehaviour
                 .ResurrectNearbyBlocks(blockGameObject.GetComponent<Block>().GetGridPosition());
             _interactorHolder.GetInteractor().Interact(blockGameObject);
 
+            
+            _preventInteractionCooldown = true;
+            _preventInteractionCooldownTimeLeft = .075f;
+            
             _lastLayer = layer;
             _coolingDown = true;
             _cooldownTimeLeft = CooldownTime;

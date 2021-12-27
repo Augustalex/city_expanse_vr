@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
@@ -21,6 +22,12 @@ public class CameraMover : MonoBehaviour
     private bool _leftDownTouch;
     private static CameraMover _instance;
     private InteractorHolder _interactorHolder;
+    private static bool _doRotate;
+    private List<Quaternion> _rotations;
+    private int _currentRotation;
+    private float _lastRotate;
+    private bool _canRotate;
+    private bool _rotateKeysUp;
 
     public static CameraMover Get()
     {
@@ -40,6 +47,8 @@ public class CameraMover : MonoBehaviour
         _interactorHolder = GetComponent<InteractorHolder>();
 
         _postProcessingController.SetDofLevel(PostProcessingController.DofLevel.Low);
+
+        ResetFixedRotations();
     }
 
     void Update()
@@ -49,10 +58,59 @@ public class CameraMover : MonoBehaviour
             HandleZoomTilt();
             HandleRightDragMovement();
         }
-        
+
         HandleKeyboardMovement();
         HandleMousePanMovement();
         ClampCameraPosition();
+
+        RotateCameraToTarget();
+    }
+
+    public static bool IsRotating()
+    {
+        return _doRotate;
+    }
+
+    private void RotateCameraToTarget()
+    {
+        if (!_doRotate) return;
+
+        var targetRotation = _rotations[_currentRotation];
+        Debug.Log(targetRotation);
+
+        var startRotation = _camera.transform.rotation;
+        var angleLeft = Quaternion.Angle(startRotation, targetRotation);
+        _camera.transform.rotation =
+            Quaternion.RotateTowards(_camera.transform.rotation, targetRotation, 360f * Time.deltaTime);
+        var angleTurned = Quaternion.Angle(startRotation, _camera.transform.rotation);
+
+        if (angleTurned > angleLeft || Quaternion.Angle(_camera.transform.rotation, targetRotation) < .01f)
+        {
+            _camera.transform.rotation = targetRotation;
+            _doRotate = false;
+            _canRotate = true;
+        }
+    }
+
+    private void ResetFixedRotations()
+    {
+        var rotations = new List<Quaternion>();
+        var originalRotation = _camera.transform.rotation;
+
+        var rotation = 45;
+        rotations.Add(_camera.transform.rotation);
+        for (var i = 1; i < 360 / rotation; i++)
+        {
+            _camera.transform.RotateAround(_camera.transform.position, Vector3.up, rotation);
+            rotations.Add(_camera.transform.rotation);
+        }
+
+        _camera.transform.rotation = originalRotation;
+
+        _rotations = rotations;
+        _currentRotation = 0;
+        _doRotate = true;
+        _canRotate = false;
     }
 
     private void ClampCameraPosition()
@@ -106,6 +164,8 @@ public class CameraMover : MonoBehaviour
                 _flatInterfaceController.Enable();
                 _postProcessingController.SetDofLevel(PostProcessingController.DofLevel.Low);
             }
+
+            ResetFixedRotations();
         }
     }
 
@@ -158,7 +218,7 @@ public class CameraMover : MonoBehaviour
                     {
                         _leftDownTouch = false;
                     }
-                    else if(_leftDownTouch)
+                    else if (_leftDownTouch)
                     {
                         Vector3 endPosition = GetPointerPosition();
                         var mouseDirection = (endPosition - _startLeftMouseButtonMovePosition).normalized;
@@ -172,7 +232,7 @@ public class CameraMover : MonoBehaviour
                 if (Input.touchCount == 0)
                 {
                     _leftDownTouch = false;
-                }   
+                }
             }
         }
         else
@@ -240,17 +300,41 @@ public class CameraMover : MonoBehaviour
         direction = new Vector3(direction.x, 0, direction.z).normalized;
         _camera.transform.position += direction * (cameraMovementSpeed * Time.deltaTime);
 
-        var rotation = 0;
-        if (Input.GetKey(KeyCode.Q) || Input.touchCount == 3)
-        {
-            rotation -= 1;
-        }
-        else if (Input.GetKey(KeyCode.E) || Input.touchCount == 4)
-        {
-            rotation += 1;
-        }
 
-        _camera.transform.RotateAround(_camera.transform.position, Vector3.up, rotation * 40 * Time.deltaTime);
+        //Handle rotations:
+
+        if (!Input.GetKey(KeyCode.Q) && !Input.GetKey(KeyCode.E)) _rotateKeysUp = true;
+
+        if (_canRotate && _rotateKeysUp)
+        {
+            var rotation = 0;
+            if (Input.GetKey(KeyCode.Q) || Input.touchCount == 3)
+            {
+                rotation -= 1;
+            }
+            else if (Input.GetKey(KeyCode.E) || Input.touchCount == 4)
+            {
+                rotation += 1;
+            }
+
+            if (rotation != 0)
+            {
+                _rotateKeysUp = false;
+                
+                _currentRotation += rotation;
+                if (_currentRotation >= _rotations.Count) _currentRotation = 0;
+                if (_currentRotation < 0) _currentRotation = _rotations.Count - 1;
+
+                Debug.Log("Current rotations: " + _currentRotation);
+                // var originalRotation = _camera.transform.rotation;
+                // _camera.transform.RotateAround(_camera.transform.position, Vector3.up, rotation * 45);
+                // _targetRotation = _camera.transform.rotation;
+                // _camera.transform.rotation = originalRotation;
+
+                _doRotate = true;
+                _canRotate = false;
+            }
+        }
     }
 
     private void HandleRightDragMovement()
@@ -279,7 +363,7 @@ public class CameraMover : MonoBehaviour
 
             _shouldFireCameraInTargetDirection = true;
         }
-        else if(!Input.GetMouseButton(0))
+        else if (!Input.GetMouseButton(0))
         {
             if (_shouldFireCameraInTargetDirection)
             {

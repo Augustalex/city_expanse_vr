@@ -153,7 +153,7 @@ public class Block : MonoBehaviour
 
         IEnumerator UnfreezeSoon()
         {
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(.25f);
             _frozen = false;
         }
     }

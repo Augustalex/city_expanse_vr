@@ -8,7 +8,7 @@ public class MoveInteractor : BlockInteractor
     public RaiseWaterBlockInteractor raiseWaterBlockInteractor;
 
     private Block.BlockType _activeBlockType = Block.BlockType.Grass;
-    
+
     private int _count;
     public override InteractorHolder.BlockInteractors InteractorType => InteractorHolder.BlockInteractors.Move;
 
@@ -25,26 +25,48 @@ public class MoveInteractor : BlockInteractor
     {
         var blockComponent = other.GetComponent<Block>();
 
+        if (Input.GetMouseButton(DigMouseButton))
+        {
+            var isWater = blockComponent.IsWater();
+            Debug.Log("isWater: " + isWater);
+            if (isWater)
+            {
+                digWaterBlockInteractor.Interact(other);
+            }
+            else
+            {
+                digBlockInteractor.Interact(other);
+            }
+        }
+        else if (Input.GetMouseButton(RaiseMouseButton))
+        {
+            raiseLandBlockInteractor.Interact(other);
+        }
+    }
+
+    public void _Interact(GameObject other)
+    {
+        var blockComponent = other.GetComponent<Block>();
+
         if (Input.GetMouseButton(DigMouseButton) && _count < MoveBufferCount)
         {
-                var isWater = blockComponent.IsWater();
-                if (_count == 0)
-                {
-                    _activeBlockType = isWater ? Block.BlockType.Lake : Block.BlockType.Grass;
-                }
-            
-                _count += 1;
-            
-                if(_activeBlockType == Block.BlockType.Lake)
-                {
-                
-                    digWaterBlockInteractor.Interact(other);
-                }
-                else
-                {
-                    digBlockInteractor.Interact(other);
-                }
-        } 
+            var isWater = blockComponent.IsWater();
+            if (_count == 0)
+            {
+                _activeBlockType = isWater ? Block.BlockType.Lake : Block.BlockType.Grass;
+            }
+
+            _count += 1;
+
+            if (_activeBlockType == Block.BlockType.Lake)
+            {
+                digWaterBlockInteractor.Interact(other);
+            }
+            else
+            {
+                digBlockInteractor.Interact(other);
+            }
+        }
         else if (Input.GetMouseButton(RaiseMouseButton) && _count > 0)
         {
             if (_count > 0 && _activeBlockType == Block.BlockType.Lake && blockComponent.IsOutsideWater())
@@ -58,7 +80,7 @@ public class MoveInteractor : BlockInteractor
 
                 if (_activeBlockType == Block.BlockType.Lake)
                 {
-                    raiseWaterBlockInteractor.Interact(other);   
+                    raiseWaterBlockInteractor.Interact(other);
                 }
                 else
                 {
@@ -72,7 +94,35 @@ public class MoveInteractor : BlockInteractor
     {
         var blockComponent = other.GetComponent<Block>();
         if (!blockComponent) return false;
-        
+
+        if (Input.GetMouseButton(DigMouseButton))
+        {
+            var isWater = blockComponent.IsWater();
+            if (isWater)
+            {
+                return digWaterBlockInteractor.Interactable(other);
+            }
+            else
+            {
+                return digBlockInteractor.Interactable(other);
+            }
+            
+        }
+        else if (Input.GetMouseButton(RaiseMouseButton))
+        {
+            return raiseLandBlockInteractor.Interactable(other);
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool _Interactable(GameObject other)
+    {
+        var blockComponent = other.GetComponent<Block>();
+        if (!blockComponent) return false;
+
         if (Input.GetMouseButton(DigMouseButton))
         {
             var isWater = blockComponent.IsWater();
@@ -93,7 +143,7 @@ public class MoveInteractor : BlockInteractor
         else if (Input.GetMouseButton(RaiseMouseButton) && _count > 0)
         {
             if (_count > 0 && _activeBlockType == Block.BlockType.Lake && blockComponent.IsOutsideWater()) return true;
-            
+
             if (_activeBlockType == Block.BlockType.Lake)
             {
                 return raiseWaterBlockInteractor.Interactable(other);
