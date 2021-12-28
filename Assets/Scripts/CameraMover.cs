@@ -28,6 +28,7 @@ public class CameraMover : MonoBehaviour
     private float _lastRotate;
     private bool _canRotate;
     private bool _rotateKeysUp;
+    private float _cameraStartedMovingAt = -1f;
 
     public static CameraMover Get()
     {
@@ -274,7 +275,6 @@ public class CameraMover : MonoBehaviour
 
     private void HandleKeyboardMovement()
     {
-        const float cameraMovementSpeed = .75f;
         var direction = Vector3.zero;
         if (Input.GetKey(KeyCode.W))
         {
@@ -296,8 +296,20 @@ public class CameraMover : MonoBehaviour
             direction += _camera.transform.right;
         }
 
+        if (direction != Vector3.zero)
+        {
+            if (_cameraStartedMovingAt < 0)
+            {
+                _cameraStartedMovingAt = Time.time;
+            }
+        }
+        else
+        {
+            _cameraStartedMovingAt = -1;
+        }
+        
         direction = new Vector3(direction.x, 0, direction.z).normalized;
-        _camera.transform.position += direction * (cameraMovementSpeed * Time.deltaTime);
+        _camera.transform.position += direction * (CameraSpeed() * Time.deltaTime);
 
 
         //Handle rotations:
@@ -328,6 +340,31 @@ public class CameraMover : MonoBehaviour
                 _canRotate = false;
             }
         }
+    }
+
+    private float CameraSpeed()
+    {
+        const float InteractionCooldownFast = .5f;
+        const float InteractionCooldownSlow = 2.5f;
+        const float RampUpTime = 1.2f;
+        
+        var duration = GetCameraMovementDuration();
+
+        var progress = duration / RampUpTime;
+        var easedProgress = Mathf.Clamp(EaseInQuad(progress), 0, 1);
+        var normalizedValue = ((InteractionCooldownSlow - InteractionCooldownFast)  * easedProgress) + InteractionCooldownFast;
+        Debug.Log("normalizedValue: " + normalizedValue + ", easedProgress: " + easedProgress + ", duration: " + duration);
+        return normalizedValue;
+    }
+
+    private float EaseInQuad(float x) {
+        return x * x * x;
+    }
+
+    private float GetCameraMovementDuration()
+    {
+        if (_cameraStartedMovingAt < 0) return 0;
+        return Time.time - _cameraStartedMovingAt;
     }
 
     private void HandleRightDragMovement()
