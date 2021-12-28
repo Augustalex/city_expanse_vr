@@ -76,7 +76,6 @@ public class CameraMover : MonoBehaviour
         if (!_doRotate) return;
 
         var targetRotation = _rotations[_currentRotation];
-        Debug.Log(targetRotation);
 
         var startRotation = _camera.transform.rotation;
         var angleLeft = Quaternion.Angle(startRotation, targetRotation);
@@ -324,12 +323,6 @@ public class CameraMover : MonoBehaviour
                 _currentRotation += rotation;
                 if (_currentRotation >= _rotations.Count) _currentRotation = 0;
                 if (_currentRotation < 0) _currentRotation = _rotations.Count - 1;
-
-                Debug.Log("Current rotations: " + _currentRotation);
-                // var originalRotation = _camera.transform.rotation;
-                // _camera.transform.RotateAround(_camera.transform.position, Vector3.up, rotation * 45);
-                // _targetRotation = _camera.transform.rotation;
-                // _camera.transform.rotation = originalRotation;
 
                 _doRotate = true;
                 _canRotate = false;

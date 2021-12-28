@@ -28,7 +28,6 @@ public class MoveInteractor : BlockInteractor
         if (Input.GetMouseButton(DigMouseButton))
         {
             var isWater = blockComponent.IsWater();
-            Debug.Log("isWater: " + isWater);
             if (isWater)
             {
                 digWaterBlockInteractor.Interact(other);

@@ -1236,6 +1236,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6606253859512846828}
   - component: {fileID: 3046012326397762824}
+  - component: {fileID: 8465261317146381692}
   m_Layer: 2
   m_Name: Mesh
   m_TagString: Untagged
@@ -1275,6 +1276,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b04e94a1c8b843a4bb7d8c25368078a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &8465261317146381692
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6792906657300468208}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: db5a995e8d79eff42b18eb36df89b6e4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6923009740083582897
 GameObject:
   m_ObjectHideFlags: 0

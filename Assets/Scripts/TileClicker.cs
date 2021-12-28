@@ -16,11 +16,43 @@ public class TileClicker : MonoBehaviour
     private CloudMover _cloudMover;
     private MenuScene _menuScene;
     private DiscoveryScene _discoveryScene;
+    
     private const float CooldownTime = .4f;
+    private const float InteractionCooldownSlow = .2f;
+    private const float InteractionCooldownFast = .05f;
+    private const float RampUpTime = .5f;
 
     private bool _preventInteractionCooldown;
     private float _preventInteractionCooldownTimeLeft;
 
+    private float _startedInteractionAt = -1;
+    private static TileClicker _instance;
+
+    private float InteractionCooldown()
+    {
+        var duration = GetInteractionDuration();
+
+        var progress = duration / RampUpTime;
+        var easedProgress = Mathf.Clamp(1 - EaseInQuad(progress), 0, 1);
+        var normalizedValue = .25f * easedProgress;
+        var value =  Mathf.Clamp(normalizedValue, InteractionCooldownFast, InteractionCooldownSlow);
+        return value;
+    }
+    
+    private float EaseInQuad(float x) {
+        return x * x;
+    }
+
+    public static TileClicker Get()
+    {
+        return _instance;
+    }
+    
+    private void Awake()
+    {
+        _instance = this;
+    }
+    
     void Start()
     {
         _interactorHolder = GetComponent<InteractorHolder>();
@@ -35,6 +67,8 @@ public class TileClicker : MonoBehaviour
     {
         if (GetPointerDown())
         {
+            if (_startedInteractionAt < 0) _startedInteractionAt = Time.time;
+            
             if (_interactorHolder.AnyInteractorActive())
             {
                 HideInteractorGhost();
@@ -49,6 +83,8 @@ public class TileClicker : MonoBehaviour
         }
         else
         {
+            _startedInteractionAt = -1;
+            
             if (_interactorHolder.AnyInteractorActive())
             {
                 StartRayInspection();
@@ -74,6 +110,12 @@ public class TileClicker : MonoBehaviour
                 _preventInteractionCooldown = false;
             }
         }
+    }
+
+    public float GetInteractionDuration()
+    {
+        if (_startedInteractionAt < 0) return 0;
+        return Time.time - _startedInteractionAt;
     }
 
     private void HideInteractorGhost()
@@ -146,7 +188,6 @@ public class TileClicker : MonoBehaviour
                     var target = blockRigidbody.gameObject;
                     if (target.CompareTag("GreensSpawn"))
                     {
-                        Debug.Log("GREENSSPAWN!");
                         target = target.GetComponent<GreensSpawn>().GetBlockRelative().gameObject;
                     }
             
@@ -175,7 +216,7 @@ public class TileClicker : MonoBehaviour
 
             
             _preventInteractionCooldown = true;
-            _preventInteractionCooldownTimeLeft = .075f;
+            _preventInteractionCooldownTimeLeft = InteractionCooldown();
             
             _lastLayer = layer;
             _coolingDown = true;
