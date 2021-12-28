@@ -353,7 +353,6 @@ public class CameraMover : MonoBehaviour
         var progress = duration / RampUpTime;
         var easedProgress = Mathf.Clamp(EaseInQuad(progress), 0, 1);
         var normalizedValue = ((InteractionCooldownSlow - InteractionCooldownFast)  * easedProgress) + InteractionCooldownFast;
-        Debug.Log("normalizedValue: " + normalizedValue + ", easedProgress: " + easedProgress + ", duration: " + duration);
         return normalizedValue;
     }
 
