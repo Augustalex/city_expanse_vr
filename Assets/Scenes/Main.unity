@@ -9607,6 +9607,8 @@ MonoBehaviour:
     type: 3}
   topWaterBlockTemplate: {fileID: 612181966713644638, guid: 93e1621042f7a6642852b4811decd2c9,
     type: 3}
+  regularWaterBlockTemplate: {fileID: 1341636617038954440, guid: 02cbe2d83c65d904a890ff58e046ad7f,
+    type: 3}
   sandBlockTemplate: {fileID: 612181966713644638, guid: 90738e66673ec454b92002eb0d8e2672,
     type: 3}
   oceanShallowBlockTemplate: {fileID: 612181966713644638, guid: 2d3750f17bd503744889b661f30e62f9,

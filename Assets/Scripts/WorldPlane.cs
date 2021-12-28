@@ -517,49 +517,94 @@ public class WorldPlane : MonoBehaviour
                             {
                                 var neededLeftColumn = isMiddle ? 0 : -1;
                                 var neededRightColumn = dimensions.x - 1;
+                                
+                                // Fill outmost border with water
                                 if (column == neededLeftColumn || column == neededRightColumn || row == 0 ||
                                     row == dimensions.y - 1)
                                 {
                                     blockToUse = BlockFactory.Get().topWaterBlockTemplate;
                                 }
-                                else if (WithinRange(column, neededLeftColumn + 1, neededLeftColumn + 3) ||
-                                         WithinRange(column, neededRightColumn - 3, neededRightColumn - 1) ||
-                                         WithinRange(row, 1, 3) ||
-                                         WithinRange(row, dimensions.y - 4, dimensions.y - 2))
+                                else
                                 {
-                                    if (WithinRange(column, neededLeftColumn + 1, neededLeftColumn + 2) ||
-                                        WithinRange(column, neededRightColumn - 2, neededRightColumn - 1) ||
-                                        WithinRange(row, 1, 2) ||
-                                        WithinRange(row, dimensions.y - 3, dimensions.y - 2))
+                                    var point = new Vector2(column, row);
+                                    var center = new Vector2(Mathf.Round(dimensions.x / 2), Mathf.Round(dimensions.y / 2));
+                                    var distanceToCenter = Vector2.Distance(point, center);
+                                    var radius = Mathf.Round(dimensions.x / 2);
+
+                                    var distanceFactor = distanceToCenter / radius;
+                                    if (distanceFactor > .95f)
                                     {
-                                        if (WithinRange(column, neededLeftColumn + 1, neededLeftColumn + 1) ||
-                                            WithinRange(column, neededRightColumn - 1, neededRightColumn - 1) ||
-                                            WithinRange(row, 1, 1) ||
-                                            WithinRange(row, dimensions.y - 2, dimensions.y - 2))
+                                        blockToUse = BlockFactory.Get().topWaterBlockTemplate;
+                                    }
+                                    else if (distanceFactor > .9f)
+                                    {
+                                        if (Random.value < .95f)
                                         {
-                                            if (Random.value < .7)
-                                            {
-                                                blockToUse = BlockFactory.Get().topWaterBlockTemplate;
-                                            }
-                                            else
-                                            {
-                                                blockToUse = BlockFactory.Get().sandBlockTemplate;
-                                            }
-                                        }
-                                        else if (Random.value < .2)
-                                        {
-                                            blockToUse = BlockFactory.Get().topWaterBlockTemplate;
+                                            blockToUse = BlockFactory.Get().regularWaterBlockTemplate;
                                         }
                                         else
                                         {
                                             blockToUse = BlockFactory.Get().sandBlockTemplate;
                                         }
                                     }
-                                    else if (Random.value < .8f)
+                                    else if (distanceFactor > .8f)
                                     {
-                                        blockToUse = BlockFactory.Get().sandBlockTemplate;
+                                        if (Random.value < .7f)
+                                        {
+                                            blockToUse = BlockFactory.Get().sandBlockTemplate;
+                                        }
+                                        else
+                                        {
+                                            blockToUse = BlockFactory.Get().regularWaterBlockTemplate;
+                                        }
+                                    }
+                                    else if (distanceFactor > .6f)
+                                    {
+                                        if (Random.value < .8f)
+                                        {
+                                            blockToUse = BlockFactory.Get().sandBlockTemplate;
+                                        }
                                     }
                                 }
+
+                                // else if (WithinRange(column, neededLeftColumn + 1, neededLeftColumn + 3) ||
+                                //          WithinRange(column, neededRightColumn - 3, neededRightColumn - 1) ||
+                                //          WithinRange(row, 1, 3) ||
+                                //          WithinRange(row, dimensions.y - 4, dimensions.y - 2))
+                                // {
+                                //     if (WithinRange(column, neededLeftColumn + 1, neededLeftColumn + 2) ||
+                                //         WithinRange(column, neededRightColumn - 2, neededRightColumn - 1) ||
+                                //         WithinRange(row, 1, 2) ||
+                                //         WithinRange(row, dimensions.y - 3, dimensions.y - 2))
+                                //     {
+                                //         if (WithinRange(column, neededLeftColumn + 1, neededLeftColumn + 1) ||
+                                //             WithinRange(column, neededRightColumn - 1, neededRightColumn - 1) ||
+                                //             WithinRange(row, 1, 1) ||
+                                //             WithinRange(row, dimensions.y - 2, dimensions.y - 2))
+                                //         {
+                                //             if (Random.value < .7)
+                                //             {
+                                //                 blockToUse = BlockFactory.Get().topWaterBlockTemplate;
+                                //             }
+                                //             else
+                                //             {
+                                //                 blockToUse = BlockFactory.Get().sandBlockTemplate;
+                                //             }
+                                //         }
+                                //         else if (Random.value < .2)
+                                //         {
+                                //             blockToUse = BlockFactory.Get().topWaterBlockTemplate;
+                                //         }
+                                //         else
+                                //         {
+                                //             blockToUse = BlockFactory.Get().sandBlockTemplate;
+                                //         }
+                                //     }
+                                //     else if (Random.value < .8f)
+                                //     {
+                                //         blockToUse = BlockFactory.Get().sandBlockTemplate;
+                                //     }
+                                // }
                             }
 
                             var blockPosition = new Vector3(row, level, column);

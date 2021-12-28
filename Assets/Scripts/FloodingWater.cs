@@ -33,6 +33,8 @@ public class FloodingWater : MonoBehaviour
 
     void Update()
     {
+        if (!_worldPlane.WorldGenerationDone()) return;
+        
         if (!_block.IsWaterLocked() && Random.value < .01f)
         {
             UpdateWaterLockedStatus();

@@ -4,6 +4,7 @@ public class BlockFactory : MonoBehaviour
 {
     public GameObject grassBlockTemplate;
     public GameObject topWaterBlockTemplate;
+    public GameObject regularWaterBlockTemplate; // Top side - but not "outside water"
     public GameObject sandBlockTemplate;
     public GameObject oceanShallowBlockTemplate;
     public GameObject oceanFullHeightBlockTemplate;
