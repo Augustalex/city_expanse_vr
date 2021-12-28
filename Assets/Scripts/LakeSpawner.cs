@@ -108,5 +108,8 @@ public class LakeSpawner : MonoBehaviour
         var block = lakeSpawn.blockRelative.block;
         block.DestroyOccupant();
         RaiseWater.Get().Use(block);
+        
+        var sound = BlockSoundLibrary.Get().GetSound(BlockSoundLibrary.BlockSound.Water);
+        AudioSource.PlayClipAtPoint(sound, block.transform.position,  .02f * GameManager.MasterVolume);
     }
 }
