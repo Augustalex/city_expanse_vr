@@ -14,12 +14,12 @@ public class BlockCapacityIndicator : MonoBehaviour
         _blockCapacity = BlockCapacity.Get();
         _blockCapacity.OnCountChange += CountChanged;
 
-        CountChanged(_blockCapacity.MaxCapacity);
+        CountChanged(_blockCapacity.DefaultCount);
     }
     private void CountChanged(int newCount)
     {
         float countForPercentage = Mathf.Max(newCount, 5);
-        float percentageCapacity = countForPercentage / _blockCapacity.MaxCapacity;
+        float percentageCapacity = Mathf.Clamp(countForPercentage / _blockCapacity.ShadowMaxCapacity, 0.01f, 1);
         transform.localScale = _originalScale * percentageCapacity;
     }
 }

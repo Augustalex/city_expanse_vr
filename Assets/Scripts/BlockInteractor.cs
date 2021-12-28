@@ -239,9 +239,19 @@ public abstract class BlockInteractor : MonoBehaviour
         PlaySound(BlockSoundLibrary.BlockSound.Basic);
     }
 
+    public void ForcePlaySound(BlockSoundLibrary.BlockSound blockSound, Vector3? position = null, float? volumeOverride = null)
+    {
+        PlaySoundNow(blockSound, position, volumeOverride);
+    }
+
     public void PlaySound(BlockSoundLibrary.BlockSound blockSound, Vector3? position = null)
     {
         if (Time.time - _lastInteract < .1f) return;
+        PlaySoundNow(blockSound, position);
+    }
+
+    private void PlaySoundNow(BlockSoundLibrary.BlockSound blockSound, Vector3? position = null, float? volumeOverride = null)
+    {
         _lastInteract = Time.time;
 
         _audioSource.Stop();
@@ -250,7 +260,7 @@ public abstract class BlockInteractor : MonoBehaviour
 
         if (position != null)
         {
-            AudioSource.PlayClipAtPoint(sound, position.Value, .02f * GameManager.MasterVolume);
+            AudioSource.PlayClipAtPoint(sound, position.Value, (volumeOverride ?? .02f) * GameManager.MasterVolume);
         }
         else
         {

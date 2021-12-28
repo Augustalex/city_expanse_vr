@@ -32,19 +32,20 @@ public class BlockCapacityText : MonoBehaviour
     {
         _lastKnownCount = newCount;
         
-        if (_lastKnownCount == _blockCapacity.MaxCapacity)
+        // if (_lastKnownCount == _blockCapacity.MaxCapacity)
+        // {
+        //     _text.text = _lastKnownCount + "/<color=red>" + _blockCapacity.MaxCapacity + "</color>";
+        //     _alertedAt = Time.time;
+        // }
+        if (_lastKnownCount == 0)
         {
-            _text.text = _lastKnownCount + "/<color=red>" + _blockCapacity.MaxCapacity + "</color>";
-            _alertedAt = Time.time;
-        }
-        else if (_lastKnownCount == 0)
-        {
-            _text.text = "<color=red>" + _lastKnownCount + "</color>/" + _blockCapacity.MaxCapacity;
+            // _text.text = "<color=red>" + _lastKnownCount + "</color>/" + _blockCapacity.MaxCapacity;
+            _text.text = "<color=red>" + _lastKnownCount + "</color>";
             _alertedAt = Time.time;
         }
         else
         {
-            _text.text = _lastKnownCount + "/" + _blockCapacity.MaxCapacity;
+            _text.text = _lastKnownCount.ToString();
         }
     }
 
@@ -59,13 +60,14 @@ public class BlockCapacityText : MonoBehaviour
         if (!_started)
         {
             _started = true;
-            CountChanged(_blockCapacity.MaxCapacity);
+            CountChanged(_blockCapacity.DefaultCount);
         }
         
         var timeSinceLastAlert = Time.time - _alertedAt;
         if (timeSinceLastAlert > 5)
         {
-            _text.text = _lastKnownCount + "/" + _blockCapacity.MaxCapacity;
+            // _text.text = _lastKnownCount + "/" + _blockCapacity.MaxCapacity;
+            _text.text = _lastKnownCount.ToString();
         }
     }
 }

@@ -25,7 +25,19 @@ public class RaiseLandBlockInteractor : BlockInteractor
         return true;
     }
 
+    public void InteractWithAlternateSound(GameObject other)
+    {
+        RaiseLand(other);
+        ForcePlaySound(BlockSoundLibrary.BlockSound.PlaceItem, other.transform.position, .05f);
+    }
+
     public override void Interact(GameObject other)
+    {
+        RaiseLand(other);
+        PlaySound(BlockSoundLibrary.BlockSound.RaiseLand, other.transform.position);
+    }
+
+    private void RaiseLand(GameObject other)
     {
         var blockComponent = other.gameObject.GetComponent<Block>();
         blockComponent.DestroyOccupant();
@@ -33,6 +45,5 @@ public class RaiseLandBlockInteractor : BlockInteractor
         var grass = Instantiate(grassBlockTemplate);
         var grassBlock = grass.GetComponentInChildren<Block>();
         GetWorldPlane().AddBlockOnTopOf(grassBlock, grass, blockComponent);
-        PlaySound(BlockSoundLibrary.BlockSound.RaiseLand, other.transform.position);
     }
 }
