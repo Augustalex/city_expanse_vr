@@ -165,18 +165,21 @@ public class TileClicker : MonoBehaviour
         }
         else if (hit.collider.CompareTag("LakeSpawnHighlight"))
         {
-            var lakeSpawn = hit.collider.gameObject.GetComponent<LakeSpawnHighlight>().GetLakeSpawn();
-            if (IsRightClick())
+            if (GetInteractionDuration() == 0)
             {
-                lakeSpawn.DestroyLakeSpawn();
-            }
-            else
-            {
-                LakeSpawner.Get().ActivateLakeSpawn(lakeSpawn);
-            }
+                var lakeSpawn = hit.collider.gameObject.GetComponent<LakeSpawnHighlight>().GetLakeSpawn();
+                if (IsRightClick())
+                {
+                    lakeSpawn.DestroyLakeSpawn();
+                }
+                else
+                {
+                    LakeSpawner.Get().ActivateLakeSpawn(lakeSpawn);
+                }
             
-            _preventInteractionCooldown = true;
-            _preventInteractionCooldownTimeLeft = .25f;
+                _preventInteractionCooldown = true;
+                _preventInteractionCooldownTimeLeft = .25f;
+            }
         }
         else if (!_cloudMover.IsMovingWithMouse())
         {

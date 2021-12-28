@@ -15,7 +15,7 @@ public class MoveInteractor : BlockInteractor
     private const int MoveBufferCount = 12;
     private const int DigMouseButton = 1;
     private const int RaiseMouseButton = 0;
-
+    
     public override bool LockOnLayer()
     {
         return true;
@@ -35,11 +35,13 @@ public class MoveInteractor : BlockInteractor
             else
             {
                 digBlockInteractor.Interact(other);
+                BlockCapacity.Get().IncreaseCount();
             }
         }
         else if (Input.GetMouseButton(RaiseMouseButton))
         {
             raiseLandBlockInteractor.Interact(other);
+            BlockCapacity.Get().DecreaseCount();
         }
     }
 
@@ -101,13 +103,16 @@ public class MoveInteractor : BlockInteractor
             {
                 return digWaterBlockInteractor.Interactable(other);
             }
-            else
+            else if(BlockCapacity.Get().HasMoreCapacity())
             {
                 return digBlockInteractor.Interactable(other);
             }
-            
+            else
+            {
+                return false;
+            }
         }
-        else if (Input.GetMouseButton(RaiseMouseButton))
+        else if (Input.GetMouseButton(RaiseMouseButton) && BlockCapacity.Get().HasBlocks())
         {
             return raiseLandBlockInteractor.Interactable(other);
         }
