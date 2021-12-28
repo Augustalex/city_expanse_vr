@@ -36,10 +36,10 @@ public class LakeSpawn : MonoBehaviour
         _workQueue = WorkQueue.Get();
     }
 
-    public void GroundHighlight()
+    public void GroundHighlight(Block block)
     {
-        var position = transform.position;
-        transform.position = new Vector3(position.x, 0, position.z);
+        var targetPosition = block.transform.position + Vector3.up * 0.1f;
+        transform.position = targetPosition;
     }
 
     public void Update()

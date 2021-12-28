@@ -66,7 +66,7 @@ public class LakeSpawner : MonoBehaviour
                                 {
                                     var lakeSpawn = Instantiate(lakeSpawnTemplate);
                                     block.Occupy(lakeSpawn);
-                                    lakeSpawn.GetComponent<LakeSpawn>().GroundHighlight();
+                                    lakeSpawn.GetComponent<LakeSpawn>().GroundHighlight(block);
                                 }
                             }
                         }

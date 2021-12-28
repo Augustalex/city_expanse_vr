@@ -41,6 +41,8 @@ public class DiscoveryScene : MonoBehaviour
 
     private void OnNewDiscovery(DiscoveryManager.Discoverable discoverable)
     {
+        return; // Disable "New discover whole screen modal" as it was annoying to players
+        
         switch (discoverable)
         {
             case DiscoveryManager.Discoverable.House:
