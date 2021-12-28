@@ -18,7 +18,7 @@ public class SphereCursor : MonoBehaviour
 
     void Start()
     {
-        _camera = FindObjectOfType<Camera>();
+        _camera = CameraManager.PrimaryCamera();
         _sphereCursorMesh = GetComponentInChildren<SphereCursorMesh>().gameObject;
         _tileClicker = TileClicker.Get();
 
@@ -50,9 +50,14 @@ public class SphereCursor : MonoBehaviour
 
             RaycastHit hit;
             Ray ray = _camera.ScreenPointToRay(GetPointerPosition());
-            if (!Physics.Raycast(ray, out hit, 1000.0f)) return;
+            if (!Physics.Raycast(ray, out hit, 1000.0f))
+            {
+                Debug.Log("NO HIT!");
+                return;
+            };
 
             var block = hit.collider.GetComponentInParent<Block>();
+            Debug.Log(hit.collider.gameObject);
             if (block)
             {
                 _target = block.transform.position + Vector3.up * 0.05f;
