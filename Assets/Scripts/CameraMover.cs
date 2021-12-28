@@ -344,9 +344,9 @@ public class CameraMover : MonoBehaviour
 
     private float CameraSpeed()
     {
-        const float InteractionCooldownFast = .5f;
-        const float InteractionCooldownSlow = 2.5f;
-        const float RampUpTime = 1.2f;
+        const float InteractionCooldownFast = 1f;
+        const float InteractionCooldownSlow = 3f;
+        const float RampUpTime = 3f;
         
         var duration = GetCameraMovementDuration();
 
@@ -358,7 +358,7 @@ public class CameraMover : MonoBehaviour
     }
 
     private float EaseInQuad(float x) {
-        return x * x * x;
+        return x;
     }
 
     private float GetCameraMovementDuration()
