@@ -9831,6 +9831,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   primaryCamera: {fileID: 546754283}
+--- !u!114 &1741071638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741071621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e0d8a1eb5c0c4f4597ed4e1f9c8b924, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materials:
+  - {fileID: 2100000, guid: a21b3eac95b9897459ad81d0510b8ad3, type: 2}
+  - {fileID: 2100000, guid: 6d802dfb23c1b7a4ebdd2a9906630d4b, type: 2}
+  - {fileID: 2100000, guid: 82cf8f6da6330ad449cc0a3184cd8f41, type: 2}
 --- !u!4 &1741071639 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3645905919876899980, guid: 63f229cc46e53ef47a8bc7f7667512ce,
