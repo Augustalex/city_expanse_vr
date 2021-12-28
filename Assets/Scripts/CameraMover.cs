@@ -124,7 +124,7 @@ public class CameraMover : MonoBehaviour
 
     private void HandleZoomTilt()
     {
-        var change = Input.mouseScrollDelta.y;
+        var change = -Input.mouseScrollDelta.y;
         Zoom(change);
     }
 
