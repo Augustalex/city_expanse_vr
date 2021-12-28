@@ -13,8 +13,8 @@ public class MoveInteractor : BlockInteractor
     public override InteractorHolder.BlockInteractors InteractorType => InteractorHolder.BlockInteractors.Move;
 
     private const int MoveBufferCount = 12;
-    private const int DigMouseButton = 0;
-    private const int RaiseMouseButton = 1;
+    private const int DigMouseButton = 1;
+    private const int RaiseMouseButton = 0;
 
     public override bool LockOnLayer()
     {
