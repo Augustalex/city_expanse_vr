@@ -52,10 +52,7 @@ public class GreensSpawn : MonoBehaviour
         _grown = true;
 
         _greens.SetActive(true);
-        // if (Random.value < .5f)
-        // {
-            _seed.SetActive(false);
-        // }
+        _seed.SetActive(false);
     }
 
     public bool IsGrown()
@@ -77,19 +74,6 @@ public class GreensSpawn : MonoBehaviour
         {
             transform.localScale = _originalScale * 1.5f;
         }
-        else if (size == TreeSize.Huge)
-        {
-            transform.localScale = _originalScale * 2f;
-        }
-        else if (size == TreeSize.Crazy)
-        {
-            transform.localScale = _originalScale * 2.5f;
-        }
-        else if (size == TreeSize.Tiny)
-        {
-            _greens.SetActive(false);
-            _seed.SetActive(true);
-        }
         else
         {
             transform.localScale = _originalScale;
@@ -98,12 +82,11 @@ public class GreensSpawn : MonoBehaviour
 
     public void OnReceiveRain()
     {
-        if (_rain > 42) return;
+        if (_rain > 30) return;
 
         _rain += 1;
 
         if (_rain == 2) Grow();
-        else if (_rain == 30) SetSize(TreeSize.Big);
-        else if (_rain == 42) SetSize(TreeSize.Huge);
+        // else if (_rain == 30) SetSize(TreeSize.Big);
     }
 }

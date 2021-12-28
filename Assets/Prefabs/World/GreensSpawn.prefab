@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7372995894491241845}
   - component: {fileID: 4517487358625046897}
   - component: {fileID: 6364829222871380648}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: GreensSpawn
   m_TagString: GreensSpawn
   m_Icon: {fileID: 0}
@@ -242,6 +242,10 @@ PrefabInstance:
     - target: {fileID: 1551494778287644, guid: 63206a6b58e89d74483b27ded7f2e41c, type: 3}
       propertyPath: m_Name
       value: Smoke04_HighPerformance
+      objectReference: {fileID: 0}
+    - target: {fileID: 1551494778287644, guid: 63206a6b58e89d74483b27ded7f2e41c, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4675623586743268, guid: 63206a6b58e89d74483b27ded7f2e41c, type: 3}
       propertyPath: m_RootOrder
