@@ -6,7 +6,6 @@ public class HouseSpawn : MonoBehaviour
 {
     public GameObject[] tinyHouseTemplates;
     public GameObject[] largeHouseTemplates;
-    public GameObject[] megaHouseTemplates;
     public AudioClip upgradeSound;
 
     private GameObject _activeHouse;
@@ -46,10 +45,6 @@ public class HouseSpawn : MonoBehaviour
         else if (_size == 0)
         {
             SetupHouse(1, largeHouseTemplates);
-        }
-        else if (_size == 1)
-        {
-            SetupHouse(2, megaHouseTemplates);
         }
 
         LaunchFromAbove();
@@ -97,19 +92,9 @@ public class HouseSpawn : MonoBehaviour
         return _size == 1;
     }
 
-    public bool IsMegaBig()
-    {
-        return _size == 2;
-    }
-
     public void SetToBig()
     {
         SetupHouse(1, largeHouseTemplates);
-    }
-
-    public void SetToMegaBig()
-    {
-        SetupHouse(2, megaHouseTemplates);
     }
 
     public void SetIsInnerCity()

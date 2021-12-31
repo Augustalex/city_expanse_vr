@@ -241,39 +241,4 @@ public class City : MonoBehaviour
             }
         }
     }
-
-    private void SpawnMegaHouse()
-    {
-        var candidates = _worldPlane.GetVacantBlocks()
-            .Where(block =>
-            {
-                var waterBlocks = _worldPlane.GetWaterBlocks();
-                return waterBlocks.Count(waterBlock => block.DistanceToOtherBlock(waterBlock) < 3) == 0;
-            })
-            .Where(block =>
-            {
-                var blocksWithHouse = _worldPlane
-                    .GetBlocksWithHouses();
-
-                return !blocksWithHouse.Any(houseBlock =>
-                           block.DistanceToOtherBlock(houseBlock) <= 1 && houseBlock.GetOccupantHouse().IsSmall())
-                       && blocksWithHouse.Count(houseBlock =>
-                           block.DistanceToOtherBlock(houseBlock) <= 1 && houseBlock.GetOccupantHouse().IsBig()) >= 2
-                       && !blocksWithHouse.Any(houseBlock =>
-                           block.DistanceToOtherBlock(houseBlock) <= 1 && houseBlock.GetOccupantHouse().IsMegaBig());
-            })
-            .ToList();
-
-        var candidatesCount = candidates.Count;
-        if (candidatesCount > 0)
-        {
-            var vacantLot = candidates[Random.Range(0, candidatesCount)];
-            var house = Instantiate(tinyHouseTemplate);
-            house.GetComponent<HouseSpawn>().SetToMegaBig();
-
-            vacantLot.Occupy(house);
-
-            _lastPlacedHouse = Time.fixedTime;
-        }
-    }
 }

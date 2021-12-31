@@ -10,11 +10,10 @@ public class GameObjective : MonoBehaviour
     private enum Objective
     {
         OneHouse,
-        OneBigHouse,
-        OneMegaHouse
+        OneBigHouse
     }
 
-    private Objective _currentObjective = Objective.OneMegaHouse;
+    private Objective _currentObjective = Objective.OneBigHouse;
     private WorldPlane _worldPlane;
     private bool _initialized;
     private const bool Disabled = true;
@@ -39,13 +38,6 @@ public class GameObjective : MonoBehaviour
                 .Select(block => block.GetOccupantHouse())
                 .Count(house => house.IsBig()) > 0;
         }
-        else if (_currentObjective == Objective.OneMegaHouse)
-        {
-            return _worldPlane
-                .GetBlocksWithHouses()
-                .Select(block => block.GetOccupantHouse())
-                .Count(house => house.IsMegaBig()) > 0;
-        }
         else
         {
             return false;
@@ -69,10 +61,8 @@ public class GameObjective : MonoBehaviour
         switch (_currentObjective)
         {
             case Objective.OneHouse:
-                return WorldPlane.Size.Small;
-            case Objective.OneBigHouse:
                 return WorldPlane.Size.Medium;
-            case Objective.OneMegaHouse:
+            case Objective.OneBigHouse:
                 return WorldPlane.Size.Large;
             default:
                 throw new Exception("No specified world size for current objective");
@@ -86,9 +76,7 @@ public class GameObjective : MonoBehaviour
             case Objective.OneHouse:
                 return Objective.OneBigHouse;
             case Objective.OneBigHouse:
-                return Objective.OneMegaHouse;
-            case Objective.OneMegaHouse:
-                return Objective.OneMegaHouse;
+                return Objective.OneBigHouse;
             default:
                 return Objective.OneHouse;
         }
