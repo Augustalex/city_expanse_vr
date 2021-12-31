@@ -61,9 +61,6 @@ public class BuildingSpawn : MonoBehaviour
         block.DestroyOccupant();
 
         PlaceHouse(spawnLot, spawnLookingTarget);
-
-        var sound = BlockSoundLibrary.Get().GetSound(BlockSoundLibrary.BlockSound.Water);
-        AudioSource.PlayClipAtPoint(sound, block.transform.position, .02f * GameManager.MasterVolume);
     }
 
     private void PlaceHouse(Block lot, Vector3 lookingTarget)
@@ -101,7 +98,6 @@ public class BuildingSpawn : MonoBehaviour
         
         if (!CanStillConstruct())
         {
-            Debug.Log("Destry fort spawn");
             DestroyBuildingSpawn();
         }
     }
