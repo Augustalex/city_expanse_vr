@@ -1739,7 +1739,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 234377179}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 4086996446bf62348a43c4aa82488bc8, type: 3}
@@ -9616,6 +9616,10 @@ MonoBehaviour:
   interactableGhostTemplate: {fileID: 3317631866390460118, guid: 8440c637f0490074795ac72038800dc5,
     type: 3}
   nonInteractableGhostTemplate: {fileID: 3317631866390460118, guid: b7c774b152b797547bc6fab4b6e0f28b,
+    type: 3}
+  buildingSpawnTemplate: {fileID: 3627084335034151866, guid: a0aaf7e0dd827f1438bc7b23b7416654,
+    type: 3}
+  tinyHouseTemplate: {fileID: 2723339866174918418, guid: 3a64644beb96b3a4ea777cf8c96a15ff,
     type: 3}
 --- !u!114 &1741071623
 MonoBehaviour:

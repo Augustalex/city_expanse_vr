@@ -46,24 +46,21 @@ public class HouseSpawn : MonoBehaviour
         else if (_size == 0)
         {
             SetupHouse(1, largeHouseTemplates);
-            // _fireworksEffect.SetHitBoxSize(2);
         }
         else if (_size == 1)
         {
             SetupHouse(2, megaHouseTemplates);
-            // _fireworksEffect.SetHitBoxSize(5);
         }
 
-        _smokeEffect.PlayOnNextHit();
         LaunchFromAbove();
-        
-        // StartCoroutine(ActivateFireworksSoon());
 
-        // IEnumerator ActivateFireworksSoon()
-        // {
-            // yield return new WaitForSeconds(.05f);
-            // _fireworksEffect.Activate();
-        // }
+        StartCoroutine(ActivateSmokeEffectSoon());
+
+        IEnumerator ActivateSmokeEffectSoon()
+        {
+            yield return new WaitForSeconds(.05f);
+            _smokeEffect.PlayOnNextHit();
+        }
     }
 
     private void PlayUpgradeSound()

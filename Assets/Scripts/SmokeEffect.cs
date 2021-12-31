@@ -28,6 +28,7 @@ public class SmokeEffect : MonoBehaviour
     public void PlayOnNextHit()
     {
         _playOnNextHit = true;
+        _played = false;
     }
 
     public bool ShouldPlayOnHit()
@@ -50,6 +51,7 @@ public class SmokeEffect : MonoBehaviour
 
     private void PlayHitGroundSound()
     {
+        Debug.Log("PLAY SOUND NOW ");
         GetAudioSource().PlayOneShot(hitGroundSound, .02f * GameManager.MasterVolume);
     }
 

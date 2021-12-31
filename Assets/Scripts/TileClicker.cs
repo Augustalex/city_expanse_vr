@@ -181,6 +181,24 @@ public class TileClicker : MonoBehaviour
                 _preventInteractionCooldownTimeLeft = .25f;
             }
         }
+        else if (hit.collider.CompareTag("BuildingSpawnHighlight"))
+        {
+            if (GetInteractionDuration() == 0)
+            {
+                var buildingSpawn = hit.collider.gameObject.GetComponent<BuildingSpawnHighlight>().GetBuildingSpawn();
+                if (IsRightClick())
+                {
+                    buildingSpawn.DestroyLakeSpawn();
+                }
+                else
+                {
+                    buildingSpawn.ActivateBuildingSpawn();
+                }
+            
+                _preventInteractionCooldown = true;
+                _preventInteractionCooldownTimeLeft = .25f;
+            }
+        }
         else if (!_cloudMover.IsMovingWithMouse())
         {
             if (_interactorHolder.AnyInteractorActive())

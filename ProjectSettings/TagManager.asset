@@ -19,6 +19,8 @@ TagManager:
   - LakeSpawnHighlight
   - LakeSpawn
   - GreensSpawn
+  - BuildingSpawnHighlight
+  - BuildingSpawn
   layers:
   - Default
   - TransparentFX

@@ -154,19 +154,11 @@ public class City : MonoBehaviour
         if (waterAndLot != null)
         {
             var (waterBlock, vacantLot) = waterAndLot;
-            var house = Instantiate(tinyHouseTemplate);
-            vacantLot.Occupy(house);
             var target = waterBlock.transform.position;
-            target.y = house.transform.position.y;
-            house.transform.LookAt(target);
 
-            _lastPlacedHouse = Time.fixedTime;
-
-            if (!_placedFirstHouse)
-            {
-                _placedFirstHouse = true;
-                DiscoveryManager.Get().RegisterNewDiscover(DiscoveryManager.Discoverable.House);
-            }
+            var buildingSpawn = BlockFactory.Get().BuildingSpawn(vacantLot, target);
+            vacantLot.Occupy(buildingSpawn);
+            buildingSpawn.GetComponent<BuildingSpawn>().GroundHighlight(vacantLot);
         }
     }
 
@@ -186,13 +178,19 @@ public class City : MonoBehaviour
         if (candidates.Count > 0)
         {
             var (bigHouse, vacantLot) = candidates.ElementAt(Random.Range(0, candidates.Count));
-            var house = Instantiate(tinyHouseTemplate);
-            house.GetComponent<HouseSpawn>().SetIsInnerCity();
-            vacantLot.Occupy(house);
-
             var target = bigHouse.transform.position;
-            target.y = house.transform.position.y;
-            house.transform.LookAt(target);
+            var buildingSpawn = BlockFactory.Get().BuildingSpawn(vacantLot, target);
+            vacantLot.Occupy(buildingSpawn);
+            buildingSpawn.GetComponent<BuildingSpawn>().GroundHighlight(vacantLot);
+            
+            var buildingSpawnComponent = buildingSpawn.GetComponent<BuildingSpawn>();
+            buildingSpawnComponent.CreateBuildingAction = () =>
+            {
+                var house = Instantiate(tinyHouseTemplate);
+                house.GetComponent<HouseSpawn>().SetIsInnerCity();
+                
+                return house.gameObject;
+            };
 
             _lastPlacedInnerCityHouse = Time.fixedTime;
         }
@@ -235,7 +233,7 @@ public class City : MonoBehaviour
             var houseToUpgrade = candidates[Random.Range(0, candidates.Count)];
             houseToUpgrade.GetOccupantHouse().Upgrade();
             _lastPlacedHouse = Time.fixedTime;
-            
+
             if (!_firstBigHouse)
             {
                 _firstBigHouse = true;
