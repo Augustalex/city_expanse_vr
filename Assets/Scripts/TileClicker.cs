@@ -188,7 +188,7 @@ public class TileClicker : MonoBehaviour
                 var buildingSpawn = hit.collider.gameObject.GetComponent<BuildingSpawnHighlight>().GetBuildingSpawn();
                 if (IsRightClick())
                 {
-                    buildingSpawn.DestroyLakeSpawn();
+                    buildingSpawn.DestroyBuildingSpawn();
                 }
                 else
                 {

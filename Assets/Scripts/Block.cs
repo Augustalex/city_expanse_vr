@@ -235,6 +235,8 @@ public class Block : MonoBehaviour
 
     public void SetOccupantThatIsTailFromOtherBase(GameObject occupant)
     {
+        //What happens when the other occupant is destroyed, and thus destroys the same game object? Should get error that you are trying to access a destroyed game object.
+
         SetOccupiedBy(occupant);
 
         var blockRelative = occupant.GetComponent<BlockRelative>();
@@ -436,7 +438,7 @@ public class Block : MonoBehaviour
 
         return current;
     }
-    
+
     public bool IsSand()
     {
         return blockType == BlockType.Sand;

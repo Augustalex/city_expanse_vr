@@ -14,6 +14,8 @@ public class CityForts : MonoBehaviour
     private WorkQueue _workQueue;
     private int _ticket;
 
+    private const float HeightOfABlock = .1f;
+
     void Start()
     {
         _worldPlane = WorldPlane.Get();
@@ -30,7 +32,7 @@ public class CityForts : MonoBehaviour
         var houseCount = _worldPlane.GetBlocksWithHousesStream().Count();
         if (houseCount < 3) return;
 
-        if (Random.value < .001f)
+        if (Random.value < .01f)
         {
             TrySpawnFort();
         }
@@ -88,13 +90,24 @@ public class CityForts : MonoBehaviour
         if (candidateCount > 0)
         {
             var (fortBottom, highlands) = candidates.ElementAt(Random.Range(0, candidateCount));
-            var fortSpawn = Instantiate(fortSpawnTemplate);
-            fortBottom.Occupy(fortSpawn);
-            highlands.SetOccupantThatIsTailFromOtherBase(fortSpawn);
+           
             var target = highlands.transform.position;
-            target.y = fortSpawn.transform.position.y;
-            fortSpawn.transform.LookAt(target);
+            target.y += HeightOfABlock;
 
+            var buildingSpawn = BlockFactory.Get().BuildingSpawn(fortBottom, target);
+            fortBottom.Occupy(buildingSpawn);
+            buildingSpawn.GetComponent<BuildingSpawn>().GroundHighlight(fortBottom);
+            
+            var buildingSpawnComponent = buildingSpawn.GetComponent<BuildingSpawn>();
+            buildingSpawnComponent.CanStillConstruct = () => highlands != null;
+            buildingSpawnComponent.CreateBuildingAction = () =>
+            {
+                var fortSpawn = Instantiate(fortSpawnTemplate);
+                highlands.SetOccupantThatIsTailFromOtherBase(fortSpawn);
+
+                return fortSpawn.gameObject;
+            };
+            
             _fortCount += 1;
         }
     }

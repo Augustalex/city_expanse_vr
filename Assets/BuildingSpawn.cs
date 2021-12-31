@@ -10,19 +10,29 @@ public class BuildingSpawn : MonoBehaviour
 {
     private static int _activeSpawns = 0;
     private static bool _placedFirstHouse = false;
-
+    private WorldPlane _worldPlane;
+    private WorkQueue _workQueue;
+    private int _ticket;
+    
     public BlockRelative blockRelative;
 
     public Vector3 spawnLookingTarget;
     public Block spawnLot;
 
     public Func<GameObject> CreateBuildingAction = CreateTinyHouse;
+    public Func<bool> CanStillConstruct = () => true;
     private bool _deactivated;
 
     private void Awake()
     {
         blockRelative = GetComponent<BlockRelative>();
         _activeSpawns += 1;
+    }
+
+    private void Start()
+    {
+        _worldPlane = WorldPlane.Get();
+        _workQueue = WorkQueue.Get();
     }
 
     public static int ActiveSpawnCount()
@@ -36,7 +46,7 @@ public class BuildingSpawn : MonoBehaviour
         transform.position = targetPosition;
     }
 
-    public void DestroyLakeSpawn()
+    public void DestroyBuildingSpawn()
     {
         Deactivate();
         
@@ -83,5 +93,26 @@ public class BuildingSpawn : MonoBehaviour
             _deactivated = true;
             _activeSpawns -= 1;
         }
+    }
+
+    void Update()
+    {
+        if (!CanWorkThisFrame()) return;
+        
+        if (!CanStillConstruct())
+        {
+            Debug.Log("Destry fort spawn");
+            DestroyBuildingSpawn();
+        }
+    }
+    
+    private bool CanWorkThisFrame()
+    {
+        if (_workQueue.HasExpiredTicket(_ticket))
+        {
+            _ticket = _workQueue.GetTicket();
+        }
+
+        return _workQueue.HasTicketForFrame(_ticket);
     }
 }
