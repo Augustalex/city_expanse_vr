@@ -48,32 +48,33 @@ public class City : MonoBehaviour
     void Update()
     {
         if (!CanWorkThisFrame()) return;
-
-        if (_featureToggles.houseSpawn)
+        if (BuildingSpawn.ActiveSpawnCount() < 3)
         {
-            var delta = Time.fixedTime - _lastPlacedHouse;
-            if (delta > 10f && Random.value < .1f)
+            if (_featureToggles.houseSpawn)
             {
-                if (CanSpawnAnotherHouse())
+                var delta = Time.fixedTime - _lastPlacedHouse;
+                if (delta > 5f && Random.value < .1f)
                 {
-                    SpawnOneHouse();
+                    if (CanSpawnAnotherHouse())
+                    {
+                        SpawnOneHouse();
+                    }
+                }
+
+                var innerCityDelta = Time.fixedTime - _lastPlacedInnerCityHouse;
+                if (innerCityDelta > 10f && Random.value < .2f)
+                {
+                    if (Random.value < .1f)
+                    {
+                        SpawnInnerCityHouse();
+                    }
                 }
             }
 
-            var innerCityDelta = Time.fixedTime - _lastPlacedInnerCityHouse;
-            if (innerCityDelta > 10f && Random.value < .2f)
+            if (Random.value < .01f && HasNoOtherBigHouses())
             {
-                if (Random.value < .1f)
-                {
-                    SpawnInnerCityHouse();
-                }
+                SpawnBigHouse();
             }
-        }
-
-
-        if (Random.value < .01f && HasNoOtherBigHouses())
-        {
-            SpawnBigHouse();
         }
 
         if (!_featureToggles.desertsAreBeaches)
@@ -159,6 +160,8 @@ public class City : MonoBehaviour
             var buildingSpawn = BlockFactory.Get().BuildingSpawn(vacantLot, target);
             vacantLot.Occupy(buildingSpawn);
             buildingSpawn.GetComponent<BuildingSpawn>().GroundHighlight(vacantLot);
+            
+            _lastPlacedHouse = Time.fixedTime;
         }
     }
 

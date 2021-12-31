@@ -8,6 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(BlockRelative))]
 public class BuildingSpawn : MonoBehaviour
 {
+    private static int _activeSpawns = 0;
     private static bool _placedFirstHouse = false;
 
     public BlockRelative blockRelative;
@@ -16,10 +17,17 @@ public class BuildingSpawn : MonoBehaviour
     public Block spawnLot;
 
     public Func<GameObject> CreateBuildingAction = CreateTinyHouse;
+    private bool _deactivated;
 
     private void Awake()
     {
         blockRelative = GetComponent<BlockRelative>();
+        _activeSpawns += 1;
+    }
+
+    public static int ActiveSpawnCount()
+    {
+        return _activeSpawns;
     }
 
     public void GroundHighlight(Block block)
@@ -30,11 +38,15 @@ public class BuildingSpawn : MonoBehaviour
 
     public void DestroyLakeSpawn()
     {
+        Deactivate();
+        
         blockRelative.block.DestroyOccupant();
     }
 
     public void ActivateBuildingSpawn()
     {
+        Deactivate();
+        
         var block = blockRelative.block;
         block.DestroyOccupant();
 
@@ -62,5 +74,14 @@ public class BuildingSpawn : MonoBehaviour
     private static GameObject CreateTinyHouse()
     {
         return BlockFactory.Get().TinyHouse();
+    }
+
+    private void Deactivate()
+    {
+        if (!_deactivated)
+        {
+            _deactivated = true;
+            _activeSpawns -= 1;
+        }
     }
 }
