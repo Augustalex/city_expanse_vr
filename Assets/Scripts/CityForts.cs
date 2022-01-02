@@ -107,6 +107,7 @@ public class CityForts : MonoBehaviour
 
                 return fortSpawn.gameObject;
             };
+            buildingSpawnComponent.GetBuildingInfo = () => new BuildingInfo {devotees = 50};
             
             _fortCount += 1;
         }

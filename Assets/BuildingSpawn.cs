@@ -19,9 +19,11 @@ public class BuildingSpawn : MonoBehaviour
     public Vector3 spawnLookingTarget;
     public Block spawnLot;
 
+    public Func<BuildingInfo> GetBuildingInfo = () => new BuildingInfo { devotees = 0 } ;
     public Func<GameObject> CreateBuildingAction = CreateTinyHouse;
     public Func<bool> CanStillConstruct = () => true;
     private bool _deactivated;
+    private ConstructionMediator _constructionMediator;
 
     private void Awake()
     {
@@ -33,6 +35,7 @@ public class BuildingSpawn : MonoBehaviour
     {
         _worldPlane = WorldPlane.Get();
         _workQueue = WorkQueue.Get();
+        _constructionMediator = ConstructionMediator.Get();
     }
 
     public static int ActiveSpawnCount()
@@ -61,6 +64,7 @@ public class BuildingSpawn : MonoBehaviour
         block.DestroyOccupant();
 
         PlaceHouse(spawnLot, spawnLookingTarget);
+        _constructionMediator.BuildingCreated(GetBuildingInfo());
     }
 
     private void PlaceHouse(Block lot, Vector3 lookingTarget)

@@ -13,6 +13,7 @@ public class SphereCursor : MonoBehaviour
     private TileClicker _tileClicker;
     private Animator _animator;
     private static readonly int Small = Animator.StringToHash("Small");
+    private Block _activeBlock;
 
     private const float SpeedModifier = 25f;
 
@@ -68,6 +69,8 @@ public class SphereCursor : MonoBehaviour
                 {
                     _speed = (_target - transform.position).magnitude * SpeedModifier * .75f;
                 }
+
+                _activeBlock = block;
             }
             else
             {
@@ -79,5 +82,10 @@ public class SphereCursor : MonoBehaviour
     private Vector2 GetPointerPosition()
     {
         return Input.touchCount > 0 ? Input.GetTouch(0).position : (Vector2) Input.mousePosition;
+    }
+
+    public Block GetSelectedBlock()
+    {
+        return _activeBlock;
     }
 }

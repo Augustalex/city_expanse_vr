@@ -27,6 +27,7 @@ public class TileClicker : MonoBehaviour
 
     private float _startedInteractionAt = -1;
     private static TileClicker _instance;
+    private SphereCursorAction _sphereCursorAction;
 
     private float InteractionCooldown()
     {
@@ -58,6 +59,8 @@ public class TileClicker : MonoBehaviour
         _interactorHolder = GetComponent<InteractorHolder>();
         _cloudMover = FindObjectOfType<CloudMover>();
         mainCamera = Camera.main;
+
+        _sphereCursorAction = FindObjectOfType<SphereCursorAction>();
 
         _menuScene = MenuScene.Get();
         _discoveryScene = DiscoveryScene.Get();
@@ -162,6 +165,10 @@ public class TileClicker : MonoBehaviour
         if (hit.collider.CompareTag("CloudCollisionBox"))
         {
             StartCloudRayInteraction();
+        }
+        else if (_sphereCursorAction.HasActiveAction())
+        {
+            _sphereCursorAction.Perform();
         }
         else if (hit.collider.CompareTag("LakeSpawnHighlight"))
         {

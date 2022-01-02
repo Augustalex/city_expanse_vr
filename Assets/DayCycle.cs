@@ -16,6 +16,7 @@ public class DayCycle : MonoBehaviour
 
     private float _worldLifeLength = 60 * 10;
     private float _sunSpeed = 1.5f;
+    private bool _meteorSent;
 
     void Start()
     {
@@ -33,7 +34,7 @@ public class DayCycle : MonoBehaviour
 
         time += Time.deltaTime;
 
-        if (time > _worldLifeLength)
+        if (time > _worldLifeLength && !_meteorSent)
         {
             var block = WorldPlane.Get().blocksRepository.GetAtPosition(new Vector3(17, 0, 17));
             SendMeteorBlockInteractor meteorSender = GameObject.FindObjectOfType<SendMeteorBlockInteractor>();
@@ -41,9 +42,11 @@ public class DayCycle : MonoBehaviour
             var target = block.gameObject;
             if (meteorSender.Interactable(target))
             {
+                _meteorSent = true;
                 meteorSender.Interact(target, () =>
                 {
                     time = 0;
+                    _meteorSent = false;
                     // SetSunToDawn();
                     // TODO END MENACING MUSIC and START REGULAR MUSIC
                 });

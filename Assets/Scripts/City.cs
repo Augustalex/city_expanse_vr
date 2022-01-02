@@ -159,7 +159,9 @@ public class City : MonoBehaviour
 
             var buildingSpawn = BlockFactory.Get().BuildingSpawn(vacantLot, target);
             vacantLot.Occupy(buildingSpawn);
-            buildingSpawn.GetComponent<BuildingSpawn>().GroundHighlight(vacantLot);
+            var buildingSpawnComponent = buildingSpawn.GetComponent<BuildingSpawn>();
+            buildingSpawnComponent.GroundHighlight(vacantLot);
+            buildingSpawnComponent.GetBuildingInfo = () => new BuildingInfo {devotees = 5};
             
             _lastPlacedHouse = Time.fixedTime;
         }
@@ -185,15 +187,16 @@ public class City : MonoBehaviour
             var buildingSpawn = BlockFactory.Get().BuildingSpawn(vacantLot, target);
             vacantLot.Occupy(buildingSpawn);
             buildingSpawn.GetComponent<BuildingSpawn>().GroundHighlight(vacantLot);
-            
+
             var buildingSpawnComponent = buildingSpawn.GetComponent<BuildingSpawn>();
             buildingSpawnComponent.CreateBuildingAction = () =>
             {
                 var house = Instantiate(tinyHouseTemplate);
                 house.GetComponent<HouseSpawn>().SetIsInnerCity();
-                
+
                 return house.gameObject;
             };
+            buildingSpawnComponent.GetBuildingInfo = () => new BuildingInfo {devotees = 10};
 
             _lastPlacedInnerCityHouse = Time.fixedTime;
         }

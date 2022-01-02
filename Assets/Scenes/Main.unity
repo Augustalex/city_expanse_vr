@@ -201,7 +201,7 @@ Transform:
   - {fileID: 1458402035}
   - {fileID: 349838504}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5609754
 GameObject:
@@ -1248,7 +1248,7 @@ Transform:
   - {fileID: 1418442070}
   - {fileID: 1616758}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &191514579
 GameObject:
@@ -1896,7 +1896,7 @@ Transform:
   - {fileID: 1700010455}
   - {fileID: 935889381}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &291736846
 PrefabInstance:
@@ -4352,6 +4352,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53db65bf3911bf0438d389a4e97ca98b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &689871999
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 689872000}
+  m_Layer: 0
+  m_Name: CursorController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &689872000
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689871999}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &697510196
 GameObject:
   m_ObjectHideFlags: 0
@@ -4389,7 +4419,7 @@ Transform:
   - {fileID: 2041826713}
   - {fileID: 1712415045}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &697510198
 MonoBehaviour:
@@ -7341,7 +7371,7 @@ Transform:
   - {fileID: 113763069}
   - {fileID: 855836645}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1298866829
 MonoBehaviour:
@@ -11706,6 +11736,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: CliffHouse
+--- !u!1 &2044776329 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 607945058546210818, guid: 3104c70b17b84054ea4f9f30103c0bb4,
+    type: 3}
+  m_PrefabInstance: {fileID: 607945059453422840}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2044776330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044776329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de2bfdef2ea04b2dac7c12cd12b2bdb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bonfireTemplate: {fileID: 2966703160465152233, guid: 8adca47cba85b494fb957c91143aad7c,
+    type: 3}
+--- !u!114 &2044776332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044776329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14e9474592acea3499a16ebef7807856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2067876632
 GameObject:
   m_ObjectHideFlags: 0
@@ -12230,7 +12292,7 @@ PrefabInstance:
     - target: {fileID: 607945058546210819, guid: 3104c70b17b84054ea4f9f30103c0bb4,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 607945058546210819, guid: 3104c70b17b84054ea4f9f30103c0bb4,
         type: 3}
