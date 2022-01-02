@@ -42,15 +42,18 @@ public class GreensSpawner : MonoBehaviour
         {
             if (Random.value < .1f)
             {
+                var allPuzzleSpawns = FindObjectsOfType<PuzzleSpawn>();
                 var candidates = _worldPlane.GetAllTopLots()
                     .OrderBy(_ => Random.value)
                     .Take(1)
-                    .Where(pair => CanSpawnGreensThere(pair.Key))
-                    .Where(pair => !_candidates.Exists(candidate => candidate.Item1 == pair.Key))
+                    .Where(pair => allPuzzleSpawns.All(spawn => spawn.spawnGridPosition != pair.Key) &&
+                                   CanSpawnGreensThere(pair.Key) &&
+                                   !_candidates.Exists(candidate => candidate.Item1 == pair.Key)
+                    )
                     .Select(pair => new Tuple<Vector3, float>(pair.Key, Time.fixedTime + SpawnTime));
                 _candidates.AddRange(candidates);
             }
-           
+
 
             if (_candidates.Count > 0)
             {
