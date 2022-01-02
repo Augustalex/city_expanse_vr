@@ -26,6 +26,7 @@ public class WorldPlane : MonoBehaviour
     private Vector2 _currentMinBound = new Vector2(0, 0);
     private static WorldPlane _worldPlaneInstance;
     private bool _doneGeneratingWorld = false;
+    private bool _worldIsEnding;
 
     private void Awake()
     {
@@ -69,6 +70,16 @@ public class WorldPlane : MonoBehaviour
     public bool WorldGenerationDone()
     {
         return _doneGeneratingWorld;
+    }
+
+    public bool WorldIsEnding()
+    {
+        return _worldIsEnding;
+    }
+
+    public void SetWorldIsEnding()
+    {
+        _worldIsEnding = true;
     }
 
     public Vector3 ToRealCoordinates(Vector3 position)
@@ -532,38 +543,44 @@ public class WorldPlane : MonoBehaviour
                                     var radius = Mathf.Round(dimensions.x / 2);
 
                                     var distanceFactor = distanceToCenter / radius;
-                                    if (distanceFactor > .95f)
+                                    // if (distanceFactor > .95f)
+                                    // {
+                                    //     blockToUse = BlockFactory.Get().topWaterBlockTemplate;
+                                    // }
+                                    // else if (distanceFactor > .7f)
+                                    // {
+                                    //     if (Random.value < .75f)
+                                    //     {
+                                    //         blockToUse = BlockFactory.Get().regularWaterBlockTemplate;
+                                    //     }
+                                    //     else
+                                    //     {
+                                    //         blockToUse = BlockFactory.Get().sandBlockTemplate;
+                                    //     }
+                                    // }
+                                    // else if (distanceFactor > .6f)
+                                    // {
+                                    //     blockToUse = BlockFactory.Get().sandBlockTemplate;
+                                    // }
+                                    
+                                    if (distanceFactor > .75f)
                                     {
                                         blockToUse = BlockFactory.Get().topWaterBlockTemplate;
                                     }
-                                    else if (distanceFactor > .9f)
+                                    else if (distanceFactor > .7f)
                                     {
-                                        if (Random.value < .95f)
+                                        if (Random.value < .75f)
                                         {
                                             blockToUse = BlockFactory.Get().regularWaterBlockTemplate;
                                         }
                                         else
                                         {
                                             blockToUse = BlockFactory.Get().sandBlockTemplate;
-                                        }
-                                    }
-                                    else if (distanceFactor > .8f)
-                                    {
-                                        if (Random.value < .7f)
-                                        {
-                                            blockToUse = BlockFactory.Get().sandBlockTemplate;
-                                        }
-                                        else
-                                        {
-                                            blockToUse = BlockFactory.Get().regularWaterBlockTemplate;
                                         }
                                     }
                                     else if (distanceFactor > .6f)
                                     {
-                                        if (Random.value < .8f)
-                                        {
-                                            blockToUse = BlockFactory.Get().sandBlockTemplate;
-                                        }
+                                        blockToUse = BlockFactory.Get().sandBlockTemplate;
                                     }
                                 }
 

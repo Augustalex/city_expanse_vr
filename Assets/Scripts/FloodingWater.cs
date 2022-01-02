@@ -105,17 +105,20 @@ public class FloodingWater : MonoBehaviour
 
             if (nearbyBlock.IsVacant())
             {
+                Block bottomBlock = nearbyBlock;
                 Block lowestBlock = nearbyBlock;
 
-                if (!nearbyBlock.IsWater())
+                var nearbyBlockIsAtLowestLevel = nearbyBlock.GetHeight() == (int) Block.LowestLevel;
+                if (!nearbyBlock.IsWater() && !nearbyBlockIsAtLowestLevel)
                 {
                     var waterBlockBelow = NewFullHeightWaterBlock().GetComponentInChildren<Block>();
                     _worldPlane.ReplaceBlock(nearbyBlock, waterBlockBelow);
 
+                    bottomBlock = waterBlockBelow;
                     lowestBlock = waterBlockBelow;
                 }
 
-                for (var y = lowestBlock.GetGridPosition().y + 1; y <= blockHeight; y++)
+                for (var y = lowestBlock.GetGridPosition().y + 1; y < blockHeight || y <= bottomBlock.GetHeight() + 1; y++)
                 {
                     var useFullHeightWater = Math.Abs(y - blockHeight) > .5f;
                     var water = useFullHeightWater ? NewFullHeightWaterBlock() : NewShallowWater();

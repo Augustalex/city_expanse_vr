@@ -51,6 +51,7 @@ public class DayCycle : MonoBehaviour
                     // TODO END MENACING MUSIC and START REGULAR MUSIC
                 });
 
+                WorldPlane.Get().SetWorldIsEnding();
                 // TODO TURN SKY RED
                 // TODO START MENACING MUSIC
                 // TODO ADD BURNING EFFECT TO METEOR

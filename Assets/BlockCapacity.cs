@@ -6,7 +6,7 @@ using UnityEngine;
 public class BlockCapacity : MonoBehaviour
 {
     private static BlockCapacity _instance;
-    public readonly int DefaultCount = 20;
+    public readonly int DefaultCount = 12;
     public readonly int MaxCapacity = 1000;
     public readonly int ShadowMaxCapacity = 24;
     private int _count = 0;

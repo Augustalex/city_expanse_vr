@@ -35,7 +35,8 @@ public class LakeSpawner : MonoBehaviour
     void Update()
     {
         if (!_worldPlane.WorldGenerationDone()) return;
-
+        if (_worldPlane.WorldIsEnding()) return;
+        
         if (CanWorkThisFrame())
         {
             var candidates = _worldPlane.GetAllTopLots()

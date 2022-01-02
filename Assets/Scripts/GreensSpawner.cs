@@ -40,7 +40,7 @@ public class GreensSpawner : MonoBehaviour
 
         if (CanWorkThisFrame())
         {
-            if (Random.value < .1f)
+            if (Random.value < .02f)
             {
                 var allPuzzleSpawns = FindObjectsOfType<PuzzleSpawn>();
                 var candidates = _worldPlane.GetAllTopLots()

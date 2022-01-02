@@ -149,10 +149,12 @@ public class City : MonoBehaviour
         var allSpawns = FindObjectsOfType<PuzzleSpawn>();
         var vacantLots = _worldPlane
             .GetAllTopLots()
-            .Where(pair => pair.Value.IsGrass() && allSpawns.All(spawn => spawn.spawnGridPosition != pair.Key))
+            .Where(pair => pair.Value.IsVacant() && pair.Value.IsGrass() && allSpawns.All(spawn => spawn.spawnGridPosition != pair.Key))
             .Select(pair => pair.Value)
             .ToList();
 
+        if (vacantLots.Count == 0) return;
+        
         var vacantLot = vacantLots[Random.Range(0, vacantLots.Count)];
 
         if (vacantLot != null)
