@@ -27,24 +27,6 @@ public class MenuScene : MonoBehaviour
         Hide();
     }
 
-    void Update()
-    {
-        if (_shown)
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                Hide();
-            }
-        }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                Show();
-            }
-        }
-    }
-
     public void Show()
     {
         _shown = true;
@@ -54,7 +36,7 @@ public class MenuScene : MonoBehaviour
         _trophies.Refresh();
     }
 
-    private void Hide()
+    public void Hide()
     {
         _camera.SetActive(false);
         _trophiesRoot.SetActive(false);

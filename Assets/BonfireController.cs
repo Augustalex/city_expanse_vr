@@ -9,13 +9,14 @@ public class BonfireController : MonoBehaviour
 
     private ParticleSystem _particleSystem;
 
-    private int devotees = 0;
     private float _originalStartLifetime;
     private Animator _animator;
     private static readonly int Highlight = Animator.StringToHash("Highlight");
+    private BonfireStateManager _bonfireStateManager;
 
     void Awake()
     {
+        _bonfireStateManager = BonfireStateManager.Get();
         _particleSystem = GetComponentInChildren<ParticleSystem>();
         _animator = GetComponent<Animator>();
         _originalStartLifetime = _particleSystem.main.startLifetime.constant;
@@ -28,7 +29,7 @@ public class BonfireController : MonoBehaviour
 
     private void BuildingCreated(BuildingInfo info)
     {
-        devotees = +info.devotees;
+        _bonfireStateManager.SetDevotees(_bonfireStateManager.GetDevoteeCount() + info.devotees);
 
         StartCoroutine(DoSoon());
 
@@ -47,7 +48,7 @@ public class BonfireController : MonoBehaviour
     public void UpdateBonfireSize()
     {
         var main = _particleSystem.main;
-        main.startLifetime = _originalStartLifetime + 1.5f * devotees;
+        main.startLifetime = _originalStartLifetime + 1.5f * _bonfireStateManager.GetDevoteeCount();
     }
 
     public void PlayUpgradeSound()

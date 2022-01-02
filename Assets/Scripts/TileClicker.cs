@@ -28,6 +28,7 @@ public class TileClicker : MonoBehaviour
     private float _startedInteractionAt = -1;
     private static TileClicker _instance;
     private SphereCursorAction _sphereCursorAction;
+    private bool _disabled;
 
     private float InteractionCooldown()
     {
@@ -69,6 +70,8 @@ public class TileClicker : MonoBehaviour
 
     void Update()
     {
+        if (_disabled) return;
+        
         if (GetPointerDown())
         {
             if (_startedInteractionAt < 0) _startedInteractionAt = Time.time;
@@ -155,6 +158,27 @@ public class TileClicker : MonoBehaviour
         }
     }
 
+    public bool Frozen()
+    {
+        return _preventInteractionCooldown;
+    }
+
+    public void Freeze(float time)
+    {
+        _preventInteractionCooldown = true;
+        _preventInteractionCooldownTimeLeft = time;
+    }
+
+    public void Disable()
+    {
+        _disabled = true;
+    }
+
+    public void Enable()
+    {
+        _disabled = false;
+    }
+
     private void StartRayInteraction()
     {
         if (_preventInteractionCooldown) return;
@@ -170,6 +194,10 @@ public class TileClicker : MonoBehaviour
         else if (_sphereCursorAction.HasActiveAction())
         {
             _sphereCursorAction.Perform();
+        }
+        else if (hit.collider.CompareTag("Bonfire"))
+        {
+            InterfaceSceneManager.Get().ShowBonfireScene();
         }
         else if (hit.collider.CompareTag("LakeSpawnHighlight"))
         {

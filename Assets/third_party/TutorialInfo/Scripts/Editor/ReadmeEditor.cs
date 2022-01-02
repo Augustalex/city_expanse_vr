@@ -93,10 +93,10 @@ public class ReadmeEditor : Editor {
 			}
 			if (!string.IsNullOrEmpty(section.linkText))
 			{
-				if (LinkLabel(new GUIContent(section.linkText)))
-				{
-					Application.OpenURL(section.url);
-				}
+				// if (LinkLabel(new GUIContent(section.linkText)))
+				// {
+				// 	Application.OpenURL(section.url);
+				// }
 			}
 			GUILayout.Space(kSpace);
 		}
@@ -138,21 +138,6 @@ public class ReadmeEditor : Editor {
 		m_LinkStyle.stretchWidth = false;
 		
 		m_Initialized = true;
-	}
-	
-	bool LinkLabel (GUIContent label, params GUILayoutOption[] options)
-	{
-		var position = GUILayoutUtility.GetRect(label, LinkStyle, options);
-
-		Handles.BeginGUI ();
-		Handles.color = LinkStyle.normal.textColor;
-		Handles.DrawLine (new Vector3(position.xMin, position.yMax), new Vector3(position.xMax, position.yMax));
-		Handles.color = Color.white;
-		Handles.EndGUI ();
-
-		EditorGUIUtility.AddCursorRect (position, MouseCursor.Link);
-
-		return GUI.Button (position, label, LinkStyle);
 	}
 }
 

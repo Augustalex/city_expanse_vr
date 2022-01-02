@@ -21,6 +21,7 @@ TagManager:
   - GreensSpawn
   - BuildingSpawnHighlight
   - BuildingSpawn
+  - Bonfire
   layers:
   - Default
   - TransparentFX
