@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -473,6 +473,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 274580474}
     m_Modifications:
+    - target: {fileID: 4602118806960232896, guid: 70a87053d8fe6a54098b6f513f160ea3,
+        type: 3}
+      propertyPath: Loop
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4602118806960232896, guid: 70a87053d8fe6a54098b6f513f160ea3,
         type: 3}
       propertyPath: m_Pitch
@@ -1833,7 +1838,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 234377179}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 4086996446bf62348a43c4aa82488bc8, type: 3}
@@ -10748,6 +10753,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d35f7341fb234ce385ec0e4ae63f97ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1741071643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741071621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6b7d05111854084b06f70693a5fa5bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  notPossibleSound: {fileID: 8300000, guid: b9df5e87f638b2b408947a0d6db7b1cf, type: 3}
 --- !u!114 &1741071646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11482,6 +11500,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 274580474}
     m_Modifications:
+    - target: {fileID: 4602118806960232896, guid: 70a87053d8fe6a54098b6f513f160ea3,
+        type: 3}
+      propertyPath: Loop
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4602118806960232896, guid: 70a87053d8fe6a54098b6f513f160ea3,
         type: 3}
       propertyPath: m_Pitch
@@ -14141,7 +14164,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1741071623, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
       propertyPath: fort
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1741071623, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
       propertyPath: biomes
@@ -14149,11 +14172,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1741071623, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
       propertyPath: docksSpawn
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1741071623, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
       propertyPath: farmsSpawn
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1741071623, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
       propertyPath: houseSpawn
@@ -14181,7 +14204,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1741071623, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
       propertyPath: farmExpandOnItsOwn
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1741071623, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
       propertyPath: interactionOverlay
@@ -14257,6 +14280,131 @@ PrefabInstance:
       propertyPath: housePuzzleTemplate
       value: 
       objectReference: {fileID: 2783279570405816794, guid: 8a3fe5b2ecf39ab49b3754ab635a033e,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.size
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[0]
+      value: 
+      objectReference: {fileID: 2783279570405816794, guid: 8a3fe5b2ecf39ab49b3754ab635a033e,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[1]
+      value: 
+      objectReference: {fileID: 2783279570405816794, guid: 8a3fe5b2ecf39ab49b3754ab635a033e,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[2]
+      value: 
+      objectReference: {fileID: 2783279570405816794, guid: 8a3fe5b2ecf39ab49b3754ab635a033e,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[3]
+      value: 
+      objectReference: {fileID: 2783279570405816794, guid: 8a3fe5b2ecf39ab49b3754ab635a033e,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[4]
+      value: 
+      objectReference: {fileID: 5749993254316088617, guid: dff56925c28d9cf4cb09bc39d699b73b,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[5]
+      value: 
+      objectReference: {fileID: 5749993254316088617, guid: dff56925c28d9cf4cb09bc39d699b73b,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[6]
+      value: 
+      objectReference: {fileID: 5749993254316088617, guid: dff56925c28d9cf4cb09bc39d699b73b,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[7]
+      value: 
+      objectReference: {fileID: 8650640333610863917, guid: 4377a42d40a01d643b9aef4306b52482,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[8]
+      value: 
+      objectReference: {fileID: 8650640333610863917, guid: 4377a42d40a01d643b9aef4306b52482,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[9]
+      value: 
+      objectReference: {fileID: 7489646052375554317, guid: 28e64ef80896fa443abb99fc6787ce56,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[10]
+      value: 
+      objectReference: {fileID: 3966774557911429922, guid: c06146c8e1afd874481ce5b058ca6aba,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[11]
+      value: 
+      objectReference: {fileID: 8815304360967856359, guid: 571e6cfe06eb8214cb0c2cc203448b33,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[12]
+      value: 
+      objectReference: {fileID: 8815304360967856359, guid: 571e6cfe06eb8214cb0c2cc203448b33,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[13]
+      value: 
+      objectReference: {fileID: 8815304360967856359, guid: 571e6cfe06eb8214cb0c2cc203448b33,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[14]
+      value: 
+      objectReference: {fileID: 8815304360967856359, guid: 571e6cfe06eb8214cb0c2cc203448b33,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[15]
+      value: 
+      objectReference: {fileID: 8815304360967856359, guid: 571e6cfe06eb8214cb0c2cc203448b33,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[16]
+      value: 
+      objectReference: {fileID: 8815304360967856359, guid: 571e6cfe06eb8214cb0c2cc203448b33,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[17]
+      value: 
+      objectReference: {fileID: 8815304360967856359, guid: 571e6cfe06eb8214cb0c2cc203448b33,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[18]
+      value: 
+      objectReference: {fileID: 8815304360967856359, guid: 571e6cfe06eb8214cb0c2cc203448b33,
+        type: 3}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: grassPuzzleTemplates.Array.data[19]
+      value: 
+      objectReference: {fileID: 8815304360967856359, guid: 571e6cfe06eb8214cb0c2cc203448b33,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}

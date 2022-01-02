@@ -24,6 +24,8 @@ public class CityForrestShrine : MonoBehaviour
 
     void Update()
     {
+        return; // DISABLED
+        
         if (_shrineCount > 0) return;
 
         if (Random.value < .02f)

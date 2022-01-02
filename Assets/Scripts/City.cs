@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(WorldPlane))]
 public class City : MonoBehaviour
 {
+    public GameObject[] grassPuzzleTemplates;
     public GameObject housePuzzleTemplate;
     public GameObject tinyHouseTemplate;
     public GameObject sandBlockTemplate;
@@ -50,7 +52,7 @@ public class City : MonoBehaviour
     {
         if (!_worldPlane.WorldGenerationDone()) return;
         if (!CanWorkThisFrame()) return;
-        
+
         if (BuildingSpawn.ActiveSpawnCount() < 3)
         {
             if (_featureToggles.houseSpawn)
@@ -144,7 +146,7 @@ public class City : MonoBehaviour
 
     public void SpawnOneHouse()
     {
-        var allSpawns = FindObjectsOfType<HousePuzzleSpawn>();
+        var allSpawns = FindObjectsOfType<PuzzleSpawn>();
         var vacantLots = _worldPlane
             .GetAllTopLots()
             .Where(pair => pair.Value.IsGrass() && allSpawns.All(spawn => spawn.spawnGridPosition != pair.Key))
@@ -152,12 +154,13 @@ public class City : MonoBehaviour
             .ToList();
 
         var vacantLot = vacantLots[Random.Range(0, vacantLots.Count)];
-        
+
         if (vacantLot != null)
         {
-            var housePuzzleSpawn = Instantiate(housePuzzleTemplate);
-            var housePuzzleSpawnComponent = housePuzzleSpawn.GetComponentInChildren<HousePuzzleSpawn>();
-            housePuzzleSpawnComponent.spawnGridPosition = vacantLot._gridPosition;
+            var template = grassPuzzleTemplates[Random.Range(0, grassPuzzleTemplates.Length)];
+            var puzzleSpawn = Instantiate(template);
+            var puzzleSpawnComponent = puzzleSpawn.GetComponentInChildren<PuzzleSpawn>();
+            puzzleSpawnComponent.spawnGridPosition = vacantLot._gridPosition;
             _lastPlacedHouse = Time.fixedTime;
         }
     }

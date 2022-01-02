@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
         if (!_gameObjective.Initialized())
         {
             _gameObjective.Initialize();
-            FindObjectOfType<SphereCursorAction>().SetCursorAction(SphereCursorAction.CursorActions.PlaceBonfire);
+            // FindObjectOfType<SphereCursorAction>().SetCursorAction(SphereCursorAction.CursorActions.PlaceBonfire);
         }
         else if (_gameObjective.Reached())
         {

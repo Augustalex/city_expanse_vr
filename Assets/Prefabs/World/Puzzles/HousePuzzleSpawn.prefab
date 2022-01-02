@@ -94,6 +94,32 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!136 &3626200872754654441
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 266437834054817191}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.05
+  m_Height: 0.07
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.02, z: 0}
+--- !u!114 &4276602540054804013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 266437834054817191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c0771ac99cf48169332c53578891482, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6197027667372937822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,7 +380,7 @@ GameObject:
   - component: {fileID: 2783279570405816795}
   - component: {fileID: 6800813543303649018}
   m_Layer: 0
-  m_Name: HouseSpawnPuzzle
+  m_Name: HousePuzzleSpawn
   m_TagString: BuildingSpawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -389,7 +415,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8244801352cf4f56aedc113e0343ffd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  notPossibleSound: {fileID: 8300000, guid: b9df5e87f638b2b408947a0d6db7b1cf, type: 3}
   spawnLookingTarget: {x: 0, y: 0, z: 0}
   spawnGridPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &4192733674699213478
@@ -945,10 +970,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.05
-  m_Height: 0.08839983
+  m_Radius: 0.02
+  m_Height: 0.025
   m_Direction: 1
-  m_Center: {x: 0, y: 0.044467255, z: 0}
+  m_Center: {x: 0, y: 0.028, z: 0}
 --- !u!114 &3207829389680978573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1064,10 +1089,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2783279570405816795}
     m_Modifications:
+    - target: {fileID: 2319297304481088215, guid: 2ccfe06cd5bb830478ab4f5fd5c1efa6,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 3627084335034151866, guid: 2ccfe06cd5bb830478ab4f5fd5c1efa6,
         type: 3}
       propertyPath: m_Name
       value: Highlight
+      objectReference: {fileID: 0}
+    - target: {fileID: 5539452306955513493, guid: 2ccfe06cd5bb830478ab4f5fd5c1efa6,
+        type: 3}
+      propertyPath: m_TagString
+      value: BuildingSpawnHighlight
       objectReference: {fileID: 0}
     - target: {fileID: 8206170395685481249, guid: 2ccfe06cd5bb830478ab4f5fd5c1efa6,
         type: 3}
@@ -1141,6 +1176,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ccfe06cd5bb830478ab4f5fd5c1efa6, type: 3}
+--- !u!1 &266437834054817191 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5539452306955513493, guid: 2ccfe06cd5bb830478ab4f5fd5c1efa6,
+    type: 3}
+  m_PrefabInstance: {fileID: 5715777432037030706}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4517296472742039571 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8206170395685481249, guid: 2ccfe06cd5bb830478ab4f5fd5c1efa6,
@@ -1164,6 +1205,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tiny House 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6152935038013607998, guid: 808ec8de85f4ba049974ff92e979b6d0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6823249873203862208, guid: 808ec8de85f4ba049974ff92e979b6d0,
         type: 3}

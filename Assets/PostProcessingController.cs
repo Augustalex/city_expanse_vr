@@ -28,6 +28,9 @@ public class PostProcessingController : MonoBehaviour
     
     public void SetDofLevel(DofLevel level)
     {
+        SetDof(1f, 1f, 1f);
+        return;
+        
         switch (level)
         {
             case DofLevel.Low:

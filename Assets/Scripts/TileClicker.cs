@@ -236,11 +236,11 @@ public class TileClicker : MonoBehaviour
                 }
                 else
                 {
-                    var housePuzzleSpawnHighlight = hit.collider.gameObject.GetComponent<HousePuzzleSpawnHighlight>();
-                    var housePuzzleSpawn = housePuzzleSpawnHighlight.GetSpawn();
+                    var puzzleSpawnHighlight = hit.collider.gameObject.GetComponent<PuzzleSpawnHighlight>();
+                    var puzzleSpawn = puzzleSpawnHighlight.GetSpawn();
                     if(!IsRightClick())
                     {
-                        housePuzzleSpawn.ActivateBuildingSpawn();
+                        puzzleSpawn.ActivateBuildingSpawn();
                     }
                 }
 

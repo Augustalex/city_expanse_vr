@@ -5,6 +5,8 @@ public class WorkQueue : MonoBehaviour
 {
     public static WorkQueue instance;
     private int _nextTicket = 1;
+    private int _round = 0;
+    private const int MaxRound = 2;
     private int _currentTicket = 0;
 
     public static WorkQueue Get()
@@ -24,7 +26,16 @@ public class WorkQueue : MonoBehaviour
 
     public int GetTicket()
     {
-        return _nextTicket++;
+        if (_round < MaxRound)
+        {
+            _round += 1;
+            return _nextTicket;
+        }
+        else
+        {
+            _round = 0;
+            return _nextTicket += 1;
+        }
     }
 
     public bool HasTicketForFrame(int ticket)

@@ -6,9 +6,10 @@ using blockInteractions;
 using UnityEngine;
 using Random = System.Random;
 
-
-public class HousePuzzleSpawn : PuzzleSpawn
+public class HillTopHousePuzzleSpawn : PuzzleSpawn
 {
+    private const int Height = 1;
+    
     public override BuildingInfo GetBuildingInfo()
     {
         return new BuildingInfo {devotees = 10};
@@ -16,10 +17,7 @@ public class HousePuzzleSpawn : PuzzleSpawn
 
     public override Vector3 GetTarget()
     {
-        var closestWater = WorldPlane.Get()
-            .GetNearbyBlocks(spawnGridPosition)
-            .FirstOrDefault(block => block.IsWater());
-        return closestWater == null ? Vector3.zero : closestWater.transform.position;
+        return spawnLookingTarget;
     }
 
     public override GameObject CreateBuildingAction()
@@ -30,8 +28,6 @@ public class HousePuzzleSpawn : PuzzleSpawn
     public override bool CanStillConstruct()
     {
         var spawnLot = GetSpawnBlock();
-        return spawnLot.IsGrass() && spawnLot.IsVacant() && WorldPlane.Get()
-            .GetNearbyBlocks(spawnLot.GetGridPosition())
-            .Count(block => block.IsWater() && block.GetHeight() == spawnLot.GetHeight()) > 0;
+        return spawnLot.IsGrass() && spawnLot.IsVacant() && spawnLot.GetHeight() >= Height;
     }
 }
