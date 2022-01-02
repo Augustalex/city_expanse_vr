@@ -48,7 +48,9 @@ public class City : MonoBehaviour
 
     void Update()
     {
+        if (!_worldPlane.WorldGenerationDone()) return;
         if (!CanWorkThisFrame()) return;
+        
         if (BuildingSpawn.ActiveSpawnCount() < 3)
         {
             if (_featureToggles.houseSpawn)
@@ -142,11 +144,13 @@ public class City : MonoBehaviour
 
     public void SpawnOneHouse()
     {
-        var vacantLot = _worldPlane
+        var vacantLots = _worldPlane
             .GetAllTopLots()
-            .OrderBy(_ => Random.value)
+            .Where(pair => pair.Value.IsGrass())
             .Select(pair => pair.Value)
-            .FirstOrDefault();
+            .ToList();
+
+        var vacantLot = vacantLots[Random.Range(0, vacantLots.Count)];
         
         if (vacantLot != null)
         {
