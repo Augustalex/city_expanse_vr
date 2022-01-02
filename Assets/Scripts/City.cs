@@ -144,9 +144,10 @@ public class City : MonoBehaviour
 
     public void SpawnOneHouse()
     {
+        var allSpawns = FindObjectsOfType<HousePuzzleSpawn>();
         var vacantLots = _worldPlane
             .GetAllTopLots()
-            .Where(pair => pair.Value.IsGrass())
+            .Where(pair => pair.Value.IsGrass() && allSpawns.All(spawn => spawn.spawnGridPosition != pair.Key))
             .Select(pair => pair.Value)
             .ToList();
 

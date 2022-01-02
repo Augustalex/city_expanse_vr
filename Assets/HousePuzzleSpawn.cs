@@ -43,23 +43,23 @@ public class HousePuzzleSpawn : MonoBehaviour
     {
         return new BuildingInfo {devotees = 10};
     }
-    
+
     public Vector3 GetTarget()
     {
         return spawnLookingTarget;
     }
-    
+
     public GameObject CreateBuildingAction()
     {
         return BlockFactory.Get().TinyHouse();
     }
-    
+
     public bool CanStillConstruct()
     {
         var spawnLot = GetSpawnBlock();
-        return _worldPlane
+        return spawnLot.IsGrass() && spawnLot.IsVacant() && _worldPlane
             .GetNearbyBlocks(spawnLot.GetGridPosition())
-            .Count(block => block.IsWater() &&  block.GetHeight() == spawnLot.GetHeight()) > 0;
+            .Count(block => block.IsWater() && block.GetHeight() == spawnLot.GetHeight()) > 0;
     }
 
     public void DestroyBuildingSpawn()
@@ -83,7 +83,8 @@ public class HousePuzzleSpawn : MonoBehaviour
         }
         else
         {
-            AudioSource.PlayClipAtPoint(notPossibleSound, _worldPlane.ToRealCoordinates(spawnGridPosition), .02f * GameManager.MasterVolume);
+            AudioSource.PlayClipAtPoint(notPossibleSound, _worldPlane.ToRealCoordinates(spawnGridPosition),
+                .02f * GameManager.MasterVolume);
         }
     }
 
@@ -111,6 +112,7 @@ public class HousePuzzleSpawn : MonoBehaviour
             BuildingSpawn.activeSpawns -= 1;
         }
     }
+
     void Update()
     {
         if (!CanWorkThisFrame()) return;
@@ -118,7 +120,7 @@ public class HousePuzzleSpawn : MonoBehaviour
         var topBlock = _worldPlane.GetBlockAtTopOfStack(spawnGridPosition);
         transform.position = topBlock.transform.position + Vector3.up * .1f;
     }
-    
+
     private bool CanWorkThisFrame()
     {
         if (_workQueue.HasExpiredTicket(_ticket))
@@ -133,5 +135,4 @@ public class HousePuzzleSpawn : MonoBehaviour
     {
         return _worldPlane.GetBlockAtTopOfStack(spawnGridPosition);
     }
-
 }

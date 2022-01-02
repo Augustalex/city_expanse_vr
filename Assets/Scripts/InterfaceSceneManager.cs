@@ -8,6 +8,8 @@ public class InterfaceSceneManager : MonoBehaviour
 
     private States _currentState = States.GameView;
 
+    private float _lastOpenedModal = 0;
+
     private enum States
     {
         BonfireScene,
@@ -55,8 +57,7 @@ public class InterfaceSceneManager : MonoBehaviour
     {
         if (_currentState != States.GameView)
         {
-            var tileClicker = TileClicker.Get();
-            if (!tileClicker.Frozen())
+            if (!Frozen())
             {
                 if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(0))
                 {
@@ -77,32 +78,39 @@ public class InterfaceSceneManager : MonoBehaviour
     private void ShowMenuScene()
     {
         TileClicker.Get().Disable();
+        _lastOpenedModal = Time.time;
+        
         GUIScene.Get().Hide();
         MenuScene.Get().Show();
         _currentState = States.MenuScene;
     }
 
+    private bool Frozen()
+    {
+        return Time.time - _lastOpenedModal < .5f;
+    }
+
     private void HideCurrentView()
     {
+        TileClicker.Get().Freeze(.1f);
+        
         if (_currentState == States.BonfireScene)
         {
-            TileClicker.Get().Freeze(.1f);
             BonfireScene.Get().Hide();
-
-            ShowGameView();
         }
         else if (_currentState == States.MenuScene)
         {
-            TileClicker.Get().Freeze(.1f);
-            MenuScene.Get().Hide();
-            
-            ShowGameView();
+            MenuScene.Get().Hide(); 
         }
+
+        ShowGameView();
     }
 
     public void ShowBonfireScene()
     {
         TileClicker.Get().Disable();
+        _lastOpenedModal = Time.time;
+        
         GUIScene.Get().Hide();
         BonfireScene.Get().Show();
 

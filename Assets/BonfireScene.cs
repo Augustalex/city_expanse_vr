@@ -16,12 +16,15 @@ public class BonfireScene : MonoBehaviour
 
     private void Awake()
     {
-        _camera = GetComponentInChildren<Camera>().gameObject;
-        _bonfireState = BonfireStateManager.Get();
-
-        _devoteeDisplay = GetComponentInChildren<DevoteeDisplay>();
-
         _instance = this;
+        
+        _camera = GetComponentInChildren<Camera>().gameObject;
+        _devoteeDisplay = GetComponentInChildren<DevoteeDisplay>();
+    }
+
+    void Start()
+    {
+        _bonfireState = BonfireStateManager.Get();
     }
 
     public void Show()
