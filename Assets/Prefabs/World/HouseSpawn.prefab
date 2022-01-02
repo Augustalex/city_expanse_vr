@@ -66,8 +66,6 @@ MonoBehaviour:
   - {fileID: 3317631866390460118, guid: 808ec8de85f4ba049974ff92e979b6d0, type: 3}
   largeHouseTemplates:
   - {fileID: 3317631866390460118, guid: a5025b9ee25372e4380edb915eba7d20, type: 3}
-  megaHouseTemplates:
-  - {fileID: 3317631866390460118, guid: 0ffe72b70d5b4ba4fbe50bdab750eebe, type: 3}
   upgradeSound: {fileID: 8300000, guid: f764780d6529f9b49a2ad052ec732df0, type: 3}
 --- !u!54 &6377690525832584305
 Rigidbody:
@@ -219,8 +217,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1.2430534}
-  m_Center: {x: 0, y: 0.000000005013062, z: 0.37847328}
+  m_Size: {x: 0.5, y: 0.4, z: 0.5}
+  m_Center: {x: 0, y: -0.2, z: 0}
 --- !u!114 &4575366380977782421
 MonoBehaviour:
   m_ObjectHideFlags: 0
