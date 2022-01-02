@@ -14,7 +14,7 @@ public class LakeSpawner : MonoBehaviour
 
     private readonly List<Tuple<Vector3, float>> _candidates = new List<Tuple<Vector3, float>>();
 
-    private const float SpawnTime = 2;
+    private const float SpawnTime = 1;
 
     private void Awake()
     {

@@ -401,7 +401,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b34b290a98749d4895b47bd3b15c37f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  notPossibleSound: {fileID: 8300000, guid: b9df5e87f638b2b408947a0d6db7b1cf, type: 3}
   blockRelative: {fileID: 0}
+  spawnLookingTarget: {x: 0, y: 0, z: 0}
+  spawnLot: {fileID: 0}
 --- !u!1 &4978240697104649263
 GameObject:
   m_ObjectHideFlags: 0

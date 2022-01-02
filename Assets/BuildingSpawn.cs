@@ -3,23 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using blockInteractions;
 using UnityEngine;
+using Random = System.Random;
 
 
 [RequireComponent(typeof(BlockRelative))]
 public class BuildingSpawn : MonoBehaviour
 {
-    private static int _activeSpawns = 0;
+    public static int activeSpawns = 0;
     private static bool _placedFirstHouse = false;
     private WorldPlane _worldPlane;
     private WorkQueue _workQueue;
     private int _ticket;
-    
+
+    public AudioClip notPossibleSound;
     public BlockRelative blockRelative;
 
     public Vector3 spawnLookingTarget;
     public Block spawnLot;
 
-    public Func<BuildingInfo> GetBuildingInfo = () => new BuildingInfo { devotees = 0 } ;
+    public Func<BuildingInfo> GetBuildingInfo = () => new BuildingInfo {devotees = 0};
+    public Func<Vector3> GetTarget = () => Vector3.zero;
     public Func<GameObject> CreateBuildingAction = CreateTinyHouse;
     public Func<bool> CanStillConstruct = () => true;
     private bool _deactivated;
@@ -28,7 +31,7 @@ public class BuildingSpawn : MonoBehaviour
     private void Awake()
     {
         blockRelative = GetComponent<BlockRelative>();
-        _activeSpawns += 1;
+        activeSpawns += 1;
     }
 
     private void Start()
@@ -40,7 +43,7 @@ public class BuildingSpawn : MonoBehaviour
 
     public static int ActiveSpawnCount()
     {
-        return _activeSpawns;
+        return activeSpawns;
     }
 
     public void GroundHighlight(Block block)
@@ -52,19 +55,29 @@ public class BuildingSpawn : MonoBehaviour
     public void DestroyBuildingSpawn()
     {
         Deactivate();
-        
+
         blockRelative.block.DestroyOccupant();
     }
 
     public void ActivateBuildingSpawn()
     {
-        Deactivate();
-        
-        var block = blockRelative.block;
-        block.DestroyOccupant();
+        if (CanStillConstruct())
+        {
+            Deactivate();
 
-        PlaceHouse(spawnLot, spawnLookingTarget);
-        _constructionMediator.BuildingCreated(GetBuildingInfo());
+            var block = blockRelative.block;
+            block.DestroyOccupant();
+
+            var target = GetTarget();
+            if (target == Vector3.zero) target = spawnLookingTarget;
+            PlaceHouse(spawnLot, target);
+
+            _constructionMediator.BuildingCreated(GetBuildingInfo());
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(notPossibleSound, spawnLot.transform.position, .02f * GameManager.MasterVolume);
+        }
     }
 
     private void PlaceHouse(Block lot, Vector3 lookingTarget)
@@ -92,27 +105,7 @@ public class BuildingSpawn : MonoBehaviour
         if (!_deactivated)
         {
             _deactivated = true;
-            _activeSpawns -= 1;
+            activeSpawns -= 1;
         }
-    }
-
-    void Update()
-    {
-        if (!CanWorkThisFrame()) return;
-        
-        if (!CanStillConstruct())
-        {
-            DestroyBuildingSpawn();
-        }
-    }
-    
-    private bool CanWorkThisFrame()
-    {
-        if (_workQueue.HasExpiredTicket(_ticket))
-        {
-            _ticket = _workQueue.GetTicket();
-        }
-
-        return _workQueue.HasTicketForFrame(_ticket);
     }
 }

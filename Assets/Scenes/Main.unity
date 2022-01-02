@@ -12650,6 +12650,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Table
       objectReference: {fileID: 0}
+    - target: {fileID: 3645905919876899985, guid: 63f229cc46e53ef47a8bc7f7667512ce,
+        type: 3}
+      propertyPath: housePuzzleTemplate
+      value: 
+      objectReference: {fileID: 2783279570405816794, guid: 8a3fe5b2ecf39ab49b3754ab635a033e,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63f229cc46e53ef47a8bc7f7667512ce, type: 3}
 --- !u!1 &3645905921843291903 stripped

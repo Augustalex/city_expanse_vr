@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(WorldPlane))]
 public class City : MonoBehaviour
 {
+    public GameObject housePuzzleTemplate;
     public GameObject tinyHouseTemplate;
     public GameObject sandBlockTemplate;
 
@@ -139,30 +140,17 @@ public class City : MonoBehaviour
 
     private void SpawnOneHouse()
     {
-        var waterAndLot = _worldPlane
-            .GetStableShorelineBlocks()
+        var vacantLot = _worldPlane
+            .GetAllTopLots()
             .OrderBy(_ => Random.value)
-            .Take(10)
-            .SelectMany(waterBlock =>
-            {
-                return _worldPlane.GetNearbyVacantLotsStream(waterBlock.GetGridPosition())
-                    .Where(levelVacantLot => waterBlock.IsLevelWith(levelVacantLot))
-                    .Select(vacantLot => new Tuple<Block, Block>(waterBlock, vacantLot));
-            })
-            .OrderBy(_ => Random.value)
+            .Select(pair => pair.Value)
             .FirstOrDefault();
-
-        if (waterAndLot != null)
+        
+        if (vacantLot != null)
         {
-            var (waterBlock, vacantLot) = waterAndLot;
-            var target = waterBlock.transform.position;
-
-            var buildingSpawn = BlockFactory.Get().BuildingSpawn(vacantLot, target);
-            vacantLot.Occupy(buildingSpawn);
-            var buildingSpawnComponent = buildingSpawn.GetComponent<BuildingSpawn>();
-            buildingSpawnComponent.GroundHighlight(vacantLot);
-            buildingSpawnComponent.GetBuildingInfo = () => new BuildingInfo {devotees = 5};
-            
+            var housePuzzleSpawn = Instantiate(housePuzzleTemplate);
+            var housePuzzleSpawnComponent = housePuzzleSpawn.GetComponentInChildren<HousePuzzleSpawn>();
+            housePuzzleSpawnComponent.spawnGridPosition = vacantLot._gridPosition;
             _lastPlacedHouse = Time.fixedTime;
         }
     }
