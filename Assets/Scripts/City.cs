@@ -53,29 +53,31 @@ public class City : MonoBehaviour
         {
             if (_featureToggles.houseSpawn)
             {
-                var delta = Time.fixedTime - _lastPlacedHouse;
-                if (delta > 5f && Random.value < .1f)
-                {
-                    if (CanSpawnAnotherHouse())
-                    {
-                        SpawnOneHouse();
-                    }
-                }
+                // var delta = Time.fixedTime - _lastPlacedHouse;
+                // if (delta > 5f && Random.value < .1f)
+                // {
+                //     if (CanSpawnAnotherHouse())
+                //     {
+                //         SpawnOneHouse();
+                //     }
+                // }
 
-                var innerCityDelta = Time.fixedTime - _lastPlacedInnerCityHouse;
-                if (innerCityDelta > 10f && Random.value < .2f)
-                {
-                    if (Random.value < .1f)
-                    {
-                        SpawnInnerCityHouse();
-                    }
-                }
+                SpawnOneHouse();
+
+                // var innerCityDelta = Time.fixedTime - _lastPlacedInnerCityHouse;
+                // if (innerCityDelta > 10f && Random.value < .2f)
+                // {
+                //     if (Random.value < .1f)
+                //     {
+                //         SpawnInnerCityHouse();
+                //     }
+                // }
             }
 
-            if (Random.value < .01f && HasNoOtherBigHouses())
-            {
-                SpawnBigHouse();
-            }
+            // if (Random.value < .01f && HasNoOtherBigHouses())
+            // {
+            //     SpawnBigHouse();
+            // }
         }
 
         if (!_featureToggles.desertsAreBeaches)
@@ -138,7 +140,7 @@ public class City : MonoBehaviour
         _worldPlane.ReplaceBlock(block, sandBlock);
     }
 
-    private void SpawnOneHouse()
+    public void SpawnOneHouse()
     {
         var vacantLot = _worldPlane
             .GetAllTopLots()

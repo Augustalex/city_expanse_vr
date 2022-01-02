@@ -21,10 +21,14 @@ public class HousePuzzleSpawn : MonoBehaviour
 
     private bool _deactivated;
     private ConstructionMediator _constructionMediator;
+    private Animator _animator;
+    private static readonly int Highlight = Animator.StringToHash("Highlight");
 
     private void Awake()
     {
         BuildingSpawn.activeSpawns += 1;
+
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void Start()
@@ -32,6 +36,7 @@ public class HousePuzzleSpawn : MonoBehaviour
         _worldPlane = WorldPlane.Get();
         _workQueue = WorkQueue.Get();
         _constructionMediator = ConstructionMediator.Get();
+        _animator.SetTrigger(Highlight);
     }
 
     public BuildingInfo GetBuildingInfo()
@@ -68,13 +73,13 @@ public class HousePuzzleSpawn : MonoBehaviour
     {
         if (CanStillConstruct())
         {
-            DestroyBuildingSpawn();
-            
             var target = GetTarget();
             if (target == Vector3.zero) target = spawnLookingTarget;
             PlaceHouse(target);
 
             _constructionMediator.BuildingCreated(GetBuildingInfo());
+
+            DestroyBuildingSpawn();
         }
         else
         {
