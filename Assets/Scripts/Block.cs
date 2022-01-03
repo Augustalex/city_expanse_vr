@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public class Block : MonoBehaviour
 {
-    public static float LowestLevel = -3.0f;
+    public static float LowestLevel = -2.0f;
     public static float GroundLevel = 0f;
 
     public enum BlockType

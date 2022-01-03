@@ -53,7 +53,7 @@ public class GameObjective : MonoBehaviour
 
     public void Reset()
     {
-        _worldPlane.ResetAtSize(WorldSizeOfObjective());
+        WorldGeneratorController.Get().Create(WorldPlane.SizeToDimensions(WorldSizeOfObjective()));
     }
 
     private WorldPlane.Size WorldSizeOfObjective()

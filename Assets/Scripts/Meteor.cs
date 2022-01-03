@@ -93,7 +93,7 @@ public class Meteor : MonoBehaviour
     {
         if (!_isIntro)
         {
-            _worldPlane.ResetAtSize(WorldPlane.Size.Large);
+            WorldGeneratorController.Get().Create(WorldPlane.SizeToDimensions(WorldPlane.Size.Large));
             FarmMasterController.OnResetWorld();
         }
 
